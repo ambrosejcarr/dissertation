@@ -1,0 +1,288 @@
+
+\chapter[Review of Single-Cell Immuno-Oncology][Review of Single-Cell Immuno-Oncology]{Review of Single-Cell Immuno-Oncology}
+
+
+\section{Immune-Mediated Cancer Cell Killing}
+
+The adaptive immune system evolved to combat exogenous threats such as viruses and bacteria. 
+However, it is increasingly thought to also play an important role in cancer surveillance; for a tumor to form and proliferate, it must evade recognition by the immune system \citep{Corthay2014}. 
+In a normal immune response, the primary surveillance cells that are tasked with identifying foreign threats are called dendritic cells. 
+Dendritic cells warn other immune cells of detected threats by presenting antigens---small pieces of foreign molecules---using a system of surface receptors called major histocompatibility complex I and II (MHC-I, MHC-II).
+Any antigen presented on an MHC molecule of an \textit{active} dendritic cell is presumed to identify a molecule or cell that should be eliminated by the immune system \citep{Joffre2009}.
+In contrast, antigens presented by \textit{inactive} dendritic cells are considered markers of human molecules or cells, and suppress immune responses against cells carrying molecules that match the presented antigen.  
+Thus, it is of critical importance that (1) any tumor antigen presented on a dendritic cell specifically mark a \textit{foreign} cell type, as antigens shared by normal cells risk turning the immune system on healthy human cells, and (2) that dendritic cells bearing tumor antigens are activated \citep{Darrasse-Jeze2009,Steinman2000}.
+
+In cancer, specific tumor antigens can be mutated proteins, products of non-mutated proteins that have much higher over-expression in tumor cells, or differentiation antigens associated with tissue of origin; for example melanosome proteins in melanoma \citep{Boon2006,Segal2008}.
+However, the latter two cases will produce auto-immune phenotypes in addition to destruction of cancer cells because the antigen is partially shared with normal cells.
+To prevent widespread auto-immunity, dendritic cell activation is carefully controlled.
+Activation signals are plentiful, including many signaling molecules that are generated during inflammation or innate immune responses.
+These signals include CD40, IFN-$\alpha$ Toll-like receptor stimulation, or GM-CSF \citep{Lippitz2013}. 
+Dying cells, another byproduct of an innate immune response, are thought to release additional signals that result in dendritic cell activation and maturation, including high mobility group proteins, ATP, and ER proteins like calreticulin \citep{Zitvogel2009}.
+
+Once a dendritic cell has been exposed to a foreign antigen and activated, the second step of an immune response is the migration of activated dendritic cells to lymphoid organs. 
+In a lymphoid organ, a tumor-antigen loaded dendritic cell interacts with and activates CD8-expressing t-cells that carry a t-cell receptor (TCR) that recognizes the antigen presented by the dendritic cell. 
+Once a t-cell is activated, it is primed to recognize the antigen that was presented to it by the dendritic cell, and is designed to interact with such cells and induce them to die. 
+As a result, t-cell activation is also under tight control. 
+Activation relies upon a host of pro- and anti-activation interactions. 
+The positive signals include CD28, CD137/4-1BB, OX40, HVEM, GITR, IL-2, and IL12 \citep{Franciszkiewicz2012,Lippitz2013}, while the negative signals include CTLA-4, TIM-3, VISTA, and LAG-3. % cite sharma 2017 
+The combination of these systems with diverse activation signals produces a complex set of possible responses and many functionally different t-cell states.
+
+Finally, active, cancer-specific t-cells must enter the tumor to find and destroy tumor cells. 
+Chemokines CX3CL1, CXCL9, CXCL10, CCL5 all encourage trafficking of t-cells to tumors \citep{Franciszkiewicz2012}.
+Once present, the ratio of active effector t-cells must be significantly higher than regulatory t-cells, which are produced by interacting with inactive, antigen-presenting dendritic cells.
+The goal of anti-tumor response is to produce a self-sustaining immune cycle wherein the killing of cancer cells produces antigens and activation signals for dendritic cells, which in turn provoke the subsequent stages of the immune cycle \citep{Chen2013}.
+
+How then do tumors that express large numbers of mutant peptides, or ``neo-antigens'', avoid immune-mediated cell killing? 
+It has become clear that immunosuppression occurs at each stage of the immune response, and that there are a variety of actors that play a part in each stage. 
+
+\section{Malignant Immunosuppression}
+
+The adaptive immune response begins with dendritic cells, whose activation can be inhibited by factors in the tumor microenvironment \citep{Michielsen2012,Chevalier2017}. 
+As discussed above, inactive dendritic cells that present tumor antigens can actively suppress immune responses. 
+In addition to being incapable of activating effector t-cells, They recruit t-regulatory cells, which suppress t-cell mediated cell killing \citep{Ohta2006,Curiel2004}. 
+However, because adjuvants can usually be found that will activate dendritic cells, more research has focused on the later stages of the immune response: t-cell activation and t-cell killing. 
+
+For normal t-cell activation to proceed, the dendritic cell must signal that it is active, which is communicated by cell-surface presentation of B-7 family ligands. 
+These B-7 ligands complex with CD80 and CD86, which when activated alongside t-cell receptor recognition of the antigen presented by the dendritic cell, signals that the antigen recognized by the T-cell should be the target of an immune response. 
+CTLA-4 is a competitive inhibitor for B-7 ligands, and when present will out-compete CD80 and CD86 \citep{Qureshi2011}. 
+This competitive inhibition suppresses t-cell activation \citep{Wing2008} and may bias t-cells towards immunosuppressive regulatory cell states. 
+Conversely, the elimination of the CTLA-4 receptor in mice causes a lethal lympho-proliferative disorder, suggesting that it unleashes unrestrained clonal t-cell expansion \citep{Tivol1995}.
+Thus, CTLA-4 functions as an immune checkpoint.
+
+Since the discovery of CTLA-4, myriad additional immune checkpoints have been uncovered including but probably not limited to TIM-3, BTLA, VISTA, and LAG-3.
+Each of these proteins has been observed on cancer cells, and when present, produces complex patterns of t-cell suppression. 
+As a result, each protein is being investigated as a possible drug target \citep{Sharma2017}.
+
+In addition to the more general CTLA-4 pathway, numerous other mechanisms exist that have been observed to suppress t-cell activation in certain contexts. 
+Release of adenosine by tumor cells, triggered by hypoxic conditions, suppresses activation and recruits t-regulatory cells \citep{Ohta2006}. 
+VEGF-A and EDNRB/ETBR, molecules secreted by tumor cells to control tumor vasculature and oxygen availability, may reduce t-cell homing and adhesion, excluding them from the tumor environment \citep{Bouzin2007}. 
+Additionally, VEGF-A can induce IL-10 secretion, which suppresses IFN-$\gamma$, a critical t-cell activation signal. 
+IL-10 is one of many mechanisms by which myeloid derived suppressor cells, immune cells which are functionally characterized by their ability to suppress anti-tumor immune responses, exert their effects. 
+Other mediators of suppression include the production of reactive oxygen species and the secretion of NO, arginase, prostaglandin E2, or TGF-$\beta$, several of which are clinically prognostic indicators of suppression \citep{Muller2006}.
+
+At later stages of an immune response, the most prominent inhibitor of t-cell mediated cell-killing is PD-1, which is expressed on the cell surface of activated t-cells.
+The activity of PD-1 functions similarly to CTLA-4: when a T-cell complexes with its target, it will induce the cell to die. 
+However, if PD-1 becomes activated, it is interpreted by the T-cell as a signal that the target cell was mistakenly identified, and causes the T-cell to die instead \citep{Keir2008}. 
+The ligands for PD-1, PD-L1 and PD-L2, are expressed on tumor and dendritic cells, and this pathway is therefore thought to serve an immuno-regulatory function. 
+Unlike CTLA-4 knockout mice, PD-1 -/- mice survive, but display chronic autoimmune phenotypes \citep{Nishimura1999,Nishimura2001}.
+
+Tumor cells are capable of expressing the majority of the immune-inhibitory markers and secreting many of the immunosuppressive compounds discussed above. 
+Because of the variety of mechanisms through which tumor cells are capable of inducing this effect, it is logical to expect a large variance in the druggability of each pathway across patients. 
+This fact may partially explain the frequent treatment failures observed in immunotherapy trials. 
+Even our limited knowledge of the functionality of these pathways reveals a system of tremendous complexity. 
+It is designed to carefully balance immunity against foreign pathogens against the risk of self-recognition and auto-immunity. 
+Because of this balance, cancer is often able to avoid detection by co-opting systems the body uses to prevent auto-immunity. 
+
+\section{Immune Therapies for Cancer}
+
+Over the past decade, some of the most promising advances in oncology have come from vaccines that paint the cancer as an immune target or drugs that disrupt cancer’s ability to masquerade as ``self.'' 
+The idea behind cancer vaccines is to stimulate the immune system to recognize a tumor as a pathogen and eliminate it. 
+However, early attempts at vaccines quickly taught that simply exposing the body to cancer antigens was not enough---if dendritic cells are exposed to an antigen in absence of an activation signal, they tend to suppress, instead of activate, the immune response \citep{Rosenberg2004}. 
+In contrast, follow-up studies that added adjuvant treatments designed to stimulate dendritic cells had more positive effects: 
+co-administration of IL-2, a dendritic cell activation signal, with gp100, a melanocyte differentiation antigen improved melanoma outcomes \citep{Eberlein2012}. 
+Similar pairings have been effective in intraepithelial neoplasia, B-cell lymphomas, and non-small cell lung cancer. \citep{Eberlein2012,Stockman2011}, 
+There have also been attempts to use viral vectors encoding tumour antigens to exploit the naturally strong antiviral immune response to elicit reactivity against cancer antigen, but these attempts have missed phase 3 trial targets \citep{BavarianNordic2017}.
+
+A second type of vaccine involves ex-vivo culturing of dendritic cells with tumor antigens. 
+This hyper-personalized treatment selects for dendritic cells that show reactivity against the patient’s tumor, which can then be injected back into the patient alongside an activation adjuvant to foment an immune response. 
+Unfortunately, the complexity of cell isolation, ex-vivo manipulation and re-infusion has made this approach very costly. 
+Consequently, it has been unpopular with pharmaceutical companies and has seen limited commercialization \citep{Mellman2011}.
+However, unlike the culturing of dendritic cells, engineered t-cells have been successfully commercialized to treat acute lymphoblastic leukemia (Yescarta, Kite Pharma) and large b-cell lymphoma (Kymriah, Novartis).
+These approaches identify immunogenic antigens in a patient’s tumor and engineer chimeric t-cell receptors to recognize and respond to them.  
+
+While cancer vaccines have shown some success, there are still several challenges that have prevented it from evolving into a broadly effective treatment strategy. 
+First, there is confusion about which tumor antigens are adequately immunogenic to activate dendritic cells, and which are adequately expressed across cells in the tumor to enable pan-cancer targeting.
+Second, safe adjuvant therapies for dendritic cell activation are not yet apparent; most induce moderate to strong autoimmune side effects. 
+Finally and most critically, though the conditions for immunization eventually may be optimized, effectiveness can be dampened by immunosuppression mechanisms acting at any of the stages identified above: dendritic cell priming and activation, t-cell activation, and t-cell mediated cell killing.
+As a result of the linear nature of this activation process, therapies that enter earlier in the chain, such as activated dendritic cells must pass additional immune checkpoints relative to those that enter towards the end, such as activated t-cells in CAR-T therapies, and as such often have lower success rates. 
+However, it is not yet clear how difficult each immune checkpoint is to pass, how commonly cancer co-opts each checkpoint to block immune activation, and the interaction of individual mechanisms at each checkpoint.
+
+In addition to cancer vaccines, there have been attempts to deplete immune-regulatory cells such as t-regs from the tumor environment. 
+Hampering this approach, no specific surface marker of t-reg cells has yet been identified that is not also expressed on effector t-cells, although some proteins such as GITR and OX40 may be transiently expressed \citep{Ito2006,Cohen2010}.
+As a result, depletion methods tend to remove both t-regulatory and CD8+ effector t-cells. 
+The best attempt so far may be the use of anti-CD25 antibodies, which preferentially deplete t-regulatory cells, at least following short-term therapy, and may help increase the efficacy of active immunization \citep{Golovina2010}. % ask george
+
+These problems have driven researchers to investigate the use of drugs of targeting specific molecular mechanisms underlying immune suppression and activation. 
+Like with vaccines, there have been efforts to characterize immune checkpoints at each stage of the adaptive immune response. 
+Motivated by mouse research showing that CTLA-4 knockouts induced lethal auto-immune reactions.
+It was theorized that a weaker, temporary blockade of CTLA-4 signaling may be effective in unleashing t-cell responses in patients for which the main barrier is t-cell activation. 
+Thus, a drug was developed targeting the CTLA4 pathway, aiming to increase the effectiveness of dendritic-cell based activation of CD8+ t-cells. 
+This was attempted first in mice and then in a series of trials for Melanoma (approved), prostate, lung, and bladder cancer. % Allison citation: Enhancement of antitumor immunity by CTLA-4 blockade.
+These trials have succeeded not because of a high response rate---relatively few patients respond---but rather because those patients that do respond appear to obtain durable and long-lasting recoveries \citep{Robert2011,Hodi2010}.
+However, because of significant on- and off-target inflammatory toxicities, anti CTLA-4 drugs are primarily targeted to late-stage patients who do not respond to front line therapies. 
+
+Similar to vaccines, drugs targeting later-acting immune checkpoints appear to have superior specificity. 
+Mirroring the result in rodents, anti-PD-1 drugs seems safer than Ipilimumab \citep{Brahmer2010} and consistently show durable responses in subsets of patients \citep{Hamid2013,McDermott2014}. 
+These clinical results suggest that anti-tumor immunity is functional up to but not including t-cell mediated cell killing in some patients. 
+
+In addition to these two pathways, there are numerous other co-stimulatory or co-inhibitory pathways that are believed to be involved in modulation of the anti-tumor responses. 
+Stimulatory pathways that might be activated include CD28, OX40, GITR, CD137, CD27, and HVEM, and inhibitory pathways that could be blocked include TIM-3, BTLA, VISTA, and LAG-3. 
+It is hoped that part of the reason for the limited patient response to PD-1 and CTLA-4 drugs is that aberrations in these other pathways are responsible for immunosuppression in those patients. 
+By better characterizing and personalizing treatment, it is hoped that the response rate of patients to immune-based treatments may be improved. 
+Initial investigation into this with combination therapies has been promising: Ipilimumab (CTLA-4) + Nivolumab (PD-1) appear to enhance immune activity over either therapy alone \citep{Wolchok2013}.
+
+The results of this research and the clinical trials that followed have revealed an extremely complex web of overlapping mechanisms governing immune-cancer interactions. 
+Each identified immunosuppression mechanism has been shown to have a critical role in preventing autoimmune disease, outlining the need for rational therapy designs, and where possible, targeted delivery. 
+However, later checkpoints unleash increasingly specific responses. 
+If it were possible to identify the particular pathway that is primarily responsible for inhibition of an immune mechanism, this would minimize the off-target autoimmune effects. 
+Similarly, improvements allowing therapies to be delivered directly to the tumor, at least for t-cell homing and t-cell mediated cell killing, should in theory also serve to minimize off-target effects. 
+Taken in combination, these improvements may allow greater doses of drugs to be brought to bear, in cases where patient toxicity would otherwise prevent a dose that facilitates complete penetrance. 
+However, this research does not benefit individuals whose immune system is suppressed by checkpoint pathways outside the regime of existing drugs, or patients who are given a drug that opens the wrong checkpoint. 
+Thus, there is a significant and pressing clinical need to better characterize the immune phenotypes present in cancer patients at the level of individuals. 
+Only recently have tools capable of probing these complex questions been invented.
+This dissertation deals, in part, with the methodological and computational development of one such technology and its application to characterize complex immune phenotypes. 
+
+\section{Single-Cell Technologies}
+
+The invention of new genomics technologies have historically triggered rapid change in biological research by allowing researchers to ask new categories of questions. 
+For example, sequencing the human genome provided biologists with the complete blueprint of human cells. 
+This provided a context in which to place the previously haphazard identification of individual expressed genes. 
+The combination of that knowledge with targeted approaches to identify RNA molecules---expressed sequence tagging---has taught us how the genome is functionally expressed. 
+This information was combined to start the transcriptomics revolution with the creation of DNA microarrays, which for the first time provided a relatively unbiased functional readout of the genes expressed by cells isolated from a tissue. % cite a brown, botstein paper. 
+
+Microarrays increased the amount of data generated in a single assay by 1000-fold and enabled scientists to make predictions about responses to treatment in breast and prostate cancer that previously required much more laborious investigation \citep{Glinsky2004, VantVeer2002}. 
+They were also used to predict response to early immune therapies in melanoma \citep{Monsurro2004} and identify pan-cancer signatures of immune infiltration \citep{Chifman2016}.
+
+RNA-sequencing (RNA-seq) expanded on these capabilities by eliminating bias inherent in microarray technology, reducing the required amount of RNA input, and for the first time allowed an absolute measurement of the number of each RNA in a sample isolate.
+RNA-seq was effectively applied to generate, among other projects, the Cancer Genome Atlas \citep{McLendon2008,Network2011}.
+This Atlas has been extensively mined and has contributed prognostic signatures of immune therapy success \citep{Senbabaoglu2016}.
+RNA-seq has since been utilized to interrogate of binding patterns of transcription factors \citep{Johnson2007}, determine nucleosome occupancy \citep{Boyle2008}, refine transcription factor binding preferences \citep{Riley2014}, map the 3D spatial organization of DNA in the nucleus \citep{Belton2012}, and create many more experimental paradigms.
+RNA-seq has spawned large studies on the functionality of the genome, such as the ENCODE and ROADMAP epigenomics projects, which revealed that a large portion of the genome is responsible for functional differences in gene expression, even if it is not itself transcribed. % cite some kind of ENCODE 2012 paper (is there a main paper?)
+
+However, the utility of RNA-sequencing is limited because it requires a large number of input cells to achieve the concentration of DNA necessary to run the sequencer.
+Because millions of cells were needed to provide the required microgram of DNA input \citep{Wilhelm2009}, RNA-sequencing cannot tell the difference between 50\% of the cells expressing two copies of an RNA and 100\% of cells expressing one copy. 
+Yet, this family of hypotheses are critical to understanding population level immune variance, and also cancer antigen variation. 
+
+Single cell approaches, in contrast, can answer these types of questions. 
+Flow cytometry is a two step procedure wherein cells are first exposed to antibodies that are bound to fluorophores, and then shot through a fluorescence detector at high speed. 
+This approach is able to characterize 8-17 proteins, limited by the overlap of fluorophore emission and excitation spectra. \citep{Perfetto2004}.
+
+Advances in cytometry by time-of-flight (Cytof) replaces fluorophores with metal ions, increasing the number of measurable proteins in a single cell to 35-50. 
+This is still typically limited to surface proteins, and has a large experimental lead time as high-quality, specific antibodies must be developed for each protein target.  
+Despite these drawbacks, Cytof’s antibody based measurements produce relative but reliable continuous estimates of protein abundance and measure individual cells. 
+In addition, it is one of the highest throughput technologies available for assaying single cells, capable of easily measuring millions of cells per sample, although these numbers are rarely necessary. 
+Finally, the individual cell measurements made by Cytof are typically quite reliable; antibodies have good binding affinities and as a result, there is high confidence that if cell surface markers are present, Cytof will detect them. 
+
+As a result, Cytof has been very effectively applied to better characterize immune cell states in cases where the marker combinations are already known: 
+Cytof identified previously unknown signaling mechanisms in the otherwise well-understood hematopoiesis system \citep{Bendall2011}, helped decompose CD8+ t-cells states and display combinatorial cytokine producing sub-types \citep{Newell2012}, enabled by trajectory-finding approaches, found novel early human B-cell populations \citep{Bendall2014}, stratified macrophage and t-cell phenotypes in renal cell carcinoma \citep{Chevrier2017}, and characterized t- and myeloid-cell dysfunction in lung cancer \citep{Lavin2017}.
+
+Unfortunately, Cytof (and FACS) requires prior knowledge or guesswork to identify state markers before experimention begins. 
+In addition, it has a limited ability to resolve intracellular states because cells must be permeabilized to allow antibody entrance, and therefore targeting intracellular proteins does not always produce effective staining. 
+As a result, it is a powerful tool for teasing apart cell populations based on previously identified surface markers, but is not a capable tool for characterization of unknown phenotypes.
+
+\section{Single-Cell RNA-Sequencing (scRNA-seq)}
+
+scRNA-seq is the first opportunity to make an unbiased measure of more than a few proteins or transcripts, allowing populations of seemingly homogeneous cells to be deconvolved into their component parts. 
+As early as 2009, transcriptomes of the largest single cells---oocytes---and multi-cell blastomeres had been amplified and measured singly in tubes by adapting a protocol originally designed for microarrays \citep{Tang2009}. 
+Multiplexing of this method for multiple cells was accomplished shortly thereafter with a cell barcoding strategy called CEL-seq wherein the poly-A capture primers were modified to contain short designed nucleotide sequences (``cell barcodes'') that differed between cells and uniquely marked them \citep{Islam2011}. 
+
+Developed contemporaneously and released shortly following CEL-seq, SMART template-switching chemistry was introduced to allow isolation of full-length transcripts \citep{Ramskoeld2012}.
+It accomplished this by leveraging the Nextera transposase reagent from bulk sequencing assays, which incorporates itself randomly into the captured RNA fragments, carrying an Illumina index. 
+The Illumina index was then used read off the sequencer, allowing reads from up to 96 cells to be sorted according to the cell that generated them per sequencing lane.
+This technological innovation was important because it allowed splicing events to be observed in single cells for the first time.
+These approaches are also generalizable and can measure any cell of any size that can pass through a FACS sorter
+
+CEL- and SMART-seq enabled reading of an estimated 7-10 thousand molecules of RNA in each cell. 
+However, these data are not without problems. 
+While 10,000 molecules is many more than proteomics approaches allow, it is a relatively small fraction of the mRNA available in a eukaryotic cells. 
+Because many of the features of interest -- intracellular transcription factors -- are present at low copy number, capture-based stochasticity may drive their expression as much or more than biological state. 
+
+Second, because cells contain so little starting material, and sequencing devices are designed for bulk genomes, significant amplification is necessary to generate enough material to run a sequencer. 
+Thus, both CEL- and SMART-seq utilize amplification, and this interacts with the capture rate to produce odd mixture distributions over captured RNA molecules. 
+
+The Central Limit Theorem describes how the mean values of a series of samples extracted independently from a population tend towards a Normal or Gaussian distribution.
+Because of the tendency for Gaussian distributions to naturally arise, there has been abundant work to analyze data that follow these distributions, and as such it is a desirable property. 
+In bulk sequencing, this is approximately achieved, as each technical or biological replicate samples many cells, each of which contains many mRNA. 
+After correcting for amplification by taking the log of the observed counts, the expression of most genes across replicates can usually be fit to Gaussian distributions. % maybe ENCODE best practices?  
+
+Single cell data is not so well behaved.
+The shallow sampling of the transcriptomes causes some cells to miss particular genes, which "drop-out" of analysis. 
+Thus, when the gene's expression is examined across cells, data is shared between a zero category or “drop-out” and a Log-Normal component which represents amplification over the captured molecules. 
+Because capture is so sparse, biases in amplification and other steps in library construction can contribute as significantly to the ratio of cells in the "drop-out" and "continuous" components as do the numbers of molecules originally present in cells \citep{Zheng2011,Dohm2008}.
+Indeed, capture in these technologies can be so variable that popular analysis visualizations such as "Dot plots" treat the fraction of cells that detect a transcript as carefully as they do the magnitude of expression in a detected gene\cite{Shekhar2016}. 
+As a result, only large effects in molecule number are reliably detectable. 
+
+To overcome these technical biases, additional experimental controls were necessary to make the data more interpretable. 
+The most significant advance was the inclusion of molecular barcodes (UMIs). 
+Like cell barcodes, these are added to capture primers. 
+Unlike cell barcodes, molecular barcodes contain random sequence. 
+When the barcodes are long enough, they probabilistically provide a unique marker for each molecule. 
+This allows a computational scientist to resolve the reads obtained in an experiment at molecular resolution. 
+Inclusion of molecular barcodes allows computational scientists to exchange the complex mixture distributions for well characterized Poisson statistics---the statistics that describe the rate of rare sampling events \citep{Shiroguchi2012}.
+The effectiveness of this molecular barcoding is demonstrated with exogenous spike-in control reagents. 
+RNA of known concentration are added, and the accuracy of population estimates were improved with inclusion of UMIs. % cite grun, AVO
+
+Amplification methods have an interaction with cell and molecular barcodes. 
+Traditional PCR amplification has a relatively small error rate, but the output of PCR is also valid input. 
+Each round of PCR adds new substrate to the pool to be amplified. 
+Therefore, any errors introduced into the cell barcode are propagated into the reaction, producing error trees wherein branches inherit errors from their trunks. 
+In contrast, linear amplification through in-vitro transcription \citep{Eberwine1992}, as used in CEL-seq, takes cDNA as input and generates RNA output. Thus, unlike PCR, the product of the reaction cannot act as substrate, and any errors that occur do not propagate or compound.
+In addition, CEL-seq2/C1 and MARS-seq showed a steeper slope at low sequencing depths than both Drop-seq and SMART-seq, potentially due to a less biased amplification by in vitro transcription \citep{Ziegenhain2017}.
+
+These technological advances---capture primers, amplification improvements, cell and molecular barcoding---form the basis of modern single-cell sequencing.
+The small cell counts of initial experiments were adequte to ask very specific questions of well controlled systems. 
+Often, the cell type had already been isolated by FACS and studies were limited to determining if the isolated cell population displayed a single phenotype with variation, or if there were modes hidden in the population that represented distinct states \citep{Shalek2013}.
+To scale beyond these experiments, robotics was used to optimize plate loading for both SMART-seq \citep{Shalek2014} and CEL-seq \citep{Jaitin2014} chemistries, allowing 96 cells to be processed at a time with reduced hands-on time. 
+More recently, droplet-based microfluidics approaches to CEL-seq \citep{Klein2015} and SMART-seq \citep{Macosko2015} were developed which enabled thousands of cells to be generated at once\footnote{Near the end of this dissertation, 10x Genomics \citep{Zheng2017a} provided a commercial application that pulls from both approaches and by focusing on tight control of the bead construction process. It is thought to currently produce the highest quality data, albeit at significantly increased cost relative to non-commercial droplet technologies.}. 
+
+These scRNA-seq approaches have revealed several interesting characteristics of the techniques used in sequencing library preparation. First, the capture primers used to extract the mRNA from the cell have quite low efficiency---early methods had as low as 5\% capture rate, and cutting edge approaches have 30-35\% capture rates. 
+As a result, it can be difficult to measure low-expression transcripts such as transcription factors, which are often present at very low copy number in cells. 
+Second, because some gene sequences are better substrates for PCR amplification than others, the (much larger) amplification necessary to create libraries for scRNA-seq with adequate concentration to load the sequencer produces significant variation in gene abundances. 
+Together, these combine to produce very sparse libraries -- bulk RNA-seq could be expected to identify over 20,000 genes in a sample. 
+In contrast, scRNA-seq captures between 1000 and 5000, depending on the size of the cells, abundance of their RNA, and lack of cellular stress. 
+In spite of these disadvantages, the capability of sequencing individual cells has taught us much about the development and function of immune cells. 
+
+\section{Single-Cell Approaches to Characterize Immune Populations}
+
+Studies predating scRNA-seq had long identified that cellular variation in expression of immune marker genes can have a functional influence on clinical outcomes. 
+For example, a 2010 study using FACS discovered variable expression of the IL-2R in a population of t-cells during an immune response correlates with t-effector and t-regulatory cell survival \citep{Feinerman2010}.
+
+scRNA-seq has been applied to great effect to improve our understanding of how immune cells develop, and the triggers that are necessary to induce the differentiation of precursors into mature cell types. 
+\cite{Jaitin2014} classified splenic cells into known immune cell types (b-cells, natural killer, macrophages, monocytes, and plasmacytoid dendritic cells), 
+and characterized variation in dendritic cell responses to lipopolysaccharide, a bacterial protein, identifying universal IFN response genes, and transcriptionally separating them into sub-populations. 
+\cite{Bjoerklund2016} profiled CD127+ innate lymphoid cells in tonsil and small intestine. 
+They identified previously characterized innate lymphoid cell 1, 2, 3, and NK cells based on surface marker expression, but also identified novel transcriptional signatures suggestive of possible subpopulations within the identified groups.  
+\cite{Gury-BenAri2016} examined helper-like innate lymphoid cells in the small-intestine, finding new populations defined by expression of NKp46, retinoic acid receptor related orphan receptor-$\gamma$-t, and IFN$\gamma$ or IL-2 and CCL22. 
+\cite{Schlitzer2015} examined lineage commitment in conventional dendritic cells, while \cite{Drissen2016} improved the resolution of early myeloid lineage branching.
+\cite{Loennberg2017} and \cite{Paul2015} helped map out how surface marker based cell states map to transcriptional changes in early bone marrow differentiation, and \cite{Nestorowa2016} carried out a similar study on hematopoietic stem cells.
+Finally, \cite{Villani2017} demonstrates the power of deeply sequencing a relatively homogeneous population by examining 2400 HLA-DR+ cells, revealing 6 dendritic cell sub-populations.
+
+Similarly, scRNA-seq has been effective at teasing apart how immune cell activation functions in well controlled model systems. 
+The first major application of SMART-seq examined bone-marrow derived dendritic cells subjected to a bacterial lipopolysaccharide activation signal to study variation in gene expression and splicing patterns among dendritic cells in response to infection \citep{Shalek2013}.
+This system was selected in part because it presents an interesting biological question, but also because dendritic cell activation is known to induce temporal phasing, and because activated dendritic cells are post-mitotic, therefore the majority of variation was expected to be biological. 
+The study revealed a correlated component of gene expression including Stat2 and Irf7, that drive the antiviral response.
+\cite{Loennberg2017} examined variation in t-helper differentiation states in response to malaria. 
+A series of knockout experiments targeting the IFN-R pathway \citep{Gaublomme2015} were able to identify heterogeneity of TH-17 cells in CNS and lymph node at peak of autoimmune encephalomyelitis. 
+Finally, recent studies demonstrated how tumor-associated cells can recruit macrophages that suppress immunity by sequencing individual macrophage cells and identifying hippo pathway Yes-associate protein (YAP) as the critical checkpoint for macrophage recruitment \citep{Guo2017}
+
+These studies demonstrate how profiling single cells enables functional characterization of immune populations, both in natural states and when stimulated by foreign pathogens. 
+Yet, at the time I began this research, the study of immune infiltration of cancer had not been broached by large scRNA-seq experiments. 
+The following chapter will describe how a technology was selected from the set of approaches reviewed above, adapted to sequencing immune cells, benchmarked for sources of variation, and how a statistical toolkit was developed to correct the technical problems introduced by the process of transforming individual cells into a library which, after sequencing, describes the phenotypes of thousands of immune cells per tumor. 
+
+\section{Towards an Atlas of Tumor Immune Phenotypes}
+
+In addition, they highlights several critical questions in cancer immuno-biology: namely, how do individual immune cells react to cancer, and what can we learn about population-level differences between patients? 
+How do the expression of individual marker genes or pairs of marker genes that are used to defined cell states correlate with cellular phenotypes? 
+What do these transcriptional states imply about individual patient's amenability to drug treatments?  
+
+%p how we will profile immune cells to gain further understanding about cancer
+To answer these questions, we would need to sequence a very large number of cells. 
+We reasoned that cancer exists as a natural perturbation, and that the unique nature of each patient’s tumors should provoke significant variation between patients. 
+However, recent demonstrations have shown that tissue residence alone exerts a significant effect on immune phenotypes % cite sasha
+Therefore, we rationalized that it would be critical to first characterize the cellular states within the healthy tissue, thus we will hierarchically characterize blood, tissue, and tumor-infiltrating immune cells.
+Previous studies and retrospectively, ones that were carried out in parallel, have demonstrated that small numbers of cells from large numbers of patients are not capable of capturing meaningful heterogeneity across immune cell types; they simply recover common cell states \citep{Chung2017}.
+Thus, shallow sampling of TILs cannot determine which cells are present across tumors at variable levels, versus the states that are patient-specific. 
+
+% statistical approaches don't exist yet and there are no data processing frameworks
+Therfore a successful study would deeply sample multiple patients, but also multiple tissues within each patient. 
+This introduces a second problem: early studies have focused on technical demonstrations, often within model organisms or cell lines, and eschewed statistical approaches that are necessary to examine variances across multiple samples of variable sources
+Very few studies had dealt with human patients effects in immune data--most studies used mouse models with intentionally limited genetic variation.
+As a result, limited work had been done to address statistical problems like normalization and adjustment for patient-patient differences, and the ability to ask large-scale questions in humans was therefore limited. 
+Yet, the ability to generalize across patients is crucial to interpret the relative importance of any states that are discovered.  
+
+Thus, before any attempts could be made to describe immune phenotypes, several technological and computational challenges needed to be addressed. 
+My approaches for solving these challenges will be detailed in the next two chapters. 
+Chapter 2 will discuss the selection of the appropriate technology to assay immune cells at a scale that was at the time unprecedented, and the computational tools that were developed to ensure that the resulting data highlighted biological variation and minimized technical effects introduced by the construction of the sequencing library. 
+Chapter 3 will then discuss the statistical models and tools that were developed to reason about the relationships between cells from different patients whose different tumors introduced huge biological variation that was not always cleanly separable from technical variation. 
+Finally, Chapter 4 will describe an experiment made possible by these tools, wherein a broad range of immune cell states are uncovered and characterized, highlighting how breast tumors dramatically expand the range of observed immune cell phenotypes relative to those observed in healthy tissue. 
+

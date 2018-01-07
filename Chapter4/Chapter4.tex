@@ -1,0 +1,412 @@
+
+\chapter[Quantifying Tissue- and Microenvironment-Induced Immune Cell Variation][Quantifying Tissue- and Microenvironment-Induced Immune Cell Variation]{Quantifying Tissue- and Microenvironment-Induced Immune Cell Variation}
+
+
+\section{Tissue Residence has a Strong Effect on the Diversity of Immune Phenotypic States}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure3-A.png}
+\caption{Breast immune cell atlas inferred from combining all patient samples and tissues, presented after Biscuit and projected with t-SNE\@. Each dot represents a cell and is colored by cluster label;  major cell types are marked according to Figure 2F,H and Table S2,3. Right: Subsets of immune atlas t-SNE projection in showing cells from each tissue presented separately on the same coordinates as right to highlight the differences between tissues compartments.
+}  % reference tables. 
+\label{fig:3a}
+\end{figure}
+
+A key goal of this study was to quantify the extent to which variation in immune cell phenotypes is driven by their tissue of residence, i.e.\ cancerous vs.\ normal breast tissue, using peripheral blood or the lymph node cells as references. 
+To gain a qualitative understanding of phenotypic overlap between tissues, we carried out tSNE co-embedding \citep{Maaten2008} of the merged dataset annotated by clusters.
+This analysis showed that T cells in blood and lymph node were dramatically dissimilar to cancerous or normal breast tissue resident T cells, which in contrast, displayed many shared phenotypes (Figure~\ref{fig:3a}).
+We observed that gene expression of T cells dramatically differed between blood and tissue resident cells, with a large blood-derived cluster of cells being phenotypically distinct from T cells in normal and tumor tissue (shown in blue).
+In contrast, Both T cells and myeloid lineage cells exhibited considerable phenotypic overlap between tumor and normal tissue samples. 
+Of the two classes of tissue resident cells, tumor cells displayed greater phenotypic heterogeneity, appearing to expand populations observed in the normal breast (Figures~\ref{fig:3a},~\ref{fig:3b} summarize distributions of cell types across tissues.)
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure3-B.png}
+\caption{Proportions of cell types across tissue types in pie charts.}
+\label{fig:3b}
+\end{figure}
+
+Next, we quantifed the above observation that immune cells from tumor and normal tissue are more similar to one another than to other tissues.
+To accomplish this, we constructed a 10-nearest neighbor graph over 15 PCA components summarizing a uniformly selected subset of n=3000 cells from each tissue.
+We reasoned that a cell's closest neighbors in this low-dimensional embedding are the cells with the closest phenotypes. 
+We then examined the overlap between each pair of tissues $u$ and $v$: 
+\(o_{u,v} = \ \frac{1}{n}\{ 1\ if\ {\omega_{i} = u}_{}\text{\ and\ }\omega_{j} = \ v_{}\ else\ 0\}\), where n is the number of cells in the subset, k is the number of neighbors, and $u, v \in \{\text{tumor}, \text{normal}, \text{lymph node}, \text{blood}\}$.
+with \(\omega_{i}\ \)denoting the tissue for cell \(i\) and \(j = 1,\ldots,k\) denotes the neighbors of cell \(i\). 
+Examining all the pairwise shared-neighbor relationships, we confirmed that tumor and normal have the highest frequency of being co-identified as neighbors. 
+To determine if this enrichment was significant, we built a null distribution from all overlaps between all pairs of tissues, and we calculated the z-score of \(o_{tumor,\ normal}\) compared to the distribution of all pairwise overlaps (z=2.68), for which a z-test confers a p-value of p=1.4e-4.
+This suggests that similarity between tissue resident cells is a positive outlier, compared with similarities between other pairs of tissues. 
+Consequently, this result highlights that tissue of residence is a significant determinant of phenotypes of human cells of hematopoietic origin, and that states or biomarkers identified from blood immune cells may not necessarily extend to tissue embedded immune populations.
+
+Finally, we confirmed that the cell types and states observed in these data comport with our prior understanding of the structure and function of the immune system using $\chi^2$ enrichment testing between cell types and tissues.
+We began by transforming the data for each tissue to have equal cell count and created a 2-factor contingency table of cell types versus tissues.
+We then calculated \(\chi^{2}\) enrichments for each tissue type. 
+We confirmed that naive T cells were strongly enriched in three blood-specific clusters (\(\chi^{2}\)=361.4, df=1, p=3e-80), while B cells were most prevalent in the lymph node than in other tissues (\(\chi^{2}\)=1737.1, df=1, p=0.0).
+A subset of T cell clusters were present in both tumor and normal tissue, but the cytotoxic T cell clusters (\(\chi^{2}\)=93.7, df=1, p=3e-25) and t-reg cells (\(\chi^{2}\)=336.0, df=1, p=5e-91) were more abundant in tumor, as expected, given that tumor should be the target for the immune response.
+Similarly, some myeloid clusters were shared between normal and tumor tissue, whereas clusters of more activated monocytes and tumor-associated macrophages (TAMs) were specific to tumor (\(\chi^{2}\)=2420.6, df=1, p=0.0).
+Overall, these observations confirm that our atlas is composed of rationally generated data, consistent with expectations of normal immune functionality. 
+
+\section{Tumor Microenvironment Drives an Expansion of Immune Cell Phenotypic Space}
+
+BISCUIT uncovered a large number of normal breast tissue resident cell states, manifested by 13 myeloid and 19 T cell clusters that were not observed in circulating blood or in the secondary lymphoid tissue.
+Furthermore, our data showed that the set of clusters found in normal breast tissue cells represented a subset of those observed in the tumors; 14 myeloid and 17 T cell clusters were only found in the tumor, doubling the number of observed clusters of these cell types relative to normal tissue, and there were no clusters specific to normal tissue.
+This increased diversity of cell states correlates with a significant increase in the variance of gene expression in tumor compared to normal tissue (Figure~\ref{fig:3c}),
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure3-C.png}
+\caption{Distribution of variance of normalized expression computed for each gene across all immune cells (all patients) from tumor tissue compared to that in normal breast tissue.
+}
+\label{fig:3c}
+\end{figure}
+
+To better understand whether the increase in variance of gene expressions in tumor tissue is due to activation or additional phenotypes that are independent from those found in normal tissue, we sought to define a metric for the ``phenotypic volume'' occupied by cells.
+Given that the volume of an N-dimensional matrix can be expressed as the absolute value of the determinant of matrix, and the determinant of a matrix is equal to the product of its non-zero eigenvalues, we reasoned that we could leverage this relationship to calculate the phenotypic volume of our data matrices. % citations here, maybe. 
+
+We therefore defined ``phenotypic volume'' \((V)\) for a subpopulation of cells as the determinant of the gene expression covariance matrix in that subpopulation, which considers covariance between all gene pairs in addition to their variance.
+The (symmetric) covariance matrix can be written as \(\Sigma = \lbrack{\overrightarrow{s_{1},}}_{}\ldots,\ \overrightarrow{s_{d}}\rbrack^{}\) where \(\overrightarrow{s_{i}}\) for \(i = 1,\ldots,d\ \)is a vector containing covariance between gene \(i\) and all other genes.
+Its determinant \(det\ (\Sigma)\) is equal to the volume of a parallelepiped spanned by vectors of the covariance matrix \citep{Tao2005}.
+
+For example, if the covariance values between a gene \(i\) and other genes is very similar to that of another gene \(i'\) and other genes, such that \(\overrightarrow{s_{i}},\ \overrightarrow{s_{i'}}\) are dependent, gene \(i'\) does not add to the volume.
+Extending this to all genes, we sought to evaluate whether the increase in expression variances (Figure~\ref{fig:3c}) are associated with phenotypes activated in tumor that are independent from those in normal tissue, i.e.\ are novel independent phenotypes observed in tumor that suggest additional mechanisms and pathways being activated in tumor.
+
+Applied to a simplified case with only two phenotypes, the determinant, which is equal to the area of the parallelogram spanned by two vectors representing the phenotypes, is larger if the phenotypes are independent, but would be equal to zero if they are dependent.
+With more than two phenotypes, we are then interested in measuring the volume of the parallelepiped spanned by these phenotypes.
+The (pseudo-)determinant can also be more rapidly computed as the product of nonzero eigenvalues of the covariance matrix:
+
+\(V = det(\Sigma)\  = \ \lambda_{\text{e\ }} = \lambda_{1}\lambda_{2\ }\text{\ldots\ }\lambda_{E}\)
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure3-E.png}
+\caption{Phenotypic volume in log-scale (defined as determinant of gene expression covariance matrix, detailed in STAR methods) of T cells, monocytic cells, and NK cells, comparing tumor immune cells and normal breast immune cells after correcting for differences in number of cells.
+  Massive expansion of volume spanned by independent phenotypes active in tumor compared to normal tissue is shown for all three major cell types.
+}
+\label{fig:3e}
+\end{figure}
+
+To quantify the change in phenotypic volume from normal to tumor, we computed this volume metric for each major cell type of T, monocytic, and NK cells.
+To correct for the effect of differences in the number of cells across cell types and tissues, we uniformly sampled 1000 cells with replacement from each cell type per tissue and computed the empirical covariance between genes based on imputed expression values for that subset of cells.
+This was followed by singular-value decomposition (SVD) of each empirical covariance matrix and computation of the product of nonzero eigenvalues as stated in the equation above.
+B cells were not included in this comparison due to the very small number of B cells in normal tissue.
+
+Given the high number of dimensions (genes), the volumes were normalized by the total number of genes \((d)\). % @elham why? 
+For robustness, this process was repeated 20 times to achieve a range of computed volumes for each cluster in each tissue, which are summarized with box plots (Figure~\ref{fig:3e},\ref{fig:s3}) showing statistically significant expansions of volume in tumor compared to normal in all three cell types.
+The fold change in volume was 7.39e4 in T cells, 1.18e14 in myeloid cells and 6.08e4 in NK cells (Mann-Whitney U, p=0.0, for all three tests), indicating a massive increase in phenotypic volume in tumor compared to normal tissue.
+These data confirm that we observe an expansion of cell states in the tumor in comparison to the normal tissue. 
+The volume analysis also alleviated concerns that technical factors may drive the increased diversity of immune cell phenotypes in tumor that were highlighted in the previous section.
+
+We were motivated to undertake volume analysis in part because we observed higher variance in tumor cells, as quantified by both by greater variance explained by the top 10 PCs, and larger, more disperse clusters in tSNE\@.
+However, as highlighted earlier, immune cells increase their mRNA expression when activated, a signal that BISCUIT does not explicitly remove. 
+Thus we would expect to see additional signal within tumor immune cells.
+In addition, because our experiment focused on tumor infiltrating lymphocytes, we observed many more of them than their tissue-resident cognates.
+
+None of our previous approaches explicitly control for the total number of input observations. 
+However, the volume analysis downsampled each tumor and normal tissue both in terms of molecules and cells, confirming our observations with a much stricter normalization method. 
+Thus, volume analysis allowed us to confirm that the heightened variation observed in tumor was the result of a richer complement of biological stimuli, rather than variation induced by sampling effects stemming from the higher coverage of tumor. 
+
+To determine possible sources of the observed increase in phenotypic volume, we performed Gene Set Enrichment Analysis (GSEA) \citep{Subramanian2005} on the genes with the largest differences in variance between tumor and normal immune cells. 
+This revealed heightened variation in targets of key immune signaling molecules, including type I (IFN$\alpha$) and II interferons (IFN$\gamma$), TNF$\alpha$, TGF$\beta$, and IL6/JAK/STAT signaling (Figure~\ref{fig:3d},~\ref{fig:s3}). % reference table
+These results suggest that the heightened variation observed in tumor immune cells is likely due at least in part to variation in the local concentrations of signaling factors that designed to elicit immune reactivity against cancer and other foreign pathogens, consistent with previous findings that tumor microenvironments differ significantly in their extent of inflammation, hypoxia, expression of ligands for activating and inhibitory receptors, and nutrient supply \citep{Finger2010,Jimenez-Sanchez2017}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure3-D_table.png}
+\caption{Hallmark GSEA enrichment results on genes with highest difference in variance in tumor T cells vs normal tissue T cells.
+  See Figure S3 for enrichment in monocytic and NK-cells.
+  Most significant results are shown; full lists of enrichments are presented in Table S5. % fix table reference
+}
+\label{fig:3d}
+\end{figure}
+
+\section{Intra-tumoral T cells Display Continuous Phenotype Gradients}
+
+% the following paragraphs need integration
+To explore further explore the most significant sources of variation in T-cell immune states, we carried out unbiased analyses by decomposing the gene expression using diffusion maps \citep{Coifman2005,Haghverdi2015,Haghverdi2016,Moignard2015,Setty2016}.
+Diffusion maps is a nonlinear dimensionality reduction technique to find the major non-linear components of variation across cells.
+It can be thought of at a high level as a non-linear analogue of PCA, and is often applied as such. % citations.  
+
+We computed diffusion components in each cell type separately using the Charlotte Python package, which implements diffusion maps as described in \citep{Coifman2005}.
+To account for differences in cell density and cluster size, we used a fixed perplexity Gaussian kernel with perplexity 30, with symmetric Markov normalization and $t=1$ diffusion steps.
+We selected $t=1$ because, in our data, this approximates diffusion of information for each cell through its 20 nearest neighbors. 
+Put another way, when $t$ is low, diffusion maps function more to identify components of non-linear variation. When $t$ is high, diffusion maps function to spread information, which can be useful for imputing missing values, by filling in missing information from other similar cells. 
+
+We selected a conservative value, because we wanted to ensure that information did not diffuse beyond the borders of our smallest cluster (30 cells).
+Equally important, we wanted to ensure that claims made about continuity of phenotypic space could not be driven by Diffusion Maps themselves. 
+Given that we observe over 25,000 T-cells of various types, and that diffusion does not exceed each cells 20-nearest neighbors, we can confidently claim that the global manifold is unaffected by these changes. 
+
+When we examined the components produced by diffusion maps, we observed that while some components distinguished discrete clusters, the majority of components defined gradual trends of variation across T cell clusters (Figure~\ref{fig:4a} left,\ref{fig:s4a}).
+However, the first two diffusion components identified two isolated clusters, owing to their strong dissimilarity (Figure~\ref{fig:3a}). 
+The first was cluster 9, which is the most distinct T cell cluster as measured by Bhattacharyya distance (Figure~\ref{fig:s2b}) and shows characteristics similar to NKT cells (Table S3) and the second was cluster 20, which is a blood-specific naive T cell cluster predominantly from one patient (Table S2).
+
+Since these two clusters were very distant from other T cell clusters according to a variety of comparison metrics, the two components corresponding to them function more like classifiers, and so were ignored, as we wished to focus on studying ``continuous'' components that quantify heterogeneity across multiple clusters.
+The top 3 continuous components correlate, respectively, with signatures for immune cell activation, terminal differentiation, and hypoxia. % figure reference here?
+
+The most informative component of variation, labeled as ``activation'', was is highly correlated with gene signatures of T cell activation and progressive differentiation (p=0.0), along with IFNγ signaling (p=0.0).
+The mean expression of the activation signature steadily increases along the component (Figure~\ref{fig:4a}, top right), with a concomitant gradual increase in expression of activation-related genes (Figure~\ref{fig:4a}, bottom right).
+The next components were labeled as T cell activation, Terminal Exhaustion, and Hypoxia (Figure~\ref{fig:4a}), respectively as they were most highly correlated with the corresponding gene signatures. % (Table S4).
+The subsequent component is labeled as Tissue Specificity, as it separates cells primarily on the basis of their tissue of origin and helps explain heterogeneity in T cells across tissues.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure4-A.png}
+\caption{(left) Visualization of all cells from T Cell clusters using first, second, and third informative diffusion components (two uninformative components denoting isolated NKT and blood-specific clusters were removed from further analysis).
+  Each dot represents a cell colored by cluster, and by tissue type in insert.
+  The main trajectories are indicated with arrows and annotated using the signature most correlated with each component.
+  See Figure~\ref{fig:s4d} for additional components.
+  (top right) Traceplot of CD8 T cell activation signature (defined as mean expression across genes in signature listed in Table S4) for all T cells along first informative diffusion component.
+  Cells are sorted based on their projection along the diffusion component (x-axis), and the blue line indicates moving average over normalized and imputed expression, using a sliding window of length equal to 5\% of total number of T cells; shaded area displays standard error (y-axis).
+  (bottom right) Heatmap showing expression of immune-related genes with the largest positive correlations with activation component, averaged per cluster and z-score standardized across clusters; columns (clusters) are ordered by mean projection along the component.
+% there are additional. components in figure S4, how to reference? which figure S4 part? 
+}
+\label{fig:4a}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure4-B.png}
+\caption{Violin plot showing the projection of T-cells along activation component aggregated by total density (left), tissue type (middle), and cluster (right).
+See Figure S4 for violin plots for additional components.
+Number of dots inside each violin are proportional to number of cells.}
+\label{fig:4b}
+\end{figure}
+
+When we examined the localization of different cell types along the activation component, we found that intra-tumoral t-cell populations are enriched at the positive end of the component relative to t-cells found in healthy tissue (t-test p=0.0, Figure~\ref{fig:4a},\ref{fig:4b}).
+Specifically, tumor-resident effector memory t-cells and t-reg cells compose the most activated end, while naïve t-cells from peripheral blood congregate at the inactive terminus, consistent with their quiescent cell state (t-test p=0.0, Figure~\ref{fig:4b}).
+However, while the mean expression levels of clusters vary gradually along the component, there is also a wide range of activation states within each cluster (Figure~\ref{fig:4b}).
+Examining the individual genes most correlated with the component reveals a diverse set of genes whose expression is well documented to increase upon T cell activation and progressive differentiation.
+These included genes encoding cytolytic effector molecules granzymes A and K (GZMA and GZMK), pro-inflammatory cytokines (IL-32), cytokine receptor subunits (IL2RB), chemokines (CCL4, CCL5), and their receptors (CXCR4, CCR5) (Figure~\ref{fig:4a}, bottom right).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure4-C.png}
+\caption{Trace-plots (as in B) of (left) terminal differentiation signature along second informative component and (right) hypoxia signature along third informative component, labeled respectively as terminal differentiation and hypoxia components.
+List of genes associated with signatures are presented in Table S4.}
+\label{fig:4c}
+\end{figure}
+
+The next most informative component of variation was labeled terminal differentiation (Figure~\ref{fig:4c}). 
+The genes most correlated with it include co-stimulatory molecules (CD2, GITR, OX40, and 4-1BB) as well as co-inhibitory receptors (CTLA-4 and TIGIT) (Figure~\ref{fig:s4b}).
+This set also included Foxp3, IL2RA, and Entpd1 (CD39), genes whose high expression is characteristic of t-reg cells \citep{Josefowicz2012}.
+The same primarily t-reg clusters reside at the very terminal end of both the activation and terminal differentiation components, and there is a moderate degree of overlap in the genes most correlated with the two (Figure~\ref{fig:4a} left, bottom right;~\ref{fig:s4b}).
+However, there are also important exceptions---including the markers of exhaustion listed above---and crucially, the two trajectories traverse different paths through the remaining clusters (Figure~\ref{fig:4d}).
+Indeed, some clusters---notably T cells from the lymph node (e.g.\ cluster 16)---express higher levels of activation than terminal differentiation (t-test p=0.0; Figure~\ref{fig:4a},\ref{fig:4b}), consistent with the idea that T cell exhaustion and terminal differentiation largely occurs in non-lymphoid tissues and not in the draining lymph node.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure4-D.png}
+\caption{Heatmap of cells projected on each diffusion component (rows) averaged by cluster (columns).
+}
+\label{fig:4d}
+\end{figure}
+
+Interestingly, visualizing the T cell activation and terminal differentiation components together revealed remarkable continuity, in essence representing a single continuous trajectory of T cells towards a terminal state (Figure~\ref{fig:4a} left,\ref{fig:s4a}).
+Thus, our observations suggest that t-cells reside along a broad continuum of activation, and that their conventional classification into relatively few discrete activation or differentiation subtypes may grossly oversimplify the phenotypic complexity of T cell populations resident in tissues.
+
+\section{Response to Diverse Environmental Stimuli Define Intra-Tumoral T-Cell States}
+
+Noting that only a few of the clusters were well delineated by the strongest components of variation, we sought to understand the variation driving the observed clustering.
+We examined the expression of gene signatures for response to environmental stimuli in each T cell cluster and found that while most clusters were arranged in a continuous fashion along the activation component, each cluster appeared unique when looking across multiple components and signatures in a combinatorial fashion. 
+
+We were interested to know whether cells show continuity as opposed to defined cell states along various diffusion components.
+For example, we were interested to know whether T cells exhibit defined states with different activation levels.
+For this, we computed the distribution of cells projected on each diffusion component and then used Hartigan's Dip Test \citep{Hartigan1985} to test whether the distribution of cells is unimodal (broad continuum of cells) or alternatively multimodal (representative of multiple defined states) with $p<0.01$.
+
+In Figure~\ref{fig:s4a}, we observe that in the case of the T Cell Activation component, the null hypothesis of unimodality is not rejected, indicating that the distribution of cells is similar to a broad unimodal distribution as opposed to a multimodal distribution with defined states. 
+In contrast, other components (such as the Tissue Specificity Component) exhibit multimodal distributions with distinct modes implying distinct states (in this case corresponding to various tissues)\footnote{In the case of myeloid cells, the null hypothesis of unimodality is rejected in all diffusion components, indicating that myeloid cells lie in distinct states along all major components explaining variation across cells that were analyzed (Figure~\ref{fig:s6a}).}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure5-A.png}
+\caption{Heatmaps showing normalized and imputed mean expression levels for a curated set of transcriptomic signatures (rows) important to T Cells (listed in Table S4) for (A) CD4 memory clusters, (B) CD8 memory clusters, and (C) T Regulatory clusters.
+  Only signatures with high expression in at least one T cell cluster are shown.
+  Signature expression values are z-scored relative to all T cell clusters but only shown for clusters of the same cell type for ease of visualization.
+}
+\label{fig:5a}
+\end{figure}
+
+Our data show that CD4 effector and central memory clusters (Figure~\ref{fig:5a}) exhibit variable levels of expression of genes contributing to signatures for Type I and II interferon response (F-test, p=1e-54 and 0.008 respectively), Hypoxia (F-test, p=4e-64), and Anergy anergy (F-test p=4e-69).
+Moreover, different CD8 effector and central memory clusters (Figure~\ref{fig:5a}) have had different expression levels of activation activation (F-test p=2e-114), pro-inflammatory pro-inflammatory (F-test p=1e-39), and cytolytic cytolytic effector pathways related genes (F-test p=6e-32).
+These examples suggest that in a heterogeneous tumor microenvironment, differing in degree of inflammation, hypoxia and nutrient availability, subpopulations of T cells either sense different environmental stimuli or respond differently to these stimuli.
+While many of these responses (e.g.\ activation or hypoxia) create phenotypic continuums, their different combinations can result in more discrete behaviors.
+
+In contrast to effector t-cells, t-reg clusters displayed less variation in expression across these gene signatures: the majority of these clusters featured comparable patterns for anti-inflammatory activity, exhaustion, hypoxia, and metabolism gene sets (Figure~\ref{fig:5a}).
+To identify features distinguishing the t-reg clusters, we examined the Biscuit parameters that differ between them.
+We found that beyond mean expression levels, covariance parameters varied significantly between clusters, and drove the observed differences.
+Specifically, two marker genes may could exhibit similar mean expression in two different clusters (e.g.\ highly expressed in both), while the clusters show opposite sign in covariances in these genes.
+This occurs due to the genes typically being co-expressed in the same cells in one cluster (i.e.\ positive covariance), while being expressed in the other cluster in a mutually exclusive manner (i.e.\ negative covariance) (Fig~\ref{fig:5c}).
+It is noteworthy that clusters were inferred based on the expression of over 14,000 genes; hence, negative covariance between two specific genes does not necessarily imply the existence of sub-clusters.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{Figure5-C.png}
+\caption{Cartoon illustration of two clusters of cells showing similar mean expression for two example marker genes but opposite covariance between the same two genes.
+}
+\label{fig:5c}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure5-D.png}
+\caption{Scatter plot showing mean expression of GITR vs. CTLA-4 for each T cell cluster (represented by a dot).
+  t-reg clusters, labeled in red, have high mean expression levels of both genes.
+Distribution of covariance between GITR and CTLA-4 across all T cell clusters (purple), with values for t-reg clusters labeled in red.
+Note that t-reg cluster covariance values are present as both positive (46, 56, 87) and negative (80) outliers, exhibiting differences in covariance despite sharing high mean expression levels.
+See Figure~\ref{fig:s5a} for similar computation on the raw, un-normalized, and un-imputed data, verifying the result.
+}
+\label{fig:5d}
+\end{figure}
+
+As an example, our analysis showed that the CTLA-4 gene, which encodes a prototypical inhibitory checkpoint receptor that is highly expressed in t-regs and activated T cells, exhibited rich covariance patterns with other mechanistically related genes (Figure~\ref{fig:5d},\ref{fig:5f};~\ref{fig:s5a},\ref{fig:s5b}).
+CTLA-4 co-varied strongly with TIGIT and co-stimulatory receptor GITR in t-reg clusters 46, 56, and 87; with CD27 in clusters 46 and 80; and with co-stimulatory receptor ICOS only in cluster 80 (Figure~\ref{fig:5d},\ref{fig:5f}); We observed considerable differences in covariance patterns between numerous pairs of other checkpoint genes across t-reg clusters.
+Additionally, covariance between other key immune genes in t-reg clusters exhibited modular structures, with groups of genes co-expressed together, suggesting co-regulation and potential involvement in similar functional modalities (Figure~\ref{fig:5f}).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure5-F.png}
+\caption{Heatmaps showing covariance between immune genes in T reg clusters 56 (left panel), and 87 (right panel). Note different modules of covarying genes.
+}
+\label{fig:5f}
+\end{figure}
+
+Since varied proportions of t-reg clusters were observed in individual patient samples, the differences in gene co-expression were present across patients as well as clusters within a given patient (Figure~\ref{fig:5g}).
+We observed that the majority of patients did not have all 5 subtypes of t-reg cells, and in fact most were dominated by only one subtype (cluster).
+It must be noted that we also observed similar differences in co-variation patterns across activated T cell clusters, even if not playing as essential a role in their delineation (Figure~\ref{fig:s5c}).
+Thus, co-variation of genes has a role in defining T cell clusters, in particular t-reg clusters (Figure~\ref{fig:5d})
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure5-G.png}
+\caption{Pie charts showing proportion of the five t-reg clusters in each patient, indicating that differences in covariance patterns between clusters also translate to patients.
+}
+\label{fig:5g}
+\end{figure}
+
+\section{Significance of Differences in Covariances of Raw Data Drive Biscuit Clustering}
+
+To verify that the differing covariance patterns in Figures 5 and 7 were not the result of computational modeling decisions, we tested the difference in covariance in raw median library size normalized data, categorizing the raw data using the BISCUIT cluster labels.  
+As the raw data involves significant amount of dropouts, co-expression patterns and their signs cannot be easily visualized or inferred.
+Hence, we performed hypothesis testing accounting for the level of dropouts by comparing the observed empirical covariance between a pair of genes \(i,\ i'\ \)to a null distribution for the gene pair in which co-expression patterns are removed.
+We assume the null hypothesis to be the case where covariance between a specific gene pair for a given cluster is the same across all clusters.
+
+Specifically, to test whether \(cov(\overrightarrow{x_{\text{i\ }}},\overrightarrow{x_{i'}})\) in a cluster \(k,\ \) with \(\overrightarrow{x_{\text{i\ }}},\overrightarrow{x_{i'}}\) being expressions of genes \(i,i'\) across cells assigned to cluster \(k\), is significantly different from that in all other clusters, we used bootstrapping and permutation testing as follows: We started by generating a null distribution for the covariance between a pair of genes by first uniformly sampling a subset of cells from all clusters, with the subset being the same size as cluster \(k\).
+Then, to further remove existing structures of co-expression in cells, we permuted the cell labels for gene \(i'\) (while retaining labels for gene \(i\)) and computed empirical covariance between the two genes in this subset of ``scrambled'' cells.
+We repeated this on 10,000 subsets to achieve a null distribution of \(cov(\overrightarrow{w_{i}},\ \overrightarrow{w_{i'}})\) where \(w_{i},w_{i'}\) are the expressions of gene \(i,i'\) in the sets of scrambled cells.
+We then compared the observed \(cov(\overrightarrow{x_{\text{i\ }}},\overrightarrow{x_{i'}})\) (marked with a star in Figure S5A, S7A) to the null distribution, which was rejected for that pair of genes if p-value\textless{}0.05 indicating that the covariance is significantly different in cluster \(k\) compared to all other clusters.
+
+We concluded that the signal is also apparent in raw un-normalized data for all the aforementioned clusters and we observe a range of covariance values with different signs between GITR and CTLA4 across t-reg clusters (Figure~\ref{fig:s5a}), and similarly different values in covariance between MARCO and CD276 in TAM clusters (Figure~\ref{fig:s7}).
+
+\section{Components of Variation of Intra-tumoral Myeloid Cells}
+
+Although myeloid lineage cells are commonly thought to be highly diverse and able to markedly influence the state of the tumor microenvironment and, thereby, impact clinical outcomes, the heterogeneity of intra-tumoral monocytes and macrophages remains insufficiently characterized \citep{Campbell2011,DeHenau2016,Engblom2016,Eppert2011,Gholamin2017,Pyonteck2013}.
+A broad survey of the major monocytic subsets suggests the existence of both gradual and abrupt phenotypic shifts (Figure~\ref{fig:6a}).
+
+\begin{figure}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{Figure6-A.png}
+  \caption{t-SNE map projecting only myeloid cells across all tissues and patients. Cells are colored by Biscuit cluster and cell types are circled and labeled based on bulk RNA-seq correlation-based annotations.}
+  \label{fig:6a}
+\end{minipage}
+\begin{minipage}{.5\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{Figure6-B.png}
+  \caption{Projection of cells in myeloid clusters on macrophage activation, pDC, and monocyte activation (first, second, and fourth) diffusion components. Cells are colored by cluster}
+  \label{fig:6b}
+\end{minipage}
+\end{figure}
+
+As with the T cells above, we employed diffusion maps to assess heterogeneity in and across these monocytic populations, excluding neutrophils and mast cells, which formed separated clusters and were therefore better assessed through other techniques (Figure~\ref{fig:6b}).
+This analysis revealed four major branches that displayed clearer segregation of cell states, and moderately less continuity, than the analogous T cell maps (Figure~\ref{fig:s6a}).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure6-C.png}
+\caption{Projection of cells in myeloid clusters on macrophage activation, pDC, and monocyte activation (first, second, and fourth) diffusion components.
+  Cells are colored by (B) cluster, (C) tissue type, (D) cell type (as explained in STAR Methods), and (E) expression of example lineage demarcating genes.
+  The main trajectories are indicated with arrows and labeled in (B).
+}
+\label{fig:6c}
+\end{figure}
+
+The first branch almost entirely comprises intra-tumoral macrophages from three clusters (23, 25, and 28) (Figure\ref{fig:6c}).
+Among the top genes correlated with the branch were are macrophage activation-associated genes APOE, CD68, TREM2, and CHIT1 (Figure~\ref{fig:s6b}); the branch, thus, likely reflects progression towards a distinct state resulting from the differentiation and activation of either recruited or tissue-resident macrophages in the tumor microenvironment (TME) (\ref{fig:6d}. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure6-D.png}
+\caption{Violin plots showing the density of cells along macrophage activation component and organized by overall density (left panel), tissue type (middle panel), and cluster (right panel).
+}
+\label{fig:6d}
+\end{figure}
+
+Additionally, expression of genes typically implicated in a polarization model of tissue-reparative and immunosuppressive M2 macrophage activation, including scavenger receptor MARCO, extracellular matrix component FN1, pro-angiogenic receptor NRP2, SPP1 (osteopontin), and inhibitory molecule B7-H3 (CD276), increased along this branch (Figure~\ref{fig:s6b}).
+Concomitantly, pro-inflammatory and immunostimulatory genes, including chemokine CCL3 (MIP-1a), typically associated with M1 macrophages likewise increased along the branch.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure6-E.png}
+\caption{Scatter plot of normalized mean expression of M1 and M2 signatures per cell (dark blue); cells assigned to 3 TAM clusters have been highlighted by cluster (light blue, pink, yellow); each dot represents a cell and cells are plotted in randomized order.
+}
+\label{fig:6e}
+\end{figure}
+
+Quite strikingly, we found that M1 and M2 gene signatures were positively correlated in the myeloid populations (Figure~\ref{fig:6e}).
+These findings support the idea that macrophage activation is markedly impacted by the tumor microenvironment in a manner that does not comport with the polarization model, either as discrete states or along a spectrum of alternative polarization trajectories.
+
+The second and third branches together captured a more gradual trajectory from blood monocytes (mainly cluster 42, 97.5\% present in blood) to intra-tumoral monocytes (clusters 67, 91, 68 and 94) (Figure~\ref{fig:6c}).
+The ``blood terminus'' of the trajectory correlated with expression of co-stimulatory gene ITGAL, but also with several tumor growth-promoting genes, i.e.\ fibroblast and epidermal growth factors, as well as IL-4 (Figure~\ref{fig:s6b}).
+The latter has been proposed to support the M2 type of macrophage activation \citep{Mantovani2013,Mills2000,Murray2014}.
+The other end of the trajectory, populated by intra-tumoral monocytes, was characterized by high expression of activation and antigen presentation-related genes encoding CD74 and HLA-DRA, but also an IFN-inducible gene encoding ISG15, which has been described to be secreted by TAMs and enhance stem-like phenotypes in pancreatic tumor cells (Figure~\ref{fig:s6b}) \citep{Sainz2014}.
+
+The fourth branch correlated with canonical plasmacytoid dendritic cell (pDC) markers such as LILRA4, CLEC4C (CD303), and IL3RA\@.
+The most discrete of the myeloid components, this branch separated the lone pDC cluster (41) from the other myeloid-monocytic cell clusters (Figure~\ref{fig:6b},\ref{fig:6c},\ref{fig:6d},\ref{fig:s6c}) This subset was also the only monocytic cluster common between the tumor and the lymph node; it featured high levels of granzyme B (GZMB) (Figure~\ref{fig:s6b}), which has been proposed to be a means, by which pDCs may suppress T cell proliferation in cancer \citep{Jahrsdoerfer2010,Swiecki2015}.
+These results highlight how diffusion maps can be used to uncover major sources of variance in heterogeneous data, and how analysis of those components can inform us of the biological signals of greatest importance. 
+
+\section{Covariance Patterns Help Distinguish TAM Subpopulations}
+
+While the TAM clusters projected to a distinct region in the diffusion component, separating them from other monocytic cells, they appeared very similar to one another (Figure~\ref{fig:6f},~\ref{fig:s6a}).
+This similarity was supported at the genomic scale by shared pattern of differentially expressed genes (Table S3) and short pairwise distances (Figure~\ref{fig:s2b}). % fix table reference
+However, similarly to the intra-tumoral t-reg cells, co-variation patterns defined distinctions between intra-tumoral myeloid cell subsets.
+Specifically, co-variation of canonical genes for M1 or M2 macrophages distinguished the TAM clusters.
+All three of the TAM populations, particularly clusters 23 and 28, were among the monocytic lineage clusters that exhibited the most similarity to the canonical M2 signature (Figure\ref{fig:6e}).
+However, both of these clusters also expressed high levels of the M1 signature genes, and significant expression of the two signatures was often coincident (Figure~\ref{fig:6e},~\ref{fig:6f}).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure6-F.png}
+\caption{Heatmap showing imputed mean expression levels in myeloid clusters for a curated set of transcriptomic signatures important to myeloid cells (listed in Table S4), z-score normalized per signature.
+See also Figure S6 for additional violin plots and Heatmaps representing the other components. % fix the reference to table
+}
+\label{fig:6f}
+\end{figure}
+
+We observed pronounced inter-cluster differences in co-expression patterns in TAM clusters.
+One example among many was co-expression of two M2-type markers, MARCO and B7-H3.
+In an unexpected manner, while TAM clusters 23, 25, and 28 all expressed high levels of both genes, they co-varied positively in clusters 23 and 25, but negatively in 28 ($p=0, p=5e-06, p=0$, respectively; (Figure~\ref{fig:7a},~\ref{fig:7b};\ref{fig:s7a}).
+The differing covariance patterns were not an artifact of modeling as they were also significant in raw un-normalized data (Figure~\ref{fig:s7a}).
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure7-A.png}
+\caption{Scatterplot of mean expression of MARCO and CD276 in each myeloid cluster; each dot represents a cluster.
+  Average expression levels for the three TAM clusters (23, 25, and 28) are marked in red, indicating high expression of both markers in macrophage clusters.
+Distribution of covariance between MARCO and CD276 across all myeloid clusters.
+TAM clusters(23, 25, and 28) are marked in red and present substantial outliers.
+See Figure S7A for similar computation on the raw, un-normalized, and un-imputed data, verifying the result.
+}
+\label{fig:7a}
+\end{figure}
+
+The degree of co-expression of genes associated with M1 and M2 signatures also varied widely within clusters in a manner not fitting the functional M1/M2 annotation.
+For example, in cluster 23 expression of CD64 in cluster 23 exhibited varying degrees of positive co-variance with FN1, MMP14, MSR1, cathepsins, MARCO, and VEGFB, but co-varied slightly negatively with chemokine CCL18 (Figure~\ref{fig:7b}).
+Taken together, these findings demonstrate that co-variation patterns define TAM clusters, and further highlight the lack of mutual exclusivity between the proposed prototypical M1 and M2 states.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Figure7-B.png}
+\caption{Heatmaps showing covariance patterns of M1 and M2 macrophage polarization marker genes (including many current or potential drug targets) in 3 TAM clusters (23, 25, and 28).
+}
+\label{fig:7b}
+\end{figure}
+

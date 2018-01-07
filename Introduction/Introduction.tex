@@ -1,0 +1,43 @@
+%The following command starts your introduction. 
+
+\chapter*{Introduction} %Your introduction isn't a numbered chapter, so we use the asterisk here.
+
+\addcontentsline{toc}{chapter}{Introduction} %This command puts your introduction in your table of contents even though we have used the asterisk in the \chapter command above.
+
+
+Tumors result from aberrant uncontrolled growth of human cells. 
+However, it is understood that individual cells within a tumor have uneven responsibility for patient mortality. 
+A large fraction of the cells are often terminally differentiated---unable to continue dividing.
+As a result, limited numbers of cancer cells are capable of moving outside their tissue of origin, or embedding themselves in other tissues.
+Heterogeneity of this type presents a challenge to the personalization of cancer treatment, as until recently there were no tools to find these rare but important cells within the larger population of mostly-benign cancer cells without already knowing surface markers that specifically identify them. 
+As a result, scientists and clinicians were limited to profiling cell types in aggregate, which produced an artificial, blurred average of all the cells in a tumor. 
+These results, which reflect no true cell state, proved only weakly predictive of cancer outcomes.
+
+The deficiency of good experimental approaches to characterize novel cell phenotypes has significantly hampered the development of promising cancer treatments such as immunotherapies, a category of biologic drugs that relieve immunosuppression. 
+Currently, bio-markers that predict treatment success are the presence of highly mutated surface proteins on a patient's tumor cells, abundant tumor infiltrating immune cells (TILs), and the evidence of active immunosuppression, driven by the pathways being drugged.
+Unfortunately, these bio-markers have low predictive power and cohorts selected for trials based on these characteristics display polarizing results: a small subset of patients displays an extremely exciting complete remission, but the great majority of patients still fail treatment.
+There is good reason to suspect that some of these remissions may be permanent, suggesting that for a small number of patients, the immune system holds the keys to curing them cancer. 
+
+Yet, the majority of patients fail treatment, and the reasons for this failure are not clear.  
+As a result, these trials are ongoing across cancers, and rare success cases across many cancer types hints that the immune system harbors an unharnessed and systemic capability to recognize, eliminate, and provide lasting immunity against cancer.
+However, dichotomy of success and failure suggests that there is hidden complexity in the tumor-immune ecosystem that extends beyond the systems that are currently being perturbed by drugs.
+
+Because cancer treatments all kill human cells at some low rate, they carry significant toxicity. 
+Thus, to maximize patient survival, it is imperative that clinicians pair patients with rational treatments based on the molecular characteristics of their tumors, as opposed to the current standard which often involves cocktails of drugs designed to, on average, have the best effect across patients. 
+
+Better characterization of immunosuppression systems may enable this kind of personalization for immunotherapy. 
+Unfortunately, RNA-sequencing of bulk tumor or immune isolates is incapable of identifying the patterns of immune suppression acting on individual cells, and as a result, has not been an effective tool for personalizing cancer therapies against individual tumors.  
+To resolve this problem, researchers originally turned to cell sorting strategies that partition cells based on surface proteins to identify and understand individual immune cells and immune cell populations.
+While powerful, these strategies are limited to deciphering a-priori known cell types or states, which are defined by relatively simple combinations of surface proteins.
+In contrast, single-cell RNA-seq (scRNA-seq) merges many of the strengths of fluorescence cell sorting and bulk RNA-seq; scRNA-seq retains the unbiased measurement of all expressed genes, but adds the ability to resolve phenotypes of individual cells.
+This unbiased, transcriptome-wide analysis approach has produced a rapid acceleration in cell state discovery and enabled, for the first time, unbiased measurement of large-scale population interactions.
+However, the technology is fraught with new technical and computational challenges, including a low signal:noise ratio and a low probability of capturing and observing mRNA in cells. 
+These problems have prevented its easy application to critical biological questions.
+
+This dissertation will describe, in 4 chapters, technical and computational development to support scRNA-seq and the application of scRNA-seq to better understand how variance in the states of TILs may explain the clinically observed variability in treatment results.
+Chapter one will review the literature of immuno-oncology and single-cell transcriptomics to contextualize the application of single-cell technologies to TILs.
+Chapter two will examine droplet-based scRNA-seq in detail, highlighting SEQC, a framework developed to control technical variances and produce a cleaner view of TIL biology, while enabling rapid iteration of library construction to improve data quality. 
+Chapter three will address how new algorithms can help us generalize to an understanding of phenotypic states of populations of cells, despite the data's unprecedented sparsity and its derivation from multiple patients.  
+Chapter four will combine the methods from chapters two and three and apply them to a large set of more than 45,000 breast-carcinoma infiltrating immune cells, characterizing TILs, but also distinguishing them from normal tissue-resident and blood-resident immune phenotypes.
+Finally, the dissertation will conclude with a discussion of the outstanding challenges surrounding single-cell analysis of immuno-oncology and the single-cell technologies themselves.
+
