@@ -33,6 +33,9 @@ We then examined the overlap between each pair of tissues $u$ and $v$:
 \(o_{u,v} = \ \frac{1}{n}\{ 1\ if\ {\omega_{i} = u}_{}\text{\ and\ }\omega_{j} = \ v_{}\ else\ 0\}\), where n is the number of cells in the subset, k is the number of neighbors, and $u, v \in \{\text{tumor}, \text{normal}, \text{lymph node}, \text{blood}\}$.
 with \(\omega_{i}\ \)denoting the tissue for cell \(i\) and \(j = 1,\ldots,k\) denotes the neighbors of cell \(i\). 
 Examining all the pairwise shared-neighbor relationships, we confirmed that tumor and normal have the highest frequency of being co-identified as neighbors. 
+
+%I found the above notation for the overlap calculation somewhat confusing. My interpretation is that you are calculating the percentage of cells belonging to tissue u whose neighbors belong to tissue v. Is this correct? If so I think it would be clearer with summation notation and an indicator variable instead of the bracket notation.
+
 To determine if this enrichment was significant, we built a null distribution from all overlaps between all pairs of tissues, and we calculated the z-score of \(o_{tumor,\ normal}\) compared to the distribution of all pairwise overlaps (z=2.68), for which a z-test confers a p-value of p=1.4e-4.
 This suggests that similarity between tissue resident cells is a positive outlier, compared with similarities between other pairs of tissues. 
 Consequently, this result highlights that tissue of residence is a significant determinant of phenotypes of human cells of hematopoietic origin, and that states or biomarkers identified from blood immune cells may not necessarily extend to tissue embedded immune populations.
@@ -60,14 +63,16 @@ This increased diversity of cell states correlates with a significant increase i
 \end{figure}
 
 To better understand whether the increase in variance of gene expressions in tumor tissue is due to activation or additional phenotypes that are independent from those found in normal tissue, we sought to define a metric for the ``phenotypic volume'' occupied by cells.
-Given that the volume of an N-dimensional matrix can be expressed as the absolute value of the determinant of matrix, and the determinant of a matrix is equal to the product of its non-zero eigenvalues, we reasoned that we could leverage this relationship to calculate the phenotypic volume of our data matrices. % citations here, maybe. 
+Given that the volume of an N-dimensional matrix can be expressed as the absolute value of the determinant of the matrix, we reasoned that we could leverage this relationship to calculate the phenotypic volume of our data matrices. % citations here, maybe. 
 
 We therefore defined ``phenotypic volume'' \((V)\) for a subpopulation of cells as the determinant of the gene expression covariance matrix in that subpopulation, which considers covariance between all gene pairs in addition to their variance.
 The (symmetric) covariance matrix can be written as \(\Sigma = \lbrack{\overrightarrow{s_{1},}}_{}\ldots,\ \overrightarrow{s_{d}}\rbrack^{}\) where \(\overrightarrow{s_{i}}\) for \(i = 1,\ldots,d\ \)is a vector containing covariance between gene \(i\) and all other genes.
 Its determinant \(det\ (\Sigma)\) is equal to the volume of a parallelepiped spanned by vectors of the covariance matrix \citep{Tao2005}.
 
-For example, if the covariance values between a gene \(i\) and other genes is very similar to that of another gene \(i'\) and other genes, such that \(\overrightarrow{s_{i}},\ \overrightarrow{s_{i'}}\) are dependent, gene \(i'\) does not add to the volume.
+For example, if the covariance values between a gene \(i\) and other genes is very similar to the covariance of another gene \(i'\) and other genes, such that \(\overrightarrow{s_{i}},\ \overrightarrow{s_{i'}}\) are dependent, gene \(i'\) does not add to the volume.
 Extending this to all genes, we sought to evaluate whether the increase in expression variances (Figure~\ref{fig:3c}) are associated with phenotypes activated in tumor that are independent from those in normal tissue, i.e.\ are novel independent phenotypes observed in tumor that suggest additional mechanisms and pathways being activated in tumor.
+
+%It might be too much at this point but a concept figure here might have been nice. For example showing example covariance vectors and the parallelograms spanned by them for a mostly dependent and mostly independent case could have been a nice visual.
 
 Applied to a simplified case with only two phenotypes, the determinant, which is equal to the area of the parallelogram spanned by two vectors representing the phenotypes, is larger if the phenotypes are independent, but would be equal to zero if they are dependent.
 With more than two phenotypes, we are then interested in measuring the volume of the parallelepiped spanned by these phenotypes.
@@ -95,6 +100,8 @@ The fold change in volume was 7.39e4 in T cells, 1.18e14 in myeloid cells and 6.
 These data confirm that we observe an expansion of cell states in the tumor in comparison to the normal tissue. 
 The volume analysis also alleviated concerns that technical factors may drive the increased diversity of immune cell phenotypes in tumor that were highlighted in the previous section.
 
+%I would add another clause here to clarify precisely how this is true, i.e. how can we be sure that technical factors do not influence the phenotypic volume metric?
+
 We were motivated to undertake volume analysis in part because we observed higher variance in tumor cells, as quantified by both by greater variance explained by the top 10 PCs, and larger, more disperse clusters in tSNE\@.
 However, as highlighted earlier, immune cells increase their mRNA expression when activated, a signal that BISCUIT does not explicitly remove. 
 Thus we would expect to see additional signal within tumor immune cells.
@@ -106,7 +113,7 @@ Thus, volume analysis allowed us to confirm that the heightened variation observ
 
 To determine possible sources of the observed increase in phenotypic volume, we performed Gene Set Enrichment Analysis (GSEA) \citep{Subramanian2005} on the genes with the largest differences in variance between tumor and normal immune cells. 
 This revealed heightened variation in targets of key immune signaling molecules, including type I (IFN$\alpha$) and II interferons (IFN$\gamma$), TNF$\alpha$, TGF$\beta$, and IL6/JAK/STAT signaling (Figure~\ref{fig:3d},~\ref{fig:s3}). % reference table
-These results suggest that the heightened variation observed in tumor immune cells is likely due at least in part to variation in the local concentrations of signaling factors that designed to elicit immune reactivity against cancer and other foreign pathogens, consistent with previous findings that tumor microenvironments differ significantly in their extent of inflammation, hypoxia, expression of ligands for activating and inhibitory receptors, and nutrient supply \citep{Finger2010,Jimenez-Sanchez2017}.
+These results suggest that the heightened variation observed in tumor immune cells is likely due at least in part to variation in the local concentrations of signaling factors designed to elicit immune reactivity against cancer and other foreign pathogens, consistent with previous findings that tumor microenvironments differ significantly in their extent of inflammation, hypoxia, expression of ligands for activating and inhibitory receptors, and nutrient supply \citep{Finger2010,Jimenez-Sanchez2017}.
 
 \begin{figure}
 \centering
@@ -130,21 +137,23 @@ To account for differences in cell density and cluster size, we used a fixed per
 We selected $t=1$ because, in our data, this approximates diffusion of information for each cell through its 20 nearest neighbors. 
 Put another way, when $t$ is low, diffusion maps function more to identify components of non-linear variation. When $t$ is high, diffusion maps function to spread information, which can be useful for imputing missing values, by filling in missing information from other similar cells. 
 
-We selected a conservative value, because we wanted to ensure that information did not diffuse beyond the borders of our smallest cluster (30 cells).
-Equally important, we wanted to ensure that claims made about continuity of phenotypic space could not be driven by Diffusion Maps themselves. 
+We selected a conservative value because we wanted to ensure that information did not diffuse beyond the borders of our smallest cluster (30 cells).
+Equally important, we wanted to ensure that claims made about continuity of phenotypic space could not be driven by Diffusion Maps themselves.
 Given that we observe over 25,000 T-cells of various types, and that diffusion does not exceed each cells 20-nearest neighbors, we can confidently claim that the global manifold is unaffected by these changes. 
+ %Consistency on capitalization of diffusion maps
 
 When we examined the components produced by diffusion maps, we observed that while some components distinguished discrete clusters, the majority of components defined gradual trends of variation across T cell clusters (Figure~\ref{fig:4a} left,\ref{fig:s4a}).
 However, the first two diffusion components identified two isolated clusters, owing to their strong dissimilarity (Figure~\ref{fig:3a}). 
 The first was cluster 9, which is the most distinct T cell cluster as measured by Bhattacharyya distance (Figure~\ref{fig:s2b}) and shows characteristics similar to NKT cells (Table S3) and the second was cluster 20, which is a blood-specific naive T cell cluster predominantly from one patient (Table S2).
 
-Since these two clusters were very distant from other T cell clusters according to a variety of comparison metrics, the two components corresponding to them function more like classifiers, and so were ignored, as we wished to focus on studying ``continuous'' components that quantify heterogeneity across multiple clusters.
+Since these two clusters were very distant from other T cell clusters according to a variety of comparison metrics, the two components corresponding to them function more like classifiers, and so were ignored as we wished to focus on studying ``continuous'' components that quantify heterogeneity across multiple clusters.
 The top 3 continuous components correlate, respectively, with signatures for immune cell activation, terminal differentiation, and hypoxia. % figure reference here?
 
-The most informative component of variation, labeled as ``activation'', was is highly correlated with gene signatures of T cell activation and progressive differentiation (p=0.0), along with IFNγ signaling (p=0.0).
+The most informative component of variation, labeled as ``activation'', was highly correlated with gene signatures of T cell activation and progressive differentiation (p=0.0), along with IFNγ signaling (p=0.0).
 The mean expression of the activation signature steadily increases along the component (Figure~\ref{fig:4a}, top right), with a concomitant gradual increase in expression of activation-related genes (Figure~\ref{fig:4a}, bottom right).
 The next components were labeled as T cell activation, Terminal Exhaustion, and Hypoxia (Figure~\ref{fig:4a}), respectively as they were most highly correlated with the corresponding gene signatures. % (Table S4).
 The subsequent component is labeled as Tissue Specificity, as it separates cells primarily on the basis of their tissue of origin and helps explain heterogeneity in T cells across tissues.
+%Maybe good to specify exactly which statistical test with the p-value. 
 
 \begin{figure}
 \centering
@@ -176,7 +185,7 @@ Specifically, tumor-resident effector memory T cells and T reg cells compose the
 However, while the mean expression levels of clusters vary gradually along the component, there is also a wide range of activation states within each cluster (Figure~\ref{fig:4b}).
 Examining the individual genes most correlated with the component reveals a diverse set of genes whose expression is well documented to increase upon T cell activation and progressive differentiation.
 These included genes encoding cytolytic effector molecules granzymes A and K (GZMA and GZMK), pro-inflammatory cytokines (IL-32), cytokine receptor subunits (IL2RB), chemokines (CCL4, CCL5), and their receptors (CXCR4, CCR5) (Figure~\ref{fig:4a}, bottom right).
-
+%Consistency on T cells vs. t-cells.
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{Figure4-C.png}
@@ -207,9 +216,9 @@ Thus, our observations suggest that T cells reside along a broad continuum of ac
 
 Noting that only a few of the clusters were well delineated by the strongest components of variation, we sought to understand the variation driving the observed clustering.
 We examined the expression of gene signatures for response to environmental stimuli in each T cell cluster and found that while most clusters were arranged in a continuous fashion along the activation component, each cluster appeared unique when looking across multiple components and signatures in a combinatorial fashion. 
-
+%I think this is really important and could be emphasized further with another sentence
 We were interested to know whether cells show continuity as opposed to defined cell states along various diffusion components.
-For example, we were interested to know whether T cells exhibit defined states with different activation levels.
+For example, we wanted to know whether T cells exhibit defined states with different activation levels.
 For this, we computed the distribution of cells projected on each diffusion component and then used Hartigan's Dip Test \citep{Hartigan1985} to test whether the distribution of cells is unimodal (broad continuum of cells) or alternatively multimodal (representative of multiple defined states) with $p<0.01$.
 
 In Figure~\ref{fig:s4a}, we observe that in the case of the T Cell Activation component, the null hypothesis of unimodality is not rejected, indicating that the distribution of cells is similar to a broad unimodal distribution as opposed to a multimodal distribution with defined states. 
@@ -226,14 +235,14 @@ In contrast, other components (such as the Tissue Specificity Component) exhibit
 \end{figure}
 
 Our data show that CD4 effector and central memory clusters (Figure~\ref{fig:5a}) exhibit variable levels of expression of genes contributing to signatures for Type I and II interferon response (F-test, p=1e-54 and 0.008 respectively), Hypoxia (F-test, p=4e-64), and Anergy anergy (F-test p=4e-69).
-Moreover, different CD8 effector and central memory clusters (Figure~\ref{fig:5a}) have had different expression levels of activation activation (F-test p=2e-114), pro-inflammatory pro-inflammatory (F-test p=1e-39), and cytolytic cytolytic effector pathways related genes (F-test p=6e-32).
+Moreover, different CD8 effector and central memory clusters (Figure~\ref{fig:5a}) have different expression levels of activation (F-test p=2e-114), pro-inflammatory (F-test p=1e-39), and cytolytic effector pathways related genes (F-test p=6e-32).
 These examples suggest that in a heterogeneous tumor microenvironment, differing in degree of inflammation, hypoxia and nutrient availability, subpopulations of T cells either sense different environmental stimuli or respond differently to these stimuli.
 While many of these responses (e.g.\ activation or hypoxia) create phenotypic continuums, their different combinations can result in more discrete behaviors.
 
 In contrast to effector T cells, T reg clusters displayed less variation in expression across these gene signatures: the majority of these clusters featured comparable patterns for anti-inflammatory activity, exhaustion, hypoxia, and metabolism gene sets (Figure~\ref{fig:5a}).
 To identify features distinguishing the T reg clusters, we examined the Biscuit parameters that differ between them.
 We found that beyond mean expression levels, covariance parameters varied significantly between clusters, and drove the observed differences.
-Specifically, two marker genes may could exhibit similar mean expression in two different clusters (e.g.\ highly expressed in both), while the clusters show opposite sign in covariances in these genes.
+Specifically, two marker genes may exhibit similar mean expression in two different clusters (e.g.\ highly expressed in both), while the clusters show opposite sign in covariances in these genes.
 This occurs due to the genes typically being co-expressed in the same cells in one cluster (i.e.\ positive covariance), while being expressed in the other cluster in a mutually exclusive manner (i.e.\ negative covariance) (Fig~\ref{fig:5c}).
 It is noteworthy that clusters were inferred based on the expression of over 14,000 genes; hence, negative covariance between two specific genes does not necessarily imply the existence of sub-clusters.
 
@@ -399,7 +408,7 @@ See Figure S7A for similar computation on the raw, un-normalized, and un-imputed
 \end{figure}
 
 The degree of co-expression of genes associated with M1 and M2 signatures also varied widely within clusters in a manner not fitting the functional M1/M2 annotation.
-For example, in cluster 23 expression of CD64 in cluster 23 exhibited varying degrees of positive co-variance with FN1, MMP14, MSR1, cathepsins, MARCO, and VEGFB, but co-varied slightly negatively with chemokine CCL18 (Figure~\ref{fig:7b}).
+For example, in cluster 23 expression of CD64 exhibited varying degrees of positive co-variance with FN1, MMP14, MSR1, cathepsins, MARCO, and VEGFB, but co-varied slightly negatively with chemokine CCL18 (Figure~\ref{fig:7b}).
 Taken together, these findings demonstrate that co-variation patterns define TAM clusters, and further highlight the lack of mutual exclusivity between the proposed prototypical M1 and M2 states.
 
 \begin{figure}
