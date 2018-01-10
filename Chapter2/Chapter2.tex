@@ -44,7 +44,7 @@ As a result, the number of reads needed to accurately quantify the expression of
 Together, these characteristics combine decrease the number of reads needed to detect each molecule, which reduces the sequencing cost for each cell to approximately \$0.4 per cell.
 
 Beyond these similarities, the technologies are starkly different. 
-Drop-seq uses the SMART-seq approach leveraged in the Fluidigm C1 and plate-seq technologies, which typically captures more genes than than the CEL-seq approach used by InDrop. % Comparative Analysis of Single-Cell RNA Sequencing Methods, Ziegenhain C1, Vieth B1, Parekh S1, Reinius B2, Guillaumet-Adkins A3, Smets M4, Leonhardt H4, Heyn H3, Hellmann I1, Enard W5.
+Drop-seq uses the SMART-seq approach leveraged in the Fluidigm C1 and plate-seq technologies, which typically captures more genes than than the CEL-seq approach used by InDrop \citep{Ziegenhain2017}. 
 Drop-seq also has a higher difference between the cell and bead flow rates, capturing about 1\% of cells, compared to InDrop’s 25\% capture rate. 
 This has the advantage of reducing the rate of physical cell-cell doublets, but captures fewer cells from precious samples. 
 In addition, while InDrop’s beads have designed cell barcodes with known sequences, Drop-seq’s cell barcodes are randomly generated using synthetic combinatorial chemistry. 
@@ -66,7 +66,7 @@ While PCR runs in under an hour, linear amplification must run overnight, increa
 \label{fig:indrop-dropseq}
 \end{figure} 
 
-% todo El-ad would like a table summarizing the differences between the methods here. 
+Given that SMART-seq 2 was economically infeasible, we were left to decide between the droplet-based sequencing approaches.  
 Several factors contributed to our selection of InDrop over Drop-seq. 
 First, the knowledge that tumor immune infiltrate is highly variable and rare in certain cancer subtypes motivated us to maximize the cell capture rate.
 Second, we were concerned about the difficulty of correcting errors in the random cell barcodes used by Drop-seq---particularly when combined with PCR amplification which can propagate errors (Figure~\ref{fig:indrop-dropseq}, top). 
@@ -74,9 +74,16 @@ Second, we were concerned about the difficulty of correcting errors in the rando
 Finally, when we examined the distributions of molecules across cells, we saw that while Drop-seq was often able to capture more molecules than InDrop, they captured a comparable number of molecules in the number of cells that were expected from the input number that were encapsulated (Figure~\ref{fig:indrop-dropseq}, bottom). 
 This suggested there may be much more non-specific RNA capture or a higher ambient RNA concentration in the Drop-seq data, which suggested a lower signal:noise ratio. 
 
-% todo El-ad wants this paragraph replaced with a proper summary paragraph (here's what a proper design looks like, three technologies, smart-seq wouldn't work and drop-seq blah blah therefore we ended up with indrop so now lets talk about computational things. 
-For these reasons, InDrop was selected for the Pe’er lab’s initial work in single-cell RNA-sequencing, and I began to carefully examine the library construction procedure to build thoughtful priors over expected error types that should be corrected prior to examining molecule counts. 
-The remainder of this chapter will discuss the design of the InDrop cancer atlas experiment and the computational pipeline that I constructed to transform sequencing data from fastq files into a cells by genes matrix whose entries are molecules, and whose data can be used to reason about biological questions. 
+This chapter proposes a framework for the design of a single-cell experiment whose goal is to characterize unknown heterogeneity of a population of cells, and to detect new cell types or cell states. 
+Such an experiment should comprise multiple patient, to ensure its findings generalize to the population that the experiment seeks to represent. 
+Each patient should be characterized by multiple biological replicates, to ensure that the extracted tissue is representative of the patient, and multiple technical replicates to verify that variability between patients is biologically and not technically driven. 
+In addition, individual replicates should sample an adequate number of cells to characterize the heterogeneity present in the samples. 
+For homogeneous samples, this number could be relatively small (100), but for populations with significant unknown sources of variation or large numbers of distinct cell types, the number of cells should be large, and therefore is best supported by droplet-based sequencing approaches.
+In cases where cells are precious, and where data quality is valued over data quantity, we believe that InDrop represents the best approach to execute large-scale experiments. 
+Finally, tissue samples should be partitioned such that a sample is retained for independent validation, to ensure that biological findings generalize across technologies, and do not represent systematic biases introduced by scRNA-seq. 
+
+Thus, InDrop was selected for the Pe’er lab’s initial work in single-cell RNA-sequencing, and we began to carefully examine the library construction procedure to build thoughtful priors over expected error types that should be corrected prior to examining molecule counts. 
+The remainder of this chapter will discuss the design of the InDrop cancer atlas experiment and the computational pipeline that we constructed to transform sequencing data from fastq files into a cells by genes matrix whose entries are molecules, and whose data can be used to reason about biological questions. 
 
 \section{Experiment Design}
 
@@ -87,8 +94,8 @@ We believed that subtype diversity would enable us to observe a wide range of im
 
 Second, mutation of BRCA genes produce significant genetic predisposition for breast cancer.
 Therefore, women who have the misfortune of carrying mutations in these genes and who are diagnosed with breast cancer often elect to undergo prophylactic mastectomies of the healthy breast at the time of tumor resection. 
-"Normal" tissue in cancer experiments is most often obtained from the tumor periphery, and likely has low-grade inflammatory or tumor influences. 
-We would be able to extract normal tissue from the contra-lateral breast of the same patients, sharing the same genetic background. % ask George how this normally works. 
+"Normal" tissue in cancer experiments is most often obtained from the tumor periphery, and can be influenced by tumor effects such as low-grade inflammatory responses or may contain pre-neoplastic tissue structures such as atypical hyperplasia. 
+We would be able to extract normal tissue from the contra-lateral breast of the same patients, sharing the same genetic background. 
 Finally, In order to incorporate the immunological expertise necessary to interpret the data, we collaborated with Prof. Alexander Rudensky at Memorial Sloan Kettering Hospital.
 
 To recover a variety of immune cell states responding to variable microenvironments, we included patients with breast tumors of varying type and grade, and devoted the majority of our sequencing to TILs (8 patients). 
@@ -98,7 +105,7 @@ We also extracted one involved lymph node to determine how TILs might act in a m
 \begin{figure}
 \centering
 \includegraphics[width=0.5\textwidth]{Figure1-B.png}
-\caption{Summary of samples obtained and patient metadata.} % todo el-ad wants more information here about what everything is. 
+\caption{Summary of samples obtained and patient metadata. Tumor, Normal, Blood and Lymph describe whether or not tissue of each type was extracted from each patient. ER, PR, and Her2 summarize the fraction of a tumor that stained positive for the ER and PR, and whether or not the Her2 gene was amplified.} 
 \label{fig:1b}
 \end{figure} 
 
@@ -108,7 +115,8 @@ We also extracted one involved lymph node to determine how TILs might act in a m
 When we began working with InDrop, it had only been applied to well-behaved cell lines. 
 Our initial analyses of pilot experiments using InDrop to sequence primary peripheral blood mononuclear cells revealed several deficiencies that we could correct to improve the quality of InDrop for primary samples.
 First, we observed that the "GC content", the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, predicted the number of molecules we recovered from cells in pilot experiments (Figure~\ref{fig:c2-1}, top-left), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
-Barcodes with 50\% GC content obtained higher molecule count than those with higher or lower GC fraction.  
+To quantify this, we correlated the deviance $d$ from balanced GC content for each barcode $d = 1 - |GC_{pct} - 0.5|$, and calculated the correlation of this statistic with the number of detected molecules for each barcode. 
+We observe a small but very singificant effect of $r^{2} = 0.23, p < 1e-45$ suggesting that barcodes with 50\% GC content obtained higher molecule count than those with higher or lower GC fraction.
 This is in agreement with previous analyses from quantitative PCR, where GC content has an established impact on PCR efficiency \citep{Mamedov2008}. 
 
 Since cells and barcodes were randomly assigned, these results implied that cells receiving GC-balanced beads were optimally amplified, and the presence of variable GC content was introducing a sampling variance over our sequencing libraries.
@@ -133,10 +141,9 @@ To address these shortfalls, we redesigned a cell barcode set so that all barcod
 This was done by performing a constrained optimization over barcodes of the variable lengths required by InDrop, obtained from Edittag \citep{Faircloth2012}.
 Comparing libraries from before and after the redesign of our barcoding beads, showed that scRNA-Seq libraries generated with new DNA barcoding hydrogel beads obtained 5.3\% improved yield as measured by molecules/million sequencing reads. 
 
-% todo reduce the length of the explanation for the hamming distance figure. 
 \begin{figure} 
 \centering
-\includegraphics[width=1.0\textwidth]{c2-1.png} % todo add statistics for %GC enrichment 
+\includegraphics[width=1.0\textwidth]{c2-1.png} 
 \caption{Top-left: visualization of cell barcode GC content (percentage, x-axis) versus cell barcode read coverage (y) displaying higher coverage at 50\% GC content. 
   Color scale represents density of cell barcodes. Yellow is high, purple is low.  
   Top-right: Two example barcode pairs where top and bottom represent expected barcodes and the middle, with possible errors highlighted in red, represents an observed cell barcode sequence. For the case of Hamming distance of 2 (left), the observed barcode may have been generated from a single T->A mutation in either the fourth position (true barcode is top) or fifth position (true barcode is bottom). If instead a hamming 3 set is used, every single base substitute error can be corrected---the only single-base error that could convert an expected barcode to the observed is a T->A mutation in the fourth position. Bottom: Toy data displaying the effect of increasing the variance while holding constant the mean and number of drawn samples from a standard Gaussian distribution truncated at zero, where values below zero indicate capture failures and are redrawn.}
@@ -150,15 +157,13 @@ Unfortunately, InDrop has a single flow channel per device, and therefore multip
 Unlike the cell lines used to demonstrate InDrop's capabilities which can be dissociated and sorted between each run of the InDrop device, patient samples are dissociated contemporaneously, and have different time-lags until cell lysis, at which point apoptosis and RNA degradation are halted.
 
 For one sample where we had abundant cells, we ran 7 sequential technical replicates in series and measured, for each cell, the fraction of molecules that came from mitochondria against the total number of observed molecules (Figure~\ref{fig:c2-2}).
-We observed two phenomena: First, time from extraction correlated with mitochondrial RNA content, implying that MT-RNA made up increasing fractions of the cells as time progressed. 
-Second, we saw that the overall library size decreased, suggesting that RNA degradation processes were eliminating mRNA molecules. 
-Both observations suggested that equalizing time from sample extraction to processing is an important technical consideration, and that increasing the speed of in-drop encapsulation would allow us to measure more cells at higher molecule count with smaller MT-RNA-related stress responses. 
+We observed that time from extraction correlated with mitochondrial RNA content ($r^2 = 0.98, p < 1e-4$), implying that MT-RNA made up increasing fractions of the cells as time progressed. 
+This suggested that equalizing time from sample extraction to processing is an important technical consideration, and that increasing the speed of in-drop encapsulation would allow us to measure more cells at higher molecule count with smaller MT-RNA-related stress responses. 
 
-% todo missing a statistic here quantifying both the decrease in library size and also the increase in MT content over time. (both could use a correlation to show the relationship)
 \begin{figure} 
 \centering
 \includegraphics[width=1.0\textwidth]{c2-2.png}
-  \caption{Mitochondrial content of seven technical replicates for an early InDrop experiment. Color scale represents cell density (yellow is high, blue is low).}
+\caption{Mitochondrial content (y axis) vs library size (x axis) of seven technical replicates for an early InDrop experiment. Color scale represents cell density (yellow is high, blue is low).}
 \label{fig:c2-2}
 \end{figure}
 
@@ -171,34 +176,10 @@ Thus, if we sequenced each sample in triplicate, and we assumed a fast transport
 % todo expand upon this and use a conclusion
 Together, the improvements to the InDrop chip, redesign of the library, and troubleshooting and optimization of cell to reagent ratios transformed InDrop into a sequencing platform well suited to comparing immune phenotypes within and between multiple patients and tissues. 
 
-\section{Generating scRNA-seq Profiles of Immunes Cells with InDrop} % el ad thinks this section needs to have better flow and less repetition vs. the last section. It should not read like "methods". Hersh agrees with this. 
-
-To generate an atlas of immune cells, the data was prepared as follows. 
-Briefly, lymphocytes were extracted from tumor and normal tissues by mincing the freshly obtained surgical specimens into 1 mm cubic pieces and freed into cell solutions through enzymatic digestion using Liberase TL (Sigma) for 20 min at 37°C.
-Digested tissues were then passed through a 100M filter and washed twice with PBS prior to surface staining with anti-CD45, the common leukocyte antigen, and DAPI for live-dead discrimination, which was carried out by sorting and isolating CD45+DAPI- with a FACSARIA sorter (BC Biosciences).  
-Post-sort purity was routinely $>95\%$ for the sorted populations.
-
-A separate subset of the cell isolate that was \textit{not} used for sequencing was additionally stained with a panel of markers that identify immune cell type composition: CD45, CD19, CD3, CD4, CD8, FoxP3, CD56, and CD11b. 
-Each sample was then divided into 10,000 cell aliquots and at least 2 technical replicates were processed through the complete experimental protocol (see below), with the exception that technical replicates were often processed on the same sequencing lane. 
-
-% todo this section in particular is redundant with the last one. 
-We employed InDrop~\citep{Klein2015,Zilionis2017}, a droplet-based single cell RNA sequencing technology, to construct sequencing libraries. 
-InDrop's high efficiency allowed deep sampling of many immune cells from individual patients, even in cases where immune infiltration was relatively low.
-As a result, we were able to compare triple-negative breast cancer (TNBC) samples with Her2+ and ER+ samples, which in some cases had as few as 50,000 tumor infiltrating immune cells.
-Cell and flow rates were set to maintain a low doublet rate of 0.59\%, corresponding to a rate of approximately 12 barcoding beads for every 1 cell. 
-InDrop was carried out as described~\citep{Zilionis2017}, with the exception of the modifications described above that optimized InDrop for use with primary human immune cells. 
-
-Constructed libraries were then sequenced on Illumina HiSeq 2500 instruments using paired-end sequencing (PE1 54 bp and PE2 66 bp). 
-Each replicate was sequenced on one half of a HiSeq lane, at an initial depth of approximately 100 million reads.\ 
-scRNA-seq produces lower-complexity libraries than bulk sequencing techniques, which can infrequently lead to reduced base quality. Because each patient sample is precious, and because it is difficult to compare libraries with different average molecule counts, we verified the quality of each sequencing library with FastQC \citep{Andrews2010}, a software package that estimates the number of un-callable and low quality bases.
-Libraries that displayed significant (\textgreater{}25\%) low quality bases were re-sequenced to maximize inter-sample comparability, although the sample molecule yields were difficult to equalize due to combinations of technical and biological variances. 
-See Supplementary Table S1 for sample sequencing depths. % remove the supplementary table reference.  
-The final protocol resulted in tuned cell loading and enzyme concentrations, and was the result of optimization of over 40 MiSeq, HiSeq, and NextSeq experiments.
-
 \section{Data Preprocessing: SEQC}
 
 % todo the introduction to this section needs to be re-worked up the introduction of SEQC. 
-InDrop data has many technical idiosyncrasies that would benefit from computational solutions beyond the basic approach of aligning reads to a genome and counting observations of each gene. 
+InDrop also has many technical idiosyncrasies that would benefit from custom computational solutions. 
 Unfortunately, at the time of data collection, published data processing pipelines were specifically tailored to the library construction methods they were designed to process. 
 In addition, the rapid pace of technology development has induced computational approaches to be constructed with similar haste; most novel computational methods were bash scripts \citep{Shalek2013,Shalek2014}, unpublished R code \citep{Jaitin2014}, tools published without source code \citep{Macosko2015} or good algorithmic descriptions but no software \citep{Klein2015}. 
 
@@ -213,7 +194,6 @@ The SEQC package, which takes Illumina Fastq or BCL files, the standard sequenci
 \label{fig:s1a}
 \end{figure} 
 
-%p barcode extraction
 Briefly, SEQC begins by extracting the cell barcode and UMI from the forward read and storing these data in the header of the reverse read.
 This produces a single fastq file containing alignable sequence and all relevant metadata.
 Merged fastq files are aligned against the genome with STAR \citep{Dobin2013}, a high performance and community-standard aligner. 
@@ -248,23 +228,26 @@ Even complex cases such as Mars-seq, which has an additional "pool" barcode that
 Thus, if there were a standard abstraction for cell barcodes and UMIs, it would facilitate rapid analysis of diverse scRNA-seq data types.
 
 The first stage of SEQC addresses this shortcoming by taking input fastq files containing genomic information and barcoding metadata spread arbitrarily across multiple sequencing files, and merges that information into a single fastq file. 
-Sequence data is stored prepended to the first read name, delimited by a colon, and separated from the original read name with a semi-colon. % todo add an example of the barcode here 
+Sequence data is stored prepended to the first read name, delimited by a colon, and separated from the original read name with a semi-colon.
+For InDrop, which contains cell and molecule barcodes, plus a number of T nucleotides, the name field of a record in the merged fastq appears as follows: {\mono @<CELLBARCODE>:<UMI>:<\#T>;R2 READ NAME}.
 No additional tag information is stored, and the sequence found in the name field is efficiently compressed by the zlib compression library \citep{Gailly2004}.
-The platform class comprises the locations of the cell barcodes and UMIs, the type of barcode and UMI correction to be run, the number of T-nucleotides that are expected to be read from the capture primer, and a merge function that indicates how to extract barcodes and construct the standardized merge fastq file. 
-It contains the complete information required to specify the which modules must be run on a particular sequencing data type. 
-The merged fastq file contains genomic, alignable sequence in the sequence field, and has read metadata prepended to the name field, separated by colons. This step can be adjusted for novel sequencing approaches by adding a new platform class, often with only 10 lines of code\footnote{see Figure~\ref{fig:10x_platform} for the 10-line platform that allowed us to adapt SEQC to 10x v2 chemistry when it was released}. % todo add the figure. 
+
+To remain general, SEQC implements a platform class comprises the locations of the cell barcodes and UMIs, the type of barcode and UMI correction to be run, the number of T-nucleotides that are expected to be read from the capture primer, and a merge function that indicates how to extract barcodes and construct the standardized merge fastq file. 
+Thus, the platform contains the complete information required to specify where to find the barcodes that define a read's provenance, but also the algorithms that must be run on a particular library construction method to generate optimal scientific data. This allows us to produce a single file format, a merged fastq file, that losslessly represents all known types of 3' RNA-seq data. 
+
+The merged fastq file contains genomic, alignable sequence in the sequence field, and has read metadata prepended to the name field, separated by colons. This step can be adjusted for novel sequencing approaches by adding a new platform class, often with only 10 lines of code\footnote{see Figure~\ref{fig:10x_platform} for the 10-line platform that allowed us to adapt SEQC to 10x v2 chemistry when it was released}.
 This allows the complete SEQC pipeline to be rapidly tested on iterations of InDrop, or novel technologies.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.75\textwidth]{FigureM1-B.png}
+\includegraphics[width=0.75\textwidth]{FigureM1-Bii.png}
 \caption{Schematic of capture primer displaying amplification machinery, cell barcodes, UMIs,
-         and poly-T capture site}
-\label{fig:m1b}
+         and poly-T capture site.}
+\label{fig:m1bii}
 \end{figure}
 
 InDrop has a more complex library construction process that required us to devise a custom fastq merging solution.
-InDrop constructs its cell barcodes from two pools of cell 384 cell barcode fragments which hybridize in a constant "spacer" sequence (see Figure~\ref{fig:m1b}).
+InDrop constructs its cell barcodes from two pools of cell 384 cell barcode fragments which hybridize in a constant "spacer" sequence (see Figure~\ref{fig:m1bii}).
 Illumina sequencers cannot read constant sequences, as observing the same base simultaneously at all points on the chip saturates the fluorescence sensor and prevents localization of base calls to individual read "spots" (see \cite{Metzker2010} for a review of sequencing technology chemistry and limitations). 
 To prevent this, InDrop's first cell barcode fragment has 4 lengths, which causes the spacer to have 4 different offsets, produced a library that is easy to sequence. 
 
@@ -363,7 +346,7 @@ We then examined the correlation, and discrepancies, between the two references.
 \label{fig:m1c}
 \end{figure}
 
-The overall $r^2$ value between the references is 0.94, with 93\% of genes holding the exact same values in both reference alignments. 
+The overall $r^{2}$ value between the references is 0.94, with 93\% of genes holding the exact same values in both reference alignments. 
 In addition, information is concentrated in 35\% fewer features, despite losing only 8\% of the total molecules. 
 There is also a large drop-out contingent present only when aligned against the complete reference. 
 Gene ontology enrichment against this reference revealed high-level biologically agnostic enrichments, such as ``protein coding,'' ``translation,'' and other enrichments, which suggest a random sampling of high-expression genes.
@@ -462,8 +445,15 @@ This is in contrast to PCR-based amplification approaches which propagate errors
 
 In contrast to cell barcodes, UMIs are random, and correction cannot proceed by the same strategy, so we devote a section later in the pipeline to the detection of UMI errors after the gene and mapping position of a fragment are identified.
 
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{FigureM1-Bi.png}
+\caption{This figure displays a schematic that describes the types of barcoding errors that can occur in InDrop data, but also other approaches that utilize 3' or 5' capture by poly-A primers. These error sources are: (A) the barcode fragments within the UMI sequence; these barcodes may randomly prime, if broken before encapsulation, or produce incorrect UMIs or fragment-fragment hybridization events, if this occurs during library preparation. (B) A barcode that breaks within the cell barcode. Because InDrop has a set of valid barcodes, these errors are easily excluded, but the process that produces these errors is the same as in (A). In (C) we display barcode substitution errors, which may cause barcodes to aberrantly manifest as separate cells or molecules, depending on which barcode they occur in.}
+\label{fig:m1bi}
+\end{figure}
+
 % todo el-ad found this paragraph, and in general this section a bit confusing. I think break up figure M1-B (way above) into two, so we can reference the second section here. 
-Another source of error in scRNA-seq experiments, including InDrop, cel-seq, mars-seq, and likely drop-seq and 10x genomics, is the fracturing and random-priming of capture primers (Figure~\ref{fig:m1b}) \citep{Jaitin2014}. 
+Another source of error in scRNA-seq experiments, including InDrop, cel-seq, mars-seq, and likely drop-seq and 10x genomics, is the fracturing and random-priming of capture primers (Figure~\ref{fig:m1bi}) \citep{Jaitin2014}. 
 We often observe cell-barcode prefixes followed by randomers. 
 When fragmentation occurs at the cell barcode level, we can remove the fragments using the whitelist approach above. To remove barcodes that break in the UMI, we determined that we would sequence 5 bases into the poly-T tail of the primer, which we expect to be all T-nucleotides. 
 By excluding reads with more than 1 non-T nucleotide, we are able to exclude most broken UMIs.
@@ -661,18 +651,51 @@ SEQC requires approximately 8 hours to run on a standard 32 GB / 16 core Amazon 
 The lower memory usage of 32GB supported by SEQC also makes it much cheaper, easier and more flexible to run on local and remote compute clusters than 10x Cell Ranger, which recommends 128GB RAM and costs twenty times as much on Amazon, given the difficulty of procuring spot instances for high-memory virtual machines\footnote{Replacement of STAR with Kallisto or Hisat2, both methods that are currently being benchmarked, would further reduce the cost of analysis and increase SEQC's speed.}. 
 Finally, SEQC is programmed to run on a local machine, on a high performance compute cluster, or on AWS. 
 
-% todo include section comparing with Allon's pipeline
+% todo add the allon figure here. 
+\section{SEQC compares favorably with other pipelines}
+
+Near the end of SEQCs development, we ran a head-to-head comparison with a pipeline that had just been released by the original InDrop computational author. 
+We ran two samples of sorted mouse T-regulatory cells on both pipelines, using a standard index provided by the Klein lab. 
+We were shocked to discover that the Klein pipeline recovered nearly double the number of molecules, suggesting a much higher sensitivity than SEQC\@.
+However, when compared each pipeline to a bulk control sample, we discovered that the Klein pipeline detected many genes in the single-cell data that were not detected in the bulk dataset. 
+
+Bulk data has a much larger number of input cells, and as a result, is theorized to proceed with higher efficiency. 
+In addition, because bulk data is full-length instead of 3' localized, it has a greater chance of detecting a larger number of genes. 
+For these reasons, it is unlikely that the genes observed in the single-cell data were true positives.
+If the single-cell specific observations are removed, the total number of detected molecules is reduced to a comparable, although still higher number. 
+
+We eventually tracked down the problem in the Klein pipeline, which derived from the analysis of multiply-aligned reads. In cases where a unique alignment could not be identified, the alignment was randomized to any of the ``best-match'' genes, producing a large increase in spurious molecule and gene observations. 
+As a result of this analysis, this problem in the klein pipeline was rectified. 
+However, it demonstrates the importance of attention to detail in single cell analysis and the impact that small computational changes can have on data quality. 
+Finally, it demonstrates that in scRNA-seq experiments, it is more important to identify the \textit{right} molecules, than simply the largest number. 
 
 % todo add a section describing SEQC's contribution to various other publications
 
-\section{After SEQC, InDrop Data is Dominated by Biological Variation} % todo make this a victory dance section
+% todo make this a victory dance section
+\section{Generating scRNA-seq Profiles of Immunes Cells with InDrop and SEQC} % el ad thinks this section needs to have better flow and less repetition vs. the last section. It should not read like "methods". Hersh agrees with this. 
 
-Having developed SEQC, it was applied to each of the 14 samples and 61 replicates in our data. 
-Each sample had a minimum of 2 replicates.  % todo fix figure reference
-Samples were sequenced such that each cell was covered by an average of 22,000 reads. % todo move detail to later sections
+Having improved InDrop and developed a computational pipeline to produce high quality, interpretable scRNA-seq data, we used InDrop to execute the experiment proposed earlier in this chapter. 
+To generate an atlas of immune cells, and to attempt to learn how cell-specific immune checkpoints function in cancer, we obtained surgical tissue from several breast cancer patients. 
+Lymphocytes were extracted from tumor and normal tissues by mincing the freshly obtained surgical specimens which were freed into cell solutions through enzymatic digestion. 
+Digested tissues were then filtered and stained with anti-CD45, the common leukocyte antigen, and DAPI for live-dead discrimination, which was carried out by sorting and isolating CD45+DAPI- with a FACS sorter.  
+Post-sort purity was routinely $>95\%$ for the sorted populations.
+
+A separate subset of the cell isolate that was \textit{not} used for sequencing was additionally stained with a panel of markers that identify immune cell type composition: CD45, CD19, CD3, CD4, CD8, FoxP3, CD56, and CD11b. 
+Each sample was then divided into 10,000 cell aliquots and at least 2 technical replicates were processed through the complete experimental protocol (see below), with the exception that technical replicates were often processed on the same sequencing lane. 
+
+Constructed libraries were then sequenced at a depth of 100 million reads on an Illumina HiSeq 2500 instrument.
+The 3' localization of sequencing fragments plus the cell barcode structure causes scRNA-seq produces lower-complexity libraries than bulk sequencing techniques. 
+This infrequently lead to reduced base quality. 
+Because each patient sample was precious, and because it was difficult to compare libraries with different average molecule counts, we verified the quality of each sequencing library with FastQC \citep{Andrews2010}, a software package that estimates the number of un-callable and low quality bases.
+
+Libraries that displayed significant (\textgreater{}25\%) low quality bases were re-sequenced to maximize inter-sample comparability, although the sample molecule yields were difficult to fully equalize due to combinations of technical and biological variances. 
+The final protocol resulted in tuned cell loading and enzyme concentrations, and was the result of optimization of over 40 MiSeq, HiSeq, and NextSeq experiments.
+
+We then applied SEQC to each of the 14 samples and 61 replicates in our data. 
+Samples were sequenced such that each cell was covered by an average of 22,000 reads. % todo move detail to earlier sections
 Cells contained on average 15 reads per molecule, and cell saturation was 91\% across all samples and replicates. 
 On average, 20\% of cells were excluded due to high mitochondrial content, a proxy for cell death and stress. 
-Samples obtained from tissue requiring dissociation had significantly higher mitochondrial transcripts (25\%) than those obtained from blood (13\%) (t=2.42, p=0.018). 
+Samples obtained from tissue requiring dissociation had significantly higher mitochondrial transcripts (25\%) than those obtained from blood (13\%) ($t=2.42, p=0.018$). 
 Small numbers of low-complexity cells displaying fewer than expected genes for their molecule count were detected and removed, removing 1.2 ∓ 2.3\% of total molecules. 
 Having excluded non-viable cells from downstream analysis, we shifted to examining within-sample consistency across technical replicates.
 
@@ -681,7 +704,7 @@ To determine the magnitude of batch-to-batch variation, we compared the variatio
 Each sample was collapsed into a pseudo-bulk by summing over the cells of the digital expression matrix. 
 We determined intra-patient consistency by determining the average pairwise Pearson correlation between pairs of samples, and compared that against the inter-patient correlations. 
 
-After excluding one aberrant sample with a sample-sample correlation of 0.6, sample-sample correlations had a minimum of $r^2=0.92$, a mean of 0.97, and a standard deviation of 0.02 (full pairwise correlation matrix in Figure~\ref{fig:m1e}). % consider adding that BO, CD were processed on the same day using same reagents. 
+After excluding one aberrant sample with a sample-sample correlation of 0.6, sample-sample correlations had a minimum of $r^{2}=0.92$, a mean of 0.97, and a standard deviation of 0.02 (full pairwise correlation matrix in Figure~\ref{fig:m1e}). % consider adding that BO, CD were processed on the same day using same reagents. 
 This is in contrast to the complete pairwise correlation matrix, where the average correlation between patients is 0.72. 
 The higher within-sample correlations suggest that patient-to-patient variation is primarily biological, and that we have low technical variation between InDrop runs. 
 These comparisons are generated automatically by SEQC, and serve as an internal control for batch variation.
@@ -702,7 +725,7 @@ It corrects errors introduced by enzymes during library construction, by filteri
 It provides high-quality alignment by limiting read annotation to gene features that are detectable by scRNA-seq, and resolves multi-alignments by aggregating data at the molecule level.  
 However, when aligning, SEQC uses the genome to filter out contamination from genomic sources, an approach overlooked by other pipelines. 
 SEQC then aggregates the cleaned sequencing reads, producing a count matrix of genes x cells which is carefully examined and depleted of cells that display biological or technical hallmarks of low quality. 
-With these approaches, SEQC provides high-quality data faster, or at lower cost, than contemporaneously developed, data-specific pipelines, and compares favorably with them scientifically. 
+With these approaches, SEQC provides high-quality data faster, or at lower cost, than contemporaneously developed, data-specific pipelines, and compares favorably with them scientifically.  % comparisons to 10x genomics, and to allon's pipeline. 
 
 SEQC also provides the first data-agnostic platform for the analysis of single-cell sequencing data.
 SEQC is fully open source, and completely modular, allowing us to rapidly test methods from other laboratories that may improve upon our initial computational approaches. 
