@@ -41,14 +41,14 @@ If each replicate $X_i \in {X_1, X_2, \ldots X_m}$ is composed of $N$ cells, and
   N_i = m * \frac{X_i}{\sum_{p=1}^{P}{X_{i,p}}}
 \]
 This transformation allows samples which receive different depths of sequencing (different numbers of molecules), to be examined as if they lie on the same scale.
-If the observed differences in distribution resulted only from differences in sampling rates between cells, then this transformation is adequate to produce data that are \textit{approximately} identically distributed\footnote{Median library size normalization does not, however, provide a solution for normalizing heterogeneous data from multiple cell types, or enabling comparisons between cells with extremely different sampling rates\citep{Anders2010}}. % add deseq2 reference 
+If the observed differences in distribution resulted only from differences in sampling rates between cells, then this transformation is adequate to produce data that are \textit{approximately} identically distributed\footnote{Median library size normalization does not, however, provide a solution for normalizing heterogeneous data from multiple cell types, or enabling comparisons between cells with extremely different sampling rates\citep{Anders2010a}}. 
 
 The transformed data, while statistically suitable for distance calculations, contains over 20,000 genes (described computationally as ``features'' or ``dimensions''), which produces a significant computational burden, as many algorithms have scale slowly with increases in features.
 However, transcription is controlled through the binding of transcription factors to DNA, each of which control many genes. % citation
 As a result, cells responses' to stimuli tend to simultaneously modify or ``co-regulate'' the expression of modules of genes. 
 
-The modularity of transcription implies that high-order correlation structures exist in the gene features of our cells, and as a result, that the data actually lie on relatively low-dimension manifolds within the space of observed features. % segal et al al 2006 A module map showing conditional activity of expression modules in cancer; https://www.ncbi.nlm.nih.gov/pubmed/10591225
-As a result, it is possible to reduce the dimensionality of biological data by collapsing it into correlated components without significant loss of information. % need some citations. 
+The modularity of transcription implies that high-order correlation structures exist in the gene features of our cells, and as a result, that the data actually lie on relatively low-dimension manifolds within the space of observed features. 
+As a result, it is possible to reduce the dimensionality of biological data by collapsing it into correlated components without significant loss of information \citep{Segal2004,Hartwell1999}.  
 
 % todo work on this paragraph a bit more. 
 To identify a low dimensional representation of the data, we apply Randomized Principal Component Analysis (rPCA) \citep{Halko2009,Rokhlin2009} prior to carrying out subsequent algorithmic steps. % todo Also cite 
@@ -81,7 +81,7 @@ These two studies comprised 37 and 32 microarray experiments taken from sorted n
 
 Consistent with our hypothesis that lineage is a stronger source of variance than immune activation or microenvironment, cells of the same lineage clustered together within the microarray experiments regardless of activation state. 
 Because the bulk data was generated with microarrays, the data is a complex function of library preparation, but also probe capture efficiency. 
-The magnitude of variation in probe capture efficiency is such that microarray analyses are typically limited to making assertions about the relative abundance of genes across samples, rather than measuring the absolute abundance of a gene in a sample. % Significance analysis of microarrays applied to the ionizing radiation response" PNAS 2001 98: 5116-5121, (Apr 24).
+The magnitude of variation in probe capture efficiency is such that microarray analyses are typically limited to making assertions about the relative abundance of genes across samples, rather than measuring the absolute abundance of a gene in a sample \citep{Tusher2001}. 
 As such, in addition to normalizing by library size, microarray data is additionally translated into units of variance by ``Z-scoring'' to remove the effect of abundance on downstream computation. 
 
 This presents a problem for comparison with single-cell sequencing data, as scale is an important predictor of sample quality. As discussed in the previous section, the ambient RNA contamination in single cell experiments means that low-abundance genes are often the result of non-specific RNA diffusion, whereas high-abundance genes are likely specifically expressed in the cells they are detected in. 
@@ -166,7 +166,14 @@ First, because the observed data is only one small sample set from the transcrip
 In addition, the depth of sampling strongly correlates with the number of features that are observed in each cell, and the sampling depth varies significantly across cells and across samples. % can we demonstrate this? 
 The sparsity of scRNA-seq measurements mean that, in our data, the average gene is detected with only a single count. 
 As a result, drop-out is very common, and drop-out is not recoverable by median library size normalization, as any number multiplied by zero remains zero. 
-Thus, in small cells, detected genes are scaled up far more than they should be, producing spurious differential expression relative to better sampled cells of the same state. % todo image from biscuit presentation. 
+Thus, in small cells, detected genes are scaled up far more than they should be, producing spurious differential expression relative to better sampled cells of the same state (Figure~\ref{fig:norm}).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.75\textwidth]{normalization_problems.png}
+\caption{Toy example showing the impact of normalizing across cells of different sizes. Large cells, e.g.\ macrophages, have a larger number of input RNA, and therefore sampling from them produces the most representative single-cell libraries, with minimal drop-out. Smaller cells, such as neutrophils and lymphocytes, are subject to more stochasticity as it is possible that mRNA molecules of a gene are present, but will not be captured. As a result, the disparity between capture/non-capture can produce misleading differential expression results at the single-cell level.}
+\label{fig:norm}
+\end{figure}
 
 Technical factors include differences in sequencing machine, enzyme activity, lysis efficiency or experimental protocol. 
 These samples were also subject to operational variation during the clinical resection, transport, and handling. These factors all impact cell viability, which in turn affects the single cell RNA-seq library preparation, in particular molecular capture rate and sampling. 

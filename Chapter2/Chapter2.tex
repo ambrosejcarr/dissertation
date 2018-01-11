@@ -38,7 +38,7 @@ Several factors contributed to this advancement.
 First, by increasing the number of input cells, the substrate for the initial amplification step was increased. With 50x more cells, the number of PCR cycles could be decreased by 5-6 and still achieve the same output cDNA concentration.
 This reduced "jackpotting", where one read or gene accrues additional copies relative to its cellular abundance. 
 
-Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (UMIs). 
+Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (UMIs) into their capture primers (Figure~\ref{fig:indrop-dropseq}~B). 
 UMIs mar each molecule, and allow any number of reads to be collapsed into a single molecule observation. 
 As a result, the number of reads needed to accurately quantify the expression of a gene was decreased. 
 Together, these characteristics combine decrease the number of reads needed to detect each molecule, which reduces the sequencing cost for each cell to approximately \$0.4 per cell.
@@ -55,23 +55,23 @@ Finally, the technologies differ in their choice of amplification methods.
 Drop-seq uses PCR amplification while InDrop uses T7 Linear amplification. 
 Linear amplification is fundamentally different from PCR in that instead of exponentially amplifying the substrate by doubling the substrate each cycle, each round of linear amplification outputs are not valid substrate for the T7 enzyme. 
 This means that any errors that are introduced into cell barcodes cannot propagate into later rounds of amplification. 
-In addition, the slower rate of amplification means that biases towards favorable sequence is less pronounced (Figure~\ref{fig:indrop-dropseq}). 
+In addition, the slower rate of amplification means that biases towards favorable sequence is less pronounced (Figure~\ref{fig:indrop-dropseq}~A). 
 However, the disadvantage of linear amplification is that it takes much longer. 
 While PCR runs in under an hour, linear amplification must run overnight, increasing the complexity of the experiment for the technician. 
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{indrop_dropseq.png}
-  \caption{Demonstrative of major differences between InDrop and Drop-seq. Top: InDrop uses linear amplification while Drop-seq uses PCR\@. Linear amplification introduces more errors, but rarely has more than one error per barcode. Drop-seq can introduce chains of errors through PCR\@. Middle: Summary of InDrop and Drop-seq primer and sequencing structure. InDrop uses a 54bp forward read containing two 8-11bp and 8bp cell barcode fragments, an 8bp UMI, and 5 bases of the poly-T capture primer. Drop-seq has a 26 bp forward read containing a 16bp cell barcode and a 10bp UMI\@. Bottom: empirical cumulative density function over molecules in an experiment. Each step upwards increments by the number of molecules in a cell (largest first) and each step right increments by a cell. Intuitively, faster movement upwards indicates larger concentration of molecules within individual cells, while movement right indicates relatively few molecules spread over very many cells.}
+\caption{Demonstrative of major differences between InDrop and Drop-seq. (A) InDrop uses linear amplification while Drop-seq uses PCR\@. Linear amplification introduces more errors, but rarely has more than one error per barcode. Drop-seq can introduce chains of errors through PCR\@. (B) Summary of InDrop and Drop-seq primer and sequencing structure. InDrop uses a 54bp forward read containing two 8-11bp and 8bp cell barcode fragments, an 8bp UMI, and 5 bases of the poly-T capture primer. Drop-seq has a 26 bp forward read containing a 16bp cell barcode and a 10bp UMI\@. (C) empirical cumulative density function over molecules in an experiment. Each step upwards increments by the number of molecules in a cell (largest first) and each step right increments by a cell. Intuitively, faster movement upwards indicates larger concentration of molecules within individual cells, while movement right indicates relatively few molecules spread over very many cells.}
 \label{fig:indrop-dropseq}
 \end{figure} 
 
 Given that SMART-seq 2 was economically infeasible, we were left to decide between the droplet-based sequencing approaches.  
 Several factors contributed to our selection of InDrop over Drop-seq. 
 First, the knowledge that tumor immune infiltrate is highly variable and rare in certain cancer subtypes motivated us to maximize the cell capture rate.
-Second, we were concerned about the difficulty of correcting errors in the random cell barcodes used by Drop-seq---particularly when combined with PCR amplification which can propagate errors (Figure~\ref{fig:indrop-dropseq}, top). 
+Second, we were concerned about the difficulty of correcting errors in the random cell barcodes used by Drop-seq---particularly when combined with PCR amplification which can propagate errors (Figure~\ref{fig:indrop-dropseq}~A). 
 
-Finally, when we examined the distributions of molecules across cells, we saw that while Drop-seq was often able to capture more molecules than InDrop, they captured a comparable number of molecules in the number of cells that were expected from the input number that were encapsulated (Figure~\ref{fig:indrop-dropseq}, bottom). 
+Finally, when we examined the distributions of molecules across cells, we saw that while Drop-seq was often able to capture more molecules than InDrop, they captured a comparable number of molecules in the number of cells that were expected from the input number that were encapsulated (Figure~\ref{fig:indrop-dropseq}~C). 
 This suggested there may be much more non-specific RNA capture or a higher ambient RNA concentration in the Drop-seq data, which suggested a lower signal:noise ratio. 
 
 This chapter proposes a framework for the design of a single-cell experiment whose goal is to characterize unknown heterogeneity of a population of cells, and to detect new cell types or cell states. 
@@ -114,13 +114,13 @@ We also extracted one involved lymph node to determine how TILs might act in a m
 % todo panel order in the figures should reflect order in the text. 
 When we began working with InDrop, it had only been applied to well-behaved cell lines. 
 Our initial analyses of pilot experiments using InDrop to sequence primary peripheral blood mononuclear cells revealed several deficiencies that we could correct to improve the quality of InDrop for primary samples.
-First, we observed that the "GC content", the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, predicted the number of molecules we recovered from cells in pilot experiments (Figure~\ref{fig:c2-1}, top-left), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
+First, we observed that the "GC content", the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, predicted the number of molecules we recovered from cells in pilot experiments (Figure~\ref{fig:c2-1}~A), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
 To quantify this, we correlated the deviance $d$ from balanced GC content for each barcode $d = 1 - |GC_{pct} - 0.5|$, and calculated the correlation of this statistic with the number of detected molecules for each barcode. 
 We observe a small but very singificant effect of $r^{2} = 0.23, p < 1e-45$ suggesting that barcodes with 50\% GC content obtained higher molecule count than those with higher or lower GC fraction.
 This is in agreement with previous analyses from quantitative PCR, where GC content has an established impact on PCR efficiency \citep{Mamedov2008}. 
 
 Since cells and barcodes were randomly assigned, these results implied that cells receiving GC-balanced beads were optimally amplified, and the presence of variable GC content was introducing a sampling variance over our sequencing libraries.
-Because there are a fixed number of reads to assign to each sample, increasing the variance of the number of molecules detected in each cell increases the size of the largest cells, but decreases the average molecule count (see Figure~\ref{fig:c2-1}, bottom).
+Because there are a fixed number of reads to assign to each sample, increasing the variance of the number of molecules detected in each cell increases the size of the largest cells, but decreases the average molecule count (see Figure~\ref{fig:c2-1}~C).
 Since the eventual statistical analyses expect cells to be identically distributed---or be transformed to be identically distributed---extra sampling of a small number of cells does not provide any experimental benefit. 
 Therefore, balancing GC content across our barcodes would decrease variance across our libraries, reducing the size of high molecule-count cells, and improving data quality. 
 
@@ -134,7 +134,7 @@ As a result, there is a trade-off between the number of barcodes of a given leng
 If the cell barcodes are too similar, substitution errors that convert one barcode into another can result in a molecule being mistakenly associated with the wrong cell. 
 This is a critical problem as miss-assignment of marker genes can disrupt type identification, since they are used by biologists to label the type or lineage of each cell. 
 It also frustrates detection of cell doublets, the rare events where two cells are encapsulated with the same barcode, as gene miss-assignment can cause cells to masquerade as doublets by associating two markers of different lineages with the same barcode. 
-We observed that the originally published barcode sequences had a minimum Hamming distance of 2, which is adequate to identify but not to correct single-base errors (see Figure~\ref{fig:c2-1}, top-right).  
+We observed that the originally published barcode sequences had a minimum Hamming distance of 2, which is adequate to identify but not to correct single-base errors (see Figure~\ref{fig:c2-1}~B).  
 Because single based errors are common in In-drop, we reasoned that this introduced unnecessary data loss.
 
 To address these shortfalls, we redesigned a cell barcode set so that all barcodes had balanced GC content, with Hamming distance of $\ge3$ (mean $D_h = 13.3$), excluding the first base of the second cell barcode, which was made a constant A.
@@ -144,9 +144,9 @@ Comparing libraries from before and after the redesign of our barcoding beads, s
 \begin{figure} 
 \centering
 \includegraphics[width=1.0\textwidth]{c2-1.png} 
-\caption{Top-left: visualization of cell barcode GC content (percentage, x-axis) versus cell barcode read coverage (y) displaying higher coverage at 50\% GC content. 
+\caption{(A) Visualization of cell barcode GC content (percentage, x-axis) versus cell barcode read coverage (y) displaying higher coverage at 50\% GC content. 
   Color scale represents density of cell barcodes. Yellow is high, purple is low.  
-  Top-right: Two example barcode pairs where top and bottom represent expected barcodes and the middle, with possible errors highlighted in red, represents an observed cell barcode sequence. For the case of Hamming distance of 2 (left), the observed barcode may have been generated from a single T->A mutation in either the fourth position (true barcode is top) or fifth position (true barcode is bottom). If instead a hamming 3 set is used, every single base substitute error can be corrected---the only single-base error that could convert an expected barcode to the observed is a T->A mutation in the fourth position. Bottom: Toy data displaying the effect of increasing the variance while holding constant the mean and number of drawn samples from a standard Gaussian distribution truncated at zero, where values below zero indicate capture failures and are redrawn.}
+(B) Two example barcode pairs where top and bottom represent expected barcodes and the middle, with possible errors highlighted in red, represents an observed cell barcode sequence. For the case of Hamming distance of 2 (left), the observed barcode may have been generated from a single T->A mutation in either the fourth position (true barcode is top) or fifth position (true barcode is bottom). If instead a hamming 3 set is used, every single base substitute error can be corrected---the only single-base error that could convert an expected barcode to the observed is a T->A mutation in the fourth position. (C) Toy data displaying the effect of increasing the variance while holding constant the mean and number of drawn samples from a standard Gaussian distribution truncated at zero, where values below zero indicate capture failures and are redrawn.}
 \label{fig:c2-1}
 \end{figure}
 
@@ -190,7 +190,7 @@ The SEQC package, which takes Illumina Fastq or BCL files, the standard sequenci
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS1-A.png}
-\caption{Schematic of the SEQC data analysis process.}
+\caption{Schematic of the SEQC package. Data analysis proceeds from right to left through modules, following the directed arrows.}
 \label{fig:s1a}
 \end{figure} 
 
@@ -428,7 +428,7 @@ However, there are two major sources of error that are introduced during library
 These errors confuse this association by disrupting the matching of observed barcodes with the barcodes that were present on primers during mRNA capture. 
 
 % todo change this and the following paragraph to "this is what I did" and "this is what I did not do, and why"
-Cell barcode errors in InDrop are easy to detect by design: we have a whitelist of 147,456 barcodes, each with Hamming distance \textgreater{}= 3. 
+Cell barcode errors in InDrop (Figure~\ref{fig:m1bi}~C) are easy to detect by design: we have a whitelist of 147,456 barcodes, each with Hamming distance \textgreater{}= 3. 
 Thus, any single base substitution error is resolved by creating a lookup table for all barcodes and all single substitutions. 
 If found in the table, the barcode is corrected.  
 If not, it is discarded. 
@@ -453,7 +453,7 @@ In contrast to cell barcodes, UMIs are random, and correction cannot proceed by 
 \end{figure}
 
 % todo el-ad found this paragraph, and in general this section a bit confusing. I think break up figure M1-B (way above) into two, so we can reference the second section here. 
-Another source of error in scRNA-seq experiments, including InDrop, cel-seq, mars-seq, and likely drop-seq and 10x genomics, is the fracturing and random-priming of capture primers (Figure~\ref{fig:m1bi}) \citep{Jaitin2014}. 
+Another source of error in scRNA-seq experiments, including InDrop, cel-seq, mars-seq, and likely drop-seq and 10x genomics, is the fracturing and random-priming of capture primers (Figure~\ref{fig:m1bi}~A,~B) \citep{Jaitin2014}. 
 We often observe cell-barcode prefixes followed by randomers. 
 When fragmentation occurs at the cell barcode level, we can remove the fragments using the whitelist approach above. To remove barcodes that break in the UMI, we determined that we would sequence 5 bases into the poly-T tail of the primer, which we expect to be all T-nucleotides. 
 By excluding reads with more than 1 non-T nucleotide, we are able to exclude most broken UMIs.
@@ -590,17 +590,10 @@ The result of this module is a BAM or h5 file containing only unique alignments 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureM1-D.png}
-\caption{(E) Example cell filtering plot showing the empirical cumulative density of molecules (y-
-axis) per cell barcode (x-axis). Note that a small number of cell barcodes contain most of
-the molecules in the experiment. Dashed black lines represent cut-off points after which
-cell barcodes are considered to consist of contamination. Red barcodes are excluded.
-(F) Coverage plot comparing the total molecules in each cell (x axis) against the average
-coverage in each cell (y axis). Densities of cells with aberrantly low coverage such as
-those with lower than 5 reads / molecule are considered likely errors and are discarded.
-(G) Mitochondrial (MT) RNA fraction plot displaying the total number of molecules in
-each cell vs the fraction of those molecules that come from mitochondrial sources. Cells
-in red consist of more than 20\% MT-RNA and are considered to be likely dying cells.
-These cells (red) are discarded.}
+\caption{(A) Example cell filtering plot showing the empirical cumulative density of molecules (y- axis) per cell barcode (x-axis). Note that a small number of cell barcodes contain most of the molecules in the experiment. Dashed black lines represent cut-off points after which cell barcodes are considered to consist of contamination. Red barcodes are excluded.  
+(B) Coverage plot comparing the total molecules in each cell (x axis) against the average coverage in each cell (y axis). Densities of cells with aberrantly low coverage such as those with lower than 5 reads / molecule are considered likely errors and are discarded.  
+(C) Mitochondrial (MT) RNA fraction plot displaying the total number of molecules in each cell vs the fraction of those molecules that come from mitochondrial sources. Cells in red consist of more than 20\% MT-RNA and are considered to be likely dying cells.  These cells (red) are discarded. 
+(D) Cell complexity plot. Each point is a cell, and the x axis measures the number of molecules and the y measures the number of genes. Cells with unexpectedly low numbers of genes relative to their molecule count are marked in red and filtered out.}
 \label{fig:m1d}
 \end{figure}
 
@@ -614,11 +607,11 @@ As a result, the raw count matrix contains a mixture of barcoded beads that were
 We want to retain barcodes that contain a large number of specific RNA molecules but deplete for cells that are dominated by Ambient RNA\@. 
 
 SEQC accomplishes this by finding the saddle point in the distribution of total molecule counts per barcode and excluding the mode with lower mean. 
-In practice, we accomplish this by constructing the empirical cumulative density function of cell sizes and finding the minimum of the second derivative (Figure~\ref{fig:m1d} A) of the distribution\footnote{Recent advances may improve upon this approach by leveraging additional features to build a cell/non-cell classifier that integrates additional information \citep{Petukhov2017}.}.
+In practice, we accomplish this by constructing the empirical cumulative density function of cell sizes and finding the minimum of the second derivative (Figure~\ref{fig:m1d}~A) of the distribution\footnote{Recent advances may improve upon this approach by leveraging additional features to build a cell/non-cell classifier that integrates additional information \citep{Petukhov2017}.}.
 For typical InDrop runs, this results in the elimination of over 95\% of the cell barcodes, but retains as many as 95\% of the molecules.
 
 Molecule size alone is not adequate to remove all barcodes that were not paired with real cells. 
-Some barcodes appear to aggregate higher numbers of errors, and as such we often see a bimodal distribution of molecule coverage: a higher mode that represents real cells, and a smaller mode that represents aggregated errors (Figure~\ref{fig:m1d}).4). 
+Some barcodes appear to aggregate higher numbers of errors, and as such we often see a bimodal distribution of molecule coverage: a higher mode that represents real cells, and a smaller mode that represents aggregated errors (Figure~\ref{fig:m1d})~B). 
 We remove the low-count density by fitting 2-component and 1-component Gaussian mixture models to each axis and comparing their relative fits using the Bayesian information criterion. 
 When the 2-component model's difference in likelihood is at least 5\% larger than the 1-component model, we exclude the densities with the smaller mean (Figure~\ref{fig:m1d}).
 
@@ -626,12 +619,12 @@ When the 2-component model's difference in likelihood is at least 5\% larger tha
 We score cells for mitochondrial RNA content, which is widely used as a proxy for cell death in scRNA-seq. 
 We observe that a small fraction of cells contain a higher abundance of molecules annotated by this signature, as much as 20−95\% of their RNA\@. 
 Since InDrop does not lyse mitochondria, we reason that these are likely to be cells dying due to stress imposed on them by the InDrop procedure or prior sorting, and remove them from further analysis. % todo Do you have an experiment or a reference to back this up? Or this is pure hypothesis? 
-This filter may be turned off for studies where apoptosis is a relevant phenotype (Figure~\ref{fig:m1d}).
+This filter may be turned off for studies where apoptosis is a relevant phenotype (Figure~\ref{fig:m1d}~C).
 
 Finally, we regress the number of genes detected per cell against the number of molecules contained in that cell. 
 We observe that there are sometimes cells whose residuals are significantly negative, indicating a cell which detects many fewer genes than would be expected given its number of molecules. 
 We exclude these cells whose residual genes per cell are more than 3 standard deviations
-below the mean (Figure~\ref{fig:m1d}).
+below the mean (Figure~\ref{fig:m1d}~D).
 
 To create a digital expression matrix, the uniquely-aligned, error-corrected Hdf5 read store is de-duplicated by counting unique groups of reads with the same UMI, cell barcode, and gene annotation. 
 A single molecule then replaces each set, and those molecules are summed to create a cells x genes matrix.\ 
@@ -656,8 +649,16 @@ Finally, SEQC is programmed to run on a local machine, on a high performance com
 
 Near the end of SEQCs development, we ran a head-to-head comparison with a pipeline that had just been released by the original InDrop computational author. 
 We ran two samples of sorted mouse T-regulatory cells on both pipelines, using a standard index provided by the Klein lab. 
-We were shocked to discover that the Klein pipeline recovered nearly double the number of molecules, suggesting a much higher sensitivity than SEQC\@.
-However, when compared each pipeline to a bulk control sample, we discovered that the Klein pipeline detected many genes in the single-cell data that were not detected in the bulk dataset. 
+We were shocked to discover that the Klein pipeline recovered nearly double the number of molecules, suggesting a much higher sensitivity than SEQC\@ (Figure~\ref{fig:klein}~A).
+However, when compared each pipeline to a bulk control sample, we discovered that the Klein pipeline detected many genes in the single-cell data that were not detected in the bulk dataset (Figure~\ref{fig:klein}~B,~C). 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{klein_comparison.png}
+\caption{(A) Stacked histogram of molecules per cell for two biological samples: CD4+ and T Reg cells, processed using SEQC (blue, green) and the Klein pipeline (red, purple).
+Comparison of SEQC (B) or Klein pipeline (C) "pseudo-bulk" sum of gene expression across cells vs.\ bulk Truseq sequencing of a second aliquot of the same T Reg cells processed from the same biological specimen.}
+\label{fig:klein}
+\end{figure}
 
 Bulk data has a much larger number of input cells, and as a result, is theorized to proceed with higher efficiency. 
 In addition, because bulk data is full-length instead of 3' localized, it has a greater chance of detecting a larger number of genes. 
