@@ -5,8 +5,8 @@
 
 The previous chapter describes an effort to generate a deep transcriptional map of immune cell states in human breast cancer.
 Using fluorescence-assisted cell-sorting and single-cell sequencing, we constructed an atlas of the tumor immune ecosystem microenvironment comprising 47,016 CD45\textsuperscript{+} cells collected from 8 primary breast carcinomas from treatment naive patients. 
-The extracted tumors had multiple types, including estrogen receptor (ER\textsuperscript{+}) and progesterone receptor (PR\textsuperscript{+}) positive, human epidermal growth factor receptor 2 amplified (Her2\textsuperscript{+}), and triple negative (TNBC) cancers (Figure~\ref{fig:1b}). 
-Through careful modeling of error sources and extensive data filtering, we confirmed that variation in the observed cells stems primarily from biological, and not technical, factors (Figure~\ref{fig:1e}).
+The extracted tumors had multiple types, including estrogen receptor (ER\textsuperscript{+}) and progesterone receptor (PR\textsuperscript{+}) positive, human epidermal growth factor receptor 2 amplified (Her2\textsuperscript{+}), and triple negative (TNBC) cancers. 
+Through careful modeling of error sources and extensive data filtering, we confirmed that variation in the observed cells stems primarily from biological, and not technical, factors.
 
 At the time, this dataset was the largest that had been generated using InDrop, and the only InDrop dataset generated from multiple human patients.
 Our experimental design was substantially more ambitious than the datasets preceding it, which had assayed well characterized model systems such as induced pluripotent stem cell differentiation \citep{Klein2015} or retinal cells \citep{Macosko2015} from mice with identical genetic backgrounds and growth conditions\footnote{Other clinical datasets were generated in parallel which examined data from multiple patients\citep{Tirosh2016}, however we are aware of no study that sequenced samples at equivalent depth.}. 
@@ -14,7 +14,7 @@ Our experiment also included multiple genetic backgrounds, tumor types, tissues,
 Consequently, the analysis of scRNA-seq data subject to numerous and varying stimuli was a significant and unanswered challenge.  
 
 This chapter describes efforts to address this challenge.
-While the last chapter demonstrated approaches to verify the technical quality of the data, this chapter begin by verifying its biological quality by performing some sanity checks on the data using established statistical approaches. 
+While the last chapter demonstrated approaches to verify the technical quality of the data, this chapter begins by verifying its biological quality by performing some sanity checks on the data using established statistical approaches. 
 Specifically, it will analyze each tumor sample independently to confirm that each of the cell types that are expected to be present in TIL isolates are recovered in each patient in the proportions indicated by FACS\@.
 The second part of this chapter describes an approach to merge data from different patients through iterative normalization and clustering. 
  
@@ -27,15 +27,15 @@ Thus, we limited our initial analyses to characterize the cell types within indi
 To discover cell types in single cell data, a standard approach is to group cells by similarity into "clusters" before comparing the average expression profile of each cluster to a previously identified type.
 The best matching type for each cluster can then be considered a good candidate for the type of the cluster. 
 There are numerous ways of accomplishing clustering, and there is no clear best approach. 
-However, PhenoGraph \citep{Levine2015}, a method that was originally developed to cluster Cytof data, has been adapted to scRNA-seq and appears to have gained community support as the best-practice for clustering cells in a single sample\cite{Shekhar2016,Butler2017}. 
+However, PhenoGraph \citep{Levine2015}, a method that was originally developed to cluster Cytof data, has been adapted to scRNA-seq and appears to have gained community support as the best-practice for clustering cells in a single sample \cite{Shekhar2016,Butler2017}. 
 
-For a distance between two cells to be accurately quantified, cells must first be transformed to approximate ``identically sampled and independently distributed'' data, meaning, practically, that each observed cell expression profile has an equal chance of observing a molecule if it were present in the physical cell. 
-This is manifestly untrue for our data, as the vastly different molecule counts achieved for different cells (and different cell types!) obliterate the ``identically sampled'' requirement. % figure here of pre-transformed in-drop data.   
+For a distance between two cells to be accurately quantified, cells must first be transformed to approximate ``independent and identitically distributed'' data, meaning, practically, that each observed cell expression profile has an equal chance of observing a molecule if it were present in the physical cell. 
+This is manifestly untrue for our data, as the vastly different molecule counts achieved for different cells (and different cell types!) obliterate the ``identically distributed'' requirement. % figure here of pre-transformed in-drop data.   
 
-The standard approach to address this problem is median library size normalization\footnote{In the case of droplet-based single-cell data ``normalization'' is a misnomer, as the data, when identically sampled, is better approximated by a negative binomial distribution. However, transformation to the same scale is the important part, rather than the distribution of the data, and so this ``normalization'' method is an appropriate one to this task.}, an approach inspired by bulk RNA-seq approaches \citep{Robinson2010}.
+The standard approach to address this problem is median library size normalization\footnote{In the case of droplet-based single-cell data ``normalization'' is a misnomer, as the data, when independently sampled, is better approximated by a negative binomial distribution. However, transformation to the same scale is the important part, rather than the distribution of the data, and so this ``normalization'' method is an appropriate one to this task.}, an approach inspired by bulk RNA-seq approaches \citep{Robinson2010}.
 Median library size normalization is a linear scaling approach that sets the total number of molecules in a library to median molecule sum across all observed cells. 
 Since the earlier pseudo-bulk analysis of technical replicates showed that the replicates were highly correlated ($\mean{r^2} = 0.96$,Figure~\ref{fig:m1e}), we combined the replicates and normalized them together.  
-If each replicate $X_i \in {X_1, X_2, \ldots X_m}$ is composed of $N$ cells, and all replicates measure the same set of $P$ genes, then samples $N_i$ can be scaled according to the median "library size" or median of the total number of molecules in each cell by: 
+If each replicate $X_i \in {X_1, X_2, \ldots X_m}$ is composed of $N$ cells, and all replicates measure the same set of $P$ genes, then samples $N_i$ can be scaled according to the median "library size" or median of the total number of molecules in each cell, $m$, by: 
 \[
   m = \median_{\sum_{p=1}^{P}{X_{i,p}}}
   N_i = m * \frac{X_i}{\sum_{p=1}^{P}{X_{i,p}}}
@@ -43,7 +43,7 @@ If each replicate $X_i \in {X_1, X_2, \ldots X_m}$ is composed of $N$ cells, and
 This transformation allows samples which receive different depths of sequencing (different numbers of molecules), to be examined as if they lie on the same scale.
 If the observed differences in distribution resulted only from differences in sampling rates between cells, then this transformation is adequate to produce data that are \textit{approximately} identically distributed\footnote{Median library size normalization does not, however, provide a solution for normalizing heterogeneous data from multiple cell types, or enabling comparisons between cells with extremely different sampling rates\citep{Anders2010a}}. 
 
-The transformed data, while statistically suitable for distance calculations, contains over 20,000 genes (described computationally as ``features'' or ``dimensions''), which produces a significant computational burden, as many algorithms have scale slowly with increases in features.
+The transformed data, while statistically suitable for distance calculations, contains over 20,000 genes (described computationally as ``features'' or ``dimensions''), which produces a significant computational burden, as many algorithms scale slowly with increases in features.
 However, transcription is controlled through the binding of transcription factors to DNA, each of which control many genes. % citation
 As a result, cells responses' to stimuli tend to simultaneously modify or ``co-regulate'' the expression of modules of genes. 
 
@@ -54,7 +54,7 @@ As a result, it is possible to reduce the dimensionality of biological data by c
 To identify a low dimensional representation of the data, we apply Randomized Principal Component Analysis (rPCA) \citep{Halko2009,Rokhlin2009} prior to carrying out subsequent algorithmic steps. % todo Also cite 
 The normal PCA method uses singular value decomposition of the data covariance matrix to identify a number of orthogonal components of variation equal to the number of genes in the data. 
 A user then examines the fraction of the original variance explained by each component, and selects some number of components $K$, to retain. This is typically done either by selecting components until a certain fraction of the total variation is retained (often 75, 95, or 99\%) or by searching for a ``knee point'', beyond which each components explained variation drops off precipitously. % todo citations, figure. 
-Randomized PCA differs accelerates the PCA method bootstrapping over several decompositions of low-rank approximations (with dimension $M$) of the full data covariance matrix, which has dimension $P$, the number of gene features with non-zero observations in at least one cell ($M << P$). \citep{Halko2009}
+Randomized PCA differs accelerates the PCA method bootstrapping over several decompositions of low-rank approximations (with dimension $M$) of the full data covariance matrix, which has dimension $P$, the number of gene features with non-zero observations in at least one cell ($M << P$) \citep{Halko2009}.
 Randomization can introduce error into low-variation component estimates ($M_i, i > 1000$), however, in scRNA-seq data, most variation is compressed into fewer than 30 components, which rPCA estimates with high accuracy\footnote{In practice, $M$ is set equal to approximately $2K$, the number of components that are expected to be retained. 
 For contemporary 3' scRNA-seq data, approximately 25 components are retained, and thus $M$ can be safely set to 50.}.
 Thus, use of this algorithm produces a large improvement in speed in what is typically the slowest step of single-sample analysis.  % todo I could introduce an additional figure here comparing the speeds of each method.
@@ -62,9 +62,9 @@ Thus, use of this algorithm produces a large improvement in speed in what is typ
 A second, and less appreciated, benefit of using PCA to reduce data dimensionality is that it depletes random variation from the data.
 By grouping coherent variation into the largest principal components ($k_i, i <= K$), a large proportion of discordant or random variation is pushed into components $k_j, j > K$, which are excluded from analysis. 
 Thus, pre-processing with PCA serves both a practical purpose of reducing computation time but also improves data quality.
-Because data naturally lie on a low-dimensional manifold, this transformation can be achieved without a significant loss of information. 
+Because biological data is sparse, and sparse data naturally lie on or close to a low-dimensional manifold, this transformation can be achieved without a significant loss of information. 
 
-Therefore, For each replicate, we applied rPCA to the normalized data $N$ and selected $K$ using the ``knee point'' method \citep{Valle1999}, as described above. 
+Therefore, for each replicate, we applied rPCA to the normalized data $N$ and selected $K$ using the ``knee point'' method \citep{Valle1999}, as described above. 
 Because our data was derived from different biological conditions and had different sampling rates, the knee point varied across our samples.
 We observed that retention of  $K=6-11$ Principal components per sample produced optimal results, but some iteration over the subsequent clustering and analysis steps was required to determine the correct value. 
 The final number of retained PCs in each sample correlated with the pre-normalization library size of the samples, as expected ($r^2 = 0.82$).
@@ -93,12 +93,12 @@ However, for clusters with low RNA expression or capture, such as naive T-cells,
 While a 1-count threshold may sound lenient, it implies that that on average, each cell in a cluster detected the gene. 
 Thresholding by cluster was important to avoid biasing the comparisons towards genes that were only present in large cell clusters, which would reduce our power to determine the types of rare populations. 
 Both the scRNA-seq and microarray data was then normalized and Z-scored, and the PhenoGraph cluster centroids were correlated with the microarray profiles. 
-The correlations were then averaged across lineages and the highest scoring lineage was used to assign each cluster a type. The types are displayed in (Figure~\ref{fig:1c}), and a Heatmap of the correlations is demonstrated in Figure~\ref{fig:2f}.
+The correlations were then averaged across lineages and the highest scoring lineage was used to assign each cluster a type. The types are displayed in (Figure~\ref{fig:1c}), and a heatmap of the correlations is demonstrated in Figure~\ref{fig:2f}.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.75\textwidth]{Figure1-C.png}
-  \caption{t-SNE projection of complete immune systems from two example breast cancer tumors.\ scRNA-seq data for each tumor is processed with pipeline described in chapter 2, library size-normalized, PCA-reduced, and clustered with PhenoGraph. Each dot represents a single-cell colored by its cluster label, and clusters are labeled by cell types, inferred through similarity with bulk profiles. Additional tumors are presented in Figure~\ref{fig:s1b}} 
+  \caption{t-SNE projection of complete immune systems from two example breast cancer tumors.\ scRNA-seq data for each tumor is processed with pipeline described in Chapter 2, library size-normalized, PCA-reduced, and clustered with PhenoGraph. Each dot represents a single-cell colored by its cluster label, and clusters are labeled by cell types, inferred through similarity with bulk profiles. Additional tumors are presented in Figure~\ref{fig:s1b}} 
 \label{fig:1c}
 \end{figure} 
 
@@ -109,7 +109,7 @@ Alternatively, low-correlation clusters could be composed of stromal or tumor ce
 
 To differentiate between these possibilities we examined library sizes of each cluster, reasoning that low-quality cells should have smaller libraries than high-quality counterparts. 
 We found no association between library size and quality of immune cell correlation. 
-We next re-ran the annotation after included several cell lines from epithelial and mesenchymal lineages as negative controls, reasoning that if the cell types were indeed stromal or cancer cells, they should appear closer in phenotype to these populations. 
+We next re-ran the annotation after including several cell lines from epithelial and mesenchymal lineages as negative controls, reasoning that if the cell types were indeed stromal or cancer cells, they should appear closer in phenotype to these populations. 
 This allowed us to identify several populations of fibroblasts, epithelial populations.
 Post-hoc analyses of the epithelial populations by our surgeon allowed us to further differentiate the epithelial populations into malignant and non-malignant clusters, providing additional support for their separate clustering. % todo see if you can find a figure for this.  
 Because these populations came primarily from only two patient samples, statistical power would be too low to derive meaningful conclusions about them, and they were excluded from downstream analyses. 
@@ -149,13 +149,13 @@ Figure~\ref{fig:2a} (left) shows scRNA-seq data from 9K immune cells from 4 brea
 Moreover, the tSNE projection did not suggest a diversity of subpopulations beyond two main lymphoid and myeloid lineages. 
 Since biological lineage should, in most cases, produce larger differences in transcript abundances than external signaling from the microenvironment, and we had already confirmed the presence of finer structure within individual patients, we believed that this phenomena was most likely due to technical effects acting across the different InDrop runs.
 However, we also observed that activated immune cells contained higher numbers of mRNA molecules, a phenomena which has been previously reported \citep{Blackinton2016,Cheadle2005,Marrack2000,Singer2016}. 
-Specifically, our analyses showed a gradient of activation of CD8 T cells in tumors as compared to normal- or blood-resident T-cells, where the most pronounced T-cell activation occurred in a TNBC tumor (BC3), which agrees with reports from clinical trials suggesting that TNBC tumors are the most immunogenic(Figure~\ref{fig:2b}) \citep{Dushyanthen2015,Garcia-Teijido2016}. 
+Specifically, our analyses showed a gradient of activation of CD8 T cells in tumors as compared to normal- or blood-resident T-cells, where the most pronounced T-cell activation occurred in a TNBC tumor (BC3), which agrees with reports from clinical trials suggesting that TNBC tumors are the most immunogenic (Figure~\ref{fig:2b}) \citep{Dushyanthen2015,Garcia-Teijido2016}. 
 Thus, our data displays technical and biological factors that both influence molecule abundance in individual samples. 
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{Figure2-B.png}
-\caption{Left: Boxplots showing expression of CD8 T cell activation signature (defined as the normalized mean expression of genes in the activation signature listed in Table S4) across immune cells from each patient. Right: Heatmap displaying z-scored mean expression of genes in activation signature. Top: Bar plot showing total expression of each gene indicated in the Heatmap across all patients. Expression of T cell activation signature shows variability across patients and increased expression in patients BC6 and BC3.} % need to figure out table citation
+\caption{Left: Boxplots showing expression of CD8 T cell activation signature (defined as the normalized mean expression of genes in the activation signature listed in Table S4) across immune cells from each patient. Right: heatmap displaying z-scored mean expression of genes in activation signature. Top: Bar plot showing total expression of each gene indicated in the heatmap across all patients. Expression of T cell activation signature shows variability across patients and increased expression in patients BC6 and BC3.} % need to figure out table citation
 \label{fig:2b}
 \end{figure}
 
@@ -180,7 +180,7 @@ These samples were also subject to operational variation during the clinical res
 Because molecular capture is a binary event, and the capture rates are very low, these technical variations often determine whether a given gene feature is observed in the data for a given cell.
 
 These more technical artifacts, particularly in capture rate, are confounded with biological differences. 
-This is particularly challenging in the case of immune cells, where activated cells have substantially heightened transcription rates, and therefore if sampling efficiency is constant, we expect to capture more molecules molecules \citep{Blackinton2016,Cheadle2005,Singer2016}. 
+This is particularly challenging in the case of immune cells, where activated cells have substantially heightened transcription rates, and therefore if sampling efficiency is constant, we expect to capture more molecules \citep{Blackinton2016,Cheadle2005,Singer2016}. 
 Therefore, the sampling rate is affected by biological as well as technical processes. 
 Indeed, we see large differences in the number of activated T-cells across patients (Figure~\ref{fig:2b}), with more activated T-cells in the Triple Negative subtype as expected \citep{Dushyanthen2015}.
 Hence, normalizing by library size will likely remove these biological variations.
@@ -202,10 +202,9 @@ Thus, the transformation and clustering of scRNA-seq is a chicken-and-egg proble
 \label{fig:2a}
 \end{figure}
 
-To solve this problem we developed and applied the method ``Biscuit'' (short for Bayesian Inference for Single-cell ClUstering and ImpuTing) to simultaneously cluster cells and normalize according to their assigned clusters \citep{Prabhakaran2016} (Figure~\ref{fig:m2}).
-To address the convolution of biological and technical effects, we instead model biological and technical variation in parallel, which we refer to as BISCUIT (Bayesian Inference for Single-cell ClUstering and ImpuTing).
-This is accomplished through incorporating parameters denoting cell-specific technical variation into a Hierarchical Dirichlet Process Mixture Model (HDPMM) \citep{Goeruer2010} (Figure~\ref{fig:m2}-A). 
-This allows for inference of cell clusters based on similarity in gene expression as well as in co-expression patterns, while identifying and accounting for technical variation per cell (Figure~\ref{fig:m2}B,C). 
+To solve address the convolution of biological and technical effects, we developed and applied the method ``Biscuit'' (short for Bayesian Inference for Single-cell ClUstering and ImpuTing) to simultaneously cluster cells and normalize according to their assigned clusters \citep{Prabhakaran2016} (Figure~\ref{fig:m2}).
+This is accomplished through incorporating parameters denoting cell-specific technical variation into a Hierarchical Dirichlet Process Mixture Model (HDPMM) \citep{Goeruer2010} (Figure~\ref{fig:m2}~A). 
+This allows for inference of cell clusters based on similarity in gene expression as well as in co-expression patterns, while identifying and accounting for technical variation per cell (Figure~\ref{fig:m2}~B,~C). 
 Two key ideas that power Biscuit are the use of gene co-expression as a more robust means to identify cell types, and the normalization of each cell type separately to better account for cell type-specific effects on technical variation. 
 The main idea behind the use of co-expression is that cell types not only share similar mean expression, but also share similar co-expression patterns (covariance) between genes. 
 While mean expression can be more sensitive to capture efficiency, covariation is more robust to such effects. 
@@ -306,7 +305,7 @@ For the case of multivariate normal distributions: \({p_{k} \sim N(\overrightarr
 
 \(D_{B}\  = \frac{1}{8}(\overrightarrow{\mu_{k}} - \overrightarrow{\mu_{k'}})^{\text{T\ }}\Sigma^{- 1}(\overrightarrow{\mu_{k}} - \overrightarrow{\mu_{k'}})\  + \ \frac{1}{2}log(\frac{\text{det\ }\Sigma}{})\ \) where \(\Sigma = (\Sigma_{k} + \Sigma_{k'})/2\).
 
-Figure~\ref{fig:s2b}  shows the Heatmap of pairwise distances between all pairs of
+Figure~\ref{fig:s2b}  shows the heatmap of pairwise distances between all pairs of
 clusters.
 
 A geometric interpretation of BD is that, via its cosine formulation, the distance subsumes a full hypersphere and the centre of the hypersphere is the centroid (mean) of the cluster, whereas the Euclidean distance only covers a quarter of the hypersphere with the center at the origin. % todo why is this important? ask elham
@@ -363,7 +362,7 @@ Therefore, when examining signature expression across patients we began by const
 This displays the contribution of each gene to the signature (top panel in Figure~\ref{fig:1e},\ref{fig:s1d}).
 The normalized values for each signature, per cell, are then summarized as a box plot to display the variation of cells in each patient (left panels).
 Finally, the cluster median of each gene is taken per patient, and the cluster medians are z-scored across patients.
-The z-scored values are plotted as a Heatmap (center-right panel in Figure~\ref{fig:1e},\ref{fig:s1d}), facilitating a comparison of signatures across patients\footnote{The full lists of compiled gene signatures used throughout this dissertation can be found in Table S4 of the bioArxiv publication and may serve as a valuable resource for additional investigations. % # todo need a link from this.  
+The z-scored values are plotted as a heatmap (center-right panel in Figure~\ref{fig:1e},\ref{fig:s1d}), facilitating a comparison of signatures across patients\footnote{The full lists of compiled gene signatures used throughout this dissertation can be found in Table S4 of the bioArxiv publication and may serve as a valuable resource for additional investigations. % # todo need a link from this.  
 To create these lists we broadly surveyed the extant literature and manually curated consensus lists of genes to be included.
 The relevant literature surveyed to form these signatures includes the following:
 
@@ -386,7 +385,7 @@ Similar variation was observed in fatty acid metabolism, glycolysis, and phospho
 \includegraphics[width=\textwidth]{Figure1-E.png}
 \caption{Left: Boxplots showing expression of Hypoxia signature (defined as the mean normalized expression of genes in the hypoxia signature listed in Table S4) across immune cells from each patient.
   Right: Heatmap displaying z-scored mean expression of genes in hypoxia signature.
-  Top: Barplot showing total expression of each gene indicated in the Heatmap, across all patients.
+  Top: Barplot showing total expression of each gene indicated in the heatmap, across all patients.
   See Figure~\ref{fig:s1d} for additional signatures.
 }
 \label{fig:1e}
