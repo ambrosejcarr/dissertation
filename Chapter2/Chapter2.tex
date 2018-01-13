@@ -2,8 +2,8 @@
 
 \section{Selecting A Technology for Deep Profiling of Immune Cells}
 
-Several types of experimental replicates and controls are necessary to characterize tumor infiltrating immune cells. 
-Because peripheral blood is the most accessible source of immune data, most knowledge of human immune cells comes from blood. 
+Expanding our knowledge of the phenotypes and functionality of tumor infiltrating immune cells requires the study of more than just tumor tissue. 
+Because peripheral blood is the most accessible source of immune data, most knowledge of human immune phenotypes comes from experiments done on blood cells. 
 However, it is established that when immune cells transition into tissues, they are subjected to different stimuli that cause shifts in gene expression \citep{Fan2016}. 
 As a result, without also measuring immune cells in healthy tissue, it would not be possible to distinguish between tumor infiltrating immune phenotypes that result from cancer or from tissue residence. 
 Similarly, without measuring blood phenotypes, it would not be possible to compare our results to previously generated immune data. 
@@ -38,12 +38,13 @@ Several factors contributed to this advancement.
 First, by increasing the number of input cells, the substrate for the initial amplification step was increased. With 50x more cells, the number of PCR cycles could be decreased by 5-6 and still achieve the same output cDNA concentration.
 This reduced "jackpotting", where one read or gene accrues additional copies relative to its cellular abundance. 
 
-Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (UMIs) into their capture primers (Figure~\ref{fig:indrop-dropseq}~B). 
+Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (
+% todo manu found this confusing. UMIs) into their capture primers (Figure~\ref{fig:indrop-dropseq}~B). 
 UMIs mar each molecule, and allow any number of reads to be collapsed into a single molecule observation. 
 As a result, the number of reads needed to accurately quantify the expression of a gene was decreased. 
-Together, these characteristics combine decrease the number of reads needed to detect each molecule, which reduces the sequencing cost for each cell to approximately \$0.4 per cell.
+Together, these characteristics combine to decrease the number of reads needed to detect each molecule, reducing the sequencing cost for each cell to approximately \$0.4 per cell.
 
-Beyond these similarities, the technologies are starkly different. 
+Beyond these similarities, the InDrop and Drop-seq are starkly different. 
 Drop-seq uses the SMART-seq approach leveraged in the Fluidigm C1 and plate-seq technologies, which typically captures more genes than than the CEL-seq approach used by InDrop \citep{Ziegenhain2017}. 
 Drop-seq also has a higher difference between the cell and bead flow rates, capturing about 1\% of cells, compared to InDrop’s 25\% capture rate. 
 This has the advantage of reducing the rate of physical cell-cell doublets, but captures fewer cells from precious samples. 
@@ -114,8 +115,9 @@ We also extracted one involved lymph node to determine how TILs might act in a m
 % todo panel order in the figures should reflect order in the text. 
 When we began working with InDrop, it had only been applied to well-behaved cell lines. 
 Our initial analyses of pilot experiments using InDrop to sequence primary peripheral blood mononuclear cells revealed several deficiencies that we could correct to improve the quality of InDrop for primary samples.
-First, we observed that the "GC content", the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, predicted the number of molecules we recovered from cells in pilot experiments (Figure~\ref{fig:c2-1}~A), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
-To quantify this, we correlated the deviance $d$ from balanced GC content for each barcode $d = 1 - |GC_{pct} - 0.5|$, and calculated the correlation of this statistic with the number of detected molecules for each barcode. 
+First, we observed that the ``GC content'', the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine varied across cell barcodes between 20 and 70\%. 
+We observed that cell barcodes with ``balanced'' GC content of 50\% yielded recovered more from cells in pilot experiments (Figure~\ref{fig:c2-1}~A), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
+To quantify this phenomena, we correlated the deviance $d$ from balanced GC content for each barcode $d = 1 - |GC_{pct} - 0.5|$, and calculated the correlation of this statistic with the number of detected molecules for each barcode. 
 We observe a small but very singificant effect of $r^{2} = 0.23, p < 1e-45$ suggesting that barcodes with 50\% GC content obtained higher molecule count than those with higher or lower GC fraction.
 This is in agreement with previous analyses from quantitative PCR, where GC content has an established impact on PCR efficiency \citep{Mamedov2008}. 
 
@@ -135,9 +137,12 @@ If the cell barcodes are too similar, substitution errors that convert one barco
 This is a critical problem as miss-assignment of marker genes can disrupt type identification, since they are used by biologists to label the type or lineage of each cell. 
 It also frustrates detection of cell doublets, the rare events where two cells are encapsulated with the same barcode, as gene miss-assignment can cause cells to masquerade as doublets by associating two markers of different lineages with the same barcode. 
 We observed that the originally published barcode sequences had a minimum Hamming distance of 2, which is adequate to identify but not to correct single-base errors (see Figure~\ref{fig:c2-1}~B).  
-Because single based errors are common in In-drop, we reasoned that this introduced unnecessary data loss.
+Because single base errors are common in In-drop, we reasoned that this introduced unnecessary data loss.
 
-To address these shortfalls, we redesigned a cell barcode set so that all barcodes had balanced GC content, with Hamming distance of $\ge3$ (mean $D_h = 13.3$), excluding the first base of the second cell barcode, which was made a constant A.
+Finally, a careful examination of cell barcode error rates showed that the most common error was that the first base of the second cell barcode would be converted to A at high rate (~10\%) from any other nucleotide. 
+We reasoned that this substitution was the result of an extension process that occurred during barcode construction.  
+
+To address these shortfalls, we redesigned a cell barcode set so that all barcodes had balanced GC content, with Hamming distance of $\ge3$ (mean $D_h = 13.3$), excluding the first base of the second cell barcode, which was made a constant A to eliminate the observed error profile.
 This was done by performing a constrained optimization over barcodes of the variable lengths required by InDrop, obtained from Edittag \citep{Faircloth2012}.
 Comparing libraries from before and after the redesign of our barcoding beads, showed that scRNA-Seq libraries generated with new DNA barcoding hydrogel beads obtained 5.3\% improved yield as measured by molecules/million sequencing reads. 
 
@@ -170,7 +175,7 @@ This suggested that equalizing time from sample extraction to processing is an i
 Given that sample extraction, dissociation and sorting was expected to take approximately 3-4h, we reasoned that if we could increase the speed of encapsulation, we could minimize data variance attributable to differences in encapsulation latency.  
 To increase the cell isolation throughput, we developed a new cell barcoding chip (V2; Droplet Genomics) and adjusted the flow rates for cell suspension at 250~μl/hr, for RT/lysis mix at 250 μl/hr, and for barcoded hydrogel beads at 75~μl/hr. 
 The flow rate for droplet stabilization oil was 550 μl/hr.
-These flow speeds generated approximately 40,000 droplets an hour, and allowed us to barcode and process individual samples in as little as 30 minutes.
+These flow speeds generated approximately 40,000 droplets an hour, a 250\% increase, which allowed us to barcode each sample in as little as 30 minutes. 
 Thus, if we sequenced each sample in triplicate, and we assumed a fast transport and sample preparation time of 3h, the last sample would take at most 28\% longer to process than the first, a 100\% improvement\footnote{10x Genomics now provides a device that can encapsulate 8 samples in parallel. This can be a superior approach for samples that are significantly perturbed by temporal effects.}.
 
 % todo expand upon this and use a conclusion
@@ -199,7 +204,7 @@ This produces a single fastq file containing alignable sequence and all relevant
 Merged fastq files are aligned against the genome with STAR \citep{Dobin2013}, a high performance and community-standard aligner. 
 After alignment, minimal representations of sequencing reads are translated into an Hdf5 {\mono ReadArray} object, where cell barcodes and UMIs are represented in reduced 3-bit coding. 
 Reads are annotated with a reduced set of exon and gene ids representing gene features---only the ones that are possible to detect with poly-A capture based droplet RNA sequencing---and SEQC attempts to resolve reads with multiple equal-scoring alignments.
-The Hdf5 {\mono ReadArray} object is efficiently indexed and is an ideal data structure for in-memory filtering of cell barcode substitution errors, broken barcodes, and low-complexity polymers to flag errors early in the pipeline, saving analysis cost.
+The Hdf5 {\mono ReadArray} object is efficiently indexed and is an ideal data structure for in-memory filtering of cell barcode substitution errors, broken barcodes, and low-complexity polymers to flag errors early in the pipeline, saving analysis cost \citep{Alted2002}.
 
 In cases where genomic and transcriptomic alignments are present, the transcriptomic alignments are retained. 
 Unique alignments from the previous step are corrected for errors using an enhancement of the method designed in \cite{Jaitin2014}, with an additional probability model to constrain the false positive rate.
@@ -211,7 +216,7 @@ Consequently, row vectors represent the observed frequencies of each gene in a c
 These count matrix data structures serve as the basis for most analyses of single-cell RNA-seq, and are the major deliverable of any data processing pipeline. 
 
 Finally, SEQC outputs a series of QC metrics in an HTML archive that can be used to evaluate the quality of the library and the success of the run. 
-SEQC is fully modular, and as such has been adapted to process drop-seq, 10x, and mars-seq data by switching de-multiplexing modules.  
+SEQC is fully modular, and as such has been adapted to process drop-seq, 10x, and mars-seq data.  
 In addition, it can be configured either to run on a local high-performance cluster, or can automatically initiate runs on Amazon Web Services compute platforms, for those without access to local compute servers. 
 The SEQC code is free and open-source, and can be found at \href{https://github.com/ambrosejcarr/seqc.git}{https://github.com/ambrosejcarr/seqc.git}, licensed under the MIT license. 
 A public Amazon machine image with SEQC pre-installed is available at AMI id: {\mono ami-8927f1f3} and a docker image of SEQC that can be used to launch experiments against a user's AWS account is available at {\mono ambrosejcarr/seqc:1.0.0}
@@ -369,7 +374,7 @@ This is a critical capability for genome sequencing, where the full dataset is f
 It is much less useful for scRNA-seq data, where most computational methods require random access to the data associated with a given cell or molecule. 
 
 To address this problem, we designed a ReadArray data structure that summarizes the information in an aligned BAM file that is critical to scRNA-seq analysis. 
-The ReadArray is built on top of the {\mono Hdf5} platform \citep{HDFGroup1997-2017} using the {\mono pytables} package, which confers three advantages: 
+The ReadArray is built on top of the {\mono Hdf5} platform \citep{hdf5} using the {\mono pytables} package, which confers three advantages: 
 First, Hdf5 is a columnar data format that supports arbitrary multi-column indices. 
 This allows indexes to be built for both cells and molecules. 
 Second, it is a numeric format that can be efficiently compressed \citep{Alted2010} to have a smaller disk footprint than the BAM format. 
@@ -439,7 +444,8 @@ Thus, we accept this low rate of loss and proceed to correct single base errors,
 
 This error rate, while high, is easy to correct and results in minimal data loss. 
 Although a 4\% barcode error rate is higher than the error rate observed by other technologies, it directly results from the use of linear amplification. 
-As such, the errors we observe are non-cumulative: each transcript is generated from the original captured mRNA molecule, and as a result, 99.94\% of observed barcodes have one or zero errors.
+If errors are independent, then the probability of obtaining 2 or more errors, which would produce an uncorrectible barcode,  is 1 - cdf beginning at 2 for a Poisson distribution with $\lambda = 0.04$. 
+Given the observed error rate, we estimated that only 0.035\% of barcodes would be uncorrectible.
 This allows SEQC to correct errors using a fast hash-based strategy. 
 This is in contrast to PCR-based amplification approaches which propagate errors that occur in early cycles, requiring more complex, graph-based correction methods, and larger Hamming buffers (see \href{https://github.com/vals/umis}{https://github.com/vals/umis}).
 
@@ -464,6 +470,7 @@ Barcodes that break in cell barcode sequences will be excluded by cell barcode c
 However, UMIs are not a-prior known; if an aligned read breaks inside the UMI sequence during amplification, it will manifest as a new molecule despite having a proper, full-length UMI that it should be associated to.
 This will result in inflation of UMI counts for the matched gene. 
 
+% todo manu found this confusing. 
 To test for the presence of these types of errors, we used a {\mono trie} data structure to efficiently count the largest hamming-corrected cell barcode prefix observed in each of our \textit{aligned} sequencing reads. 
 We used the hamming-corrected barcodes because we reasoned that subsitution errors would be the most common error type, and wanted to exclude those from anlysis, as they are corrected through other methods, described above. 
 The largest cell barcode prefix is most often a complete cell barcode, owing to the high quality of InDrop data. 
@@ -484,17 +491,19 @@ These values are consistent with the results of running SEQC on drop-seq or MARS
 
 \section{Molecular Identifier Correction}
 
+% todo reference earlier figure describing errors; and/or manu would prefer we add a figure to describe how this works. 
 Errors in molecular identifiers are well-known to introduce noise in sequencing experiments \citep{Jaitin2014}, since undetected errors induce spurious increases in molecule counts. 
 SEQC utilizes information in the ReadArray to identify errors in UMIs, and replace them with their corrected value. 
 The most common approach, published in \citep{Jaitin2014} for MARS-seq, does a very good job of detecting and removing molecule errors in InDrop (due to the similar CEL-seq protocol used in both technologies). 
 This approach deletes any UMI for which a higher-abundance donor UMIs can be identified that (1) lies within a single base error (2) has higher count (3) and contain all observed alignment positions of the recipient RNA\@. 
-This results in removal of approximately 20\% of observed UMIs. However, we observed that this model can be overly stringent, correcting UMIs when the donor molecule has as few as one read count higher than the recipient.
+This results in removal of approximately 20\% of observed UMIs. 
+However, we observed that this model can be overly stringent, correcting UMIs when the donor molecule has as few as one read count higher than the recipient. % todo manu wants a figure here. 
 
 We apply a modified version of the \citep{Jaitin2014} approach, where we replace errors with corrected barcodes instead of deleting them, and where we only eliminate errors when we have adequate statistical evidence. 
 To accomplish this, we utilize the spacer and cell-barcode whitelist to empirically estimate a per-base error UMI error rate of approximately 0.2\% per base. 
 E.g.\ to calculate the probability of a conversion from adenosine to cytosine, where \(A \rightarrow C\) denotes this nucleotide conversion:
 \[P_{A \rightarrow C}\  = \frac{1}{n \cdot m}\ \{ 1\ if\ x_{ij\ :\ A \rightarrow C}\ else\ 0\ \}\]
-where \(x_{j}\)is a barcode, \(\text{j\ } \in \{ 1,\ldots,m\}\) and each barcode has \(n\)bases.
+where \(x_{j}\)is a barcode, \(\text{j\ } \in \{ 1,\ldots,m\}\) and each barcode has \(n\) bases.
 To calculate the probability that a target read was generated in error from a specific donor molecule, we calculated the product of the errors that could potentially convert a donor into the observed molecule. 
 To convert, for example, ACGTACGT into TTGTACGT, having one \(A \rightarrow T\)and one \(C \rightarrow T\) conversion:
 \(e\  = \ \{ P_{A \rightarrow T},P_{C \rightarrow T}\}\ \)
@@ -611,9 +620,9 @@ In practice, we accomplish this by constructing the empirical cumulative density
 For typical InDrop runs, this results in the elimination of over 95\% of the cell barcodes, but retains as many as 95\% of the molecules.
 
 Molecule size alone is not adequate to remove all barcodes that were not paired with real cells. 
-Some barcodes appear to aggregate higher numbers of errors, and as such we often see a bimodal distribution of molecule coverage: a higher mode that represents real cells, and a smaller mode that represents aggregated errors (Figure~\ref{fig:m1d})~B). 
+Some barcodes appear to aggregate higher numbers of errors, and as such we often see a bimodal distribution of molecule coverage: a higher mode that represents real cells, and a smaller mode that represents aggregated errors (Figure~\ref{fig:m1d}~B). 
 We remove the low-count density by fitting 2-component and 1-component Gaussian mixture models to each axis and comparing their relative fits using the Bayesian information criterion. 
-When the 2-component model's difference in likelihood is at least 5\% larger than the 1-component model, we exclude the densities with the smaller mean (Figure~\ref{fig:m1d}).
+When the 2-component model's difference in likelihood is at least 5\% larger than the 1-component model, we exclude the densities with the smaller mean (Figure~\ref{fig:m1d}~B).
 
 % todo Paragraph needs better intro. Something like, "another source of obfuscation is dying cells, which are high in mitochondrial RNA content". (Maybe the later bit about "cells dying due to stress have their mitochondria lysed" should come here.)
 We score cells for mitochondrial RNA content, which is widely used as a proxy for cell death in scRNA-seq. 
@@ -681,7 +690,7 @@ Lymphocytes were extracted from tumor and normal tissues by mincing the freshly 
 Digested tissues were then filtered and stained with anti-CD45, the common leukocyte antigen, and DAPI for live-dead discrimination, which was carried out by sorting and isolating CD45+DAPI- with a FACS sorter.  
 Post-sort purity was routinely $>95\%$ for the sorted populations.
 
-A separate subset of the cell isolate that was \textit{not} used for sequencing was additionally stained with a panel of markers that identify immune cell type composition: CD45, CD19, CD3, CD4, CD8, FoxP3, CD56, and CD11b. 
+A separate subset of the cell isolate that was \textit{not} used for sequencing was additionally stained with a panel of common immune cell markers (CD45, CD19, CD3, CD4, CD8, FoxP3, CD56, and CD11b) and was measured with FACS\@. 
 Each sample was then divided into 10,000 cell aliquots and at least 2 technical replicates were processed through the complete experimental protocol (see below), with the exception that technical replicates were often processed on the same sequencing lane. 
 
 Constructed libraries were then sequenced at a depth of 100 million reads on an Illumina HiSeq 2500 instrument.
