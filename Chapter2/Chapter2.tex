@@ -38,9 +38,9 @@ Several factors contributed to this advancement.
 First, by increasing the number of input cells, the substrate for the initial amplification step was increased. With 50x more cells, the number of PCR cycles could be decreased by 5-6 and still achieve the same output cDNA concentration.
 This reduced "jackpotting", where one read or gene accrues additional copies relative to its cellular abundance. 
 
-Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (
-% todo manu found this confusing. UMIs) into their capture primers (Figure~\ref{fig:indrop-dropseq}~B). 
-UMIs mar each molecule, and allow any number of reads to be collapsed into a single molecule observation. 
+% todo manu found this confusing. 
+Second, by switching from full-length coverage to 3' sequencing, InDrop and Drop-Seq could incorporate molecular barcodes (UMIs) into their capture primers (Figure~\ref{fig:indrop-dropseq}~B).
+UMIs mark each molecule, and allow any number of reads to be collapsed into a single molecule observation. 
 As a result, the number of reads needed to accurately quantify the expression of a gene was decreased. 
 Together, these characteristics combine to decrease the number of reads needed to detect each molecule, reducing the sequencing cost for each cell to approximately \$0.4 per cell.
 
@@ -216,7 +216,7 @@ Consequently, row vectors represent the observed frequencies of each gene in a c
 These count matrix data structures serve as the basis for most analyses of single-cell RNA-seq, and are the major deliverable of any data processing pipeline. 
 
 Finally, SEQC outputs a series of QC metrics in an HTML archive that can be used to evaluate the quality of the library and the success of the run. 
-SEQC is fully modular, and as such has been adapted to process drop-seq, 10x, and mars-seq data.  
+SEQC is fully modular, which facilitated easy adaptation to use with drop-seq, 10x, and mars-seq data.  
 In addition, it can be configured either to run on a local high-performance cluster, or can automatically initiate runs on Amazon Web Services compute platforms, for those without access to local compute servers. 
 The SEQC code is free and open-source, and can be found at \href{https://github.com/ambrosejcarr/seqc.git}{https://github.com/ambrosejcarr/seqc.git}, licensed under the MIT license. 
 A public Amazon machine image with SEQC pre-installed is available at AMI id: {\mono ami-8927f1f3} and a docker image of SEQC that can be used to launch experiments against a user's AWS account is available at {\mono ambrosejcarr/seqc:1.0.0}
