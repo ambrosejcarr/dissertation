@@ -20,7 +20,7 @@
 \begin{figure}
 \centering
 \includegraphics[width=0.75\textwidth]{FigureS1-D.png}
-\caption{Expression of metabolic signatures: fatty acid metabolism (E), glycolysis (F), and phosphorylation (G), summarized as boxplots (left) showing expression of each respective signature (defined as the mean normalized expression of genes in each signature listed in Table S4) across immune cells from each patient; and heatmap (right) displaying z-scored mean expression of genes in each signature; (top) barplot showing total expression of each gene indicated in the heatmap across all patients. See Figure~\ref{fig:1e} for one additional signature
+\caption{Expression of metabolic signatures: fatty acid metabolism (top), phosphorylation (middle), and glycolysis (bottom), summarized as boxplots (left) showing expression of each respective signature (defined as the mean normalized expression of genes)  across immune cells from each patient; and heatmap (right) displaying z-scored mean expression of genes in each signature; (top) barplot showing total expression of each gene indicated in the heatmap across all patients. See Figure~\ref{fig:1e} for one additional signature
 }
 \label{fig:s1d}
 \end{figure}
@@ -28,7 +28,7 @@
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS2-A.png}
-\caption{(A) Posterior probability of assignment of cells to clusters in the Biscuit model in the full immune cell atlas of combined tissues and patients presented in Figure 2E; note broad distributions in assignment of naive T cells (bottom) as compared to other cell types.
+\caption{Posterior probability of assignment of cells to clusters in the Biscuit model in the full immune cell atlas of combined tissues and patients presented in Figure~\ref{fig:2e}; note broad distributions in assignment of naive T cells (bottom) as compared to other cell types.
 }
 \label{fig:s2a}
 \end{figure}
@@ -67,8 +67,8 @@
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{FigureS2-D.png}
-\caption{Histogram of frequency of patients contributing to each cluster showing that 19 clusters (out of 95) are present in all 8 patients and 10 clusters are patient-specific.
+\includegraphics[width=0.75\textwidth]{FigureS2-D.png}
+\caption{Boxplots showing entropy of distribution of patients in each cluster, computed with bootstrapping to correct for cluster size. Note that cluster labels are given by size (cluster 1 has the most number of cells and cluster 95 has the fewest) and ordering clusters by mean entropy in this plot indicates that entropy does not correlate with size.
 }
 \label{fig:s2d}
 \end{figure}
@@ -94,7 +94,7 @@ Right: same as left, but after removing the effect of cluster mean in computing 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS3.png}
-\caption{Hallmark GSEA enrichment results on genes with highest difference in variance in tumor vs normal tissue in (A) NK and (B) monocytic cells. See Figure 3E for enrichment in T cells; complete lists of enrichments are presented in Table S5.
+\caption{Hallmark GSEA enrichment results on genes with highest difference in variance in tumor vs normal tissue in (A) NK and (B) monocytic cells. See Figure~\ref{fig:3d}  for enrichment in T cells; complete lists of enrichments are presented in Table S5.
 }
 \label{fig:s3}
 \end{figure}
@@ -111,7 +111,7 @@ Right: same as left, but after removing the effect of cluster mean in computing 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS4-B.png}
-\caption{Violin plot of cells projected on terminal differentiation diffusion component: terminal differentiation components organized by tissue type (left panels) and cluster (center panel). Also, heatmap showing expression of immune-related genes with the largest positive correlations with component, averaged per cluster and z-score standardized across clusters; columns (clusters) are ordered by mean projection along the component.
+\caption{Violin plot of cells projected on terminal differentiation diffusion component: component organized by tissue type (left panels) and cluster (center panel). Also, heatmap showing expression of immune-related genes with the largest positive correlations with component, averaged per cluster and z-score standardized across clusters; columns (clusters) are ordered by mean projection along the component.
 }
 \label{fig:s4b}
 \end{figure}
@@ -119,26 +119,34 @@ Right: same as left, but after removing the effect of cluster mean in computing 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS4-D.png}
-\caption{Visualization of all T Cell clusters using activation (component 3), terminal differentiation (component 4), and tissue specificity (component 6) diffusion components. Cells are colored by clusters, and by tissue type in insert. The main trajectories are indicated with arrows and annotated with labels.
+\caption{Violin plot of cells projected on hypoxia diffusion component: component organized by tissue type (left panels) and cluster (center panel). Also, heatmap showing expression of immune-related genes with the largest positive correlations with component, averaged per cluster and z-score standardized across clusters; columns (clusters) are ordered by mean projection along the component.
 }
 \label{fig:s4d}
 \end{figure}
 
-
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS5-A.png}
-\caption{Hartigan’s dip test on density of cells projected on diffusion components indicating no diffusion components across myeloid cells show statistically significant continuity, implying myeloid cells reside in defined (multimodal) states along major components explaining variation.
-}
+\caption{Displaying null distributions and observed covariances between CTLA-4 and GITR in raw, un- normalized data using hypothesis testing, subsampling, and permutation (see STAR methods); shows that the differences in covariance shown in biscuit-normalized data are also present in un-normalized and un-imputed data, and hence are not an artifact of computation.}
 \label{fig:s5a}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS5-B.png}
-\caption{Heatmap showing expression of immune-related markers with the largest positive correlation with TAM activation, pDCs, and monocyte activation components.
+\caption{Bivariate plots of expression levels of GITR and CTLA-4 in Treg clusters based on inferred mean and covariance parameters from Biscuit. Dark blue color indicates the highest density of cells and light yellow the lowest density of cells.
 }
+
 \label{fig:s5b}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{FigureS5-C.png}
+\caption{Network graphs showing covariance between checkpoint receptors in activated T cell clusters. Edge width denotes absolute magnitude (strength) of covariance and color denotes sign of covariance (red positive and blue negative). Note diversity across clusters. 
+}
+
+\label{fig:s5c}
 \end{figure}
 
 \begin{figure}
@@ -151,7 +159,7 @@ Right: same as left, but after removing the effect of cluster mean in computing 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS6-B.png}
-\caption{Heatmap showing expression of immune-related markers with the largest positive correlation with TAM activation, pDCs, and monocyte activation components.
+\caption{Violin plot showing the density of cells projected along pDC component and organized by tissue type and cluster.
 }
 \label{fig:s6b}
 \end{figure}
@@ -160,7 +168,7 @@ Right: same as left, but after removing the effect of cluster mean in computing 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{FigureS6-C.png}
-\caption{Violin plot showing the density of cells projected along pDC component and organized by tissue type and cluster.
+\caption{Violin plot showing the density of cells projected along monocyte activation component and organized by tissue type and cluster.
 }
 \label{fig:s6c}
 \end{figure}
