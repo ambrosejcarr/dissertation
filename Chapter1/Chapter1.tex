@@ -8,8 +8,8 @@ The adaptive immune system evolved to combat exogenous threats such as viruses a
 However, it is increasingly thought to also play an important role in cancer surveillance because, for a tumor to form and proliferate, it must evade recognition by the immune system \citep{Corthay2014}. 
 In a normal immune response, the primary surveillance cells that are tasked with identifying foreign threats are called Dendritic cells. 
 Dendritic cells warn other immune cells of detected threats by presenting antigens---small pieces of foreign molecules---using a system of surface receptors called major histocompatibility complex I and II (MHC-I, MHC-II).
-Any antigen presented on an MHC molecule of an \textit{active} Dendritic cell is presumed to identify a molecule or cell that should be eliminated by the immune system \citep{Joffre2009}.
-In contrast, antigens presented by \textit{inactive} Dendritic cells are considered markers of human molecules or cells, and suppress immune responses against cells carrying molecules that match the presented antigen.  
+Any antigen presented on an MHC molecule of an active Dendritic cell is presumed to identify a molecule or cell that should be eliminated by the immune system \citep{Joffre2009}.
+In contrast, antigens presented by inactive Dendritic cells are considered markers of human molecules or cells, and suppress immune responses against cells carrying molecules that match the presented antigen.  
 Thus, it is of critical importance that (1) any tumor antigen presented on a Dendritic cell specifically mark a \textit{foreign} cell type, as antigens shared by normal cells risk turning the immune system on healthy human cells, and (2) that Dendritic cells bearing tumor antigens are activated \citep{Darrasse-Jeze2009,Steinman2000}.
 
 In cancer, specific tumor antigens can be mutated proteins, products of non-mutated proteins that have much higher over-expression in tumor cells, or differentiation antigens associated with tissue of origin; for example melanosome proteins in melanoma \citep{Boon2006,Segal2008}.
@@ -24,7 +24,7 @@ In a lymphoid organ, a tumor-antigen loaded Dendritic cell interacts with and ac
 Once a T cell is activated, it is primed to recognize the antigen that was presented to it by the Dendritic cell, and is designed to interact with such cells and induce them to die. 
 As a result, T cell activation is also under tight control. 
 Activation relies upon a host of pro- and anti-activation interactions. 
-The positive signals include CD28, CD137/4-1BB, OX40, HVEM, GITR, IL-2, and IL12 \citep{Franciszkiewicz2012,Lippitz2013}, while the negative signals include CTLA-4, TIM-3, VISTA, and LAG-3. % cite sharma 2017 
+The positive signals include CD28, CD137/4-1BB, OX40, HVEM, GITR, IL-2, and IL12 \citep{Franciszkiewicz2012,Lippitz2013}, while the negative signals include CTLA-4, TIM-3, VISTA, and LAG-3 \citep{Sharma2017}.
 The combination of these systems with diverse activation signals produces a complex set of possible responses and many functionally different T cell states.
 
 Finally, active, cancer-specific T cells must enter the tumor to find and destroy tumor cells. 
@@ -103,7 +103,7 @@ Hampering this approach, no specific surface marker of T Reg cells has yet been 
 As a result, depletion methods tend to remove both T Regulatory and CD8+ effector T cells. 
 The best attempt so far may be the use of anti-CD25 antibodies, which preferentially deplete T Regulatory cells, at least following short-term therapy, and may help increase the efficacy of active immunization \citep{Golovina2010}. 
 
-These problems have driven researchers to investigate the use of drugs of targeting specific molecular mechanisms underlying immune suppression and activation. 
+These problems have driven researchers to investigate the use of drugs for targeting specific molecular mechanisms underlying immune suppression and activation. 
 Like with vaccines, there have been efforts to characterize immune checkpoints at each stage of the adaptive immune response. 
 Motivated by mouse research showing that CTLA-4 knockouts induced lethal auto-immune reactions, it was theorized that a weaker, temporary blockade of CTLA-4 signaling may be effective in unleashing T cell responses in patients for which the main barrier is T cell activation. 
 Thus, a drug was developed targeting the CTLA4 pathway, aiming to increase the effectiveness of Dendritic-cell based activation of CD8+ T cells. 
@@ -112,7 +112,7 @@ These trials have succeeded not because of a high response rate---relatively few
 However, because of significant on- and off-target inflammatory toxicities, anti CTLA-4 drugs are primarily targeted to late-stage patients who do not respond to front line therapies. 
 
 Similar to vaccines, drugs targeting later-acting immune checkpoints appear to have superior specificity. 
-Mirroring the result in rodents, anti-PD-1 drugs seems safer than Ipilimumab \citep{Brahmer2010} and consistently show durable responses in subsets of patients \citep{Hamid2013,McDermott2014}. 
+Mirroring the result in rodents, anti-PD-1 drugs seem safer than Ipilimumab \citep{Brahmer2010} and consistently show durable responses in subsets of patients \citep{Hamid2013,McDermott2014}. 
 These clinical results suggest that anti-tumor immunity is functional up to but not including T cell mediated cell killing in some patients. % todo hersh didn't understand why this makes sense; need to imply that immunity is hierarchical, and therefore 'success' at later stages means the earlier stages are functioning properly.
 
 In addition to these two pathways, there are numerous other co-stimulatory or co-inhibitory pathways that are believed to be involved in modulation of the anti-tumor responses. 
@@ -144,10 +144,10 @@ Microarrays increased the amount of data generated in a single assay by 1000-fol
 They were also used to predict response to early immune therapies in melanoma \citep{Monsurro2004} and identify pan-cancer signatures of immune infiltration \citep{Chifman2016}.
 
 RNA-sequencing (RNA-seq) expanded on these capabilities by eliminating bias inherent in microarray technology, reducing the required amount of RNA input, and for the first time allowed an absolute measurement of the number of each RNA in a sample isolate.
-RNA-seq was effectively applied to generate, among other projects, the Cancer Genome Atlas \citep{McLendon2008,Network2011}.
+RNA-seq was effectively applied to generate, among other projects, The Cancer Genome Atlas \citep{McLendon2008,Network2011}.
 This Atlas has been extensively mined and has contributed prognostic signatures of immune therapy success \citep{Senbabaoglu2016}.
-RNA-seq has since been utilized to interrogate the binding patterns of transcription factors \citep{Johnson2007}, determine nucleosome occupancy \citep{Boyle2008}, refine transcription factor binding preferences \citep{Riley2014}, map the 3D spatial organization of DNA in the nucleus \citep{Belton2012}, and create many more experimental paradigms.
-RNA-seq has spawned large studies on the functionality of the genome, such as the ENCODE and ROADMAP epigenomics projects, which revealed that a large portion of the genome is responsible for functional differences in gene expression, even if it is not itself transcribed. % cite some kind of ENCODE 2012 paper (is there a main paper?)
+RNA-seq has since been utilized to interrogate the binding patterns of transcription factors (CHIP-seq,~\cite{Johnson2007}), determine nucleosome occupancy (DNAse-seq,~\cite{Boyle2008}), refine transcription factor binding preferences (SELEX-seq,~\cite{Riley2014}), map the 3D spatial organization of DNA in the nucleus (Hi-C,~\cite{Belton2012}), and create many more experimental paradigms.
+RNA-seq has spawned large studies on the functionality of the genome, such as the ENCODE \citep{Consortium2012} and ROADMAP epigenomics projects \citep{Kundaje2015}, which revealed that a large portion of the genome is responsible for functional differences in gene expression, even if it is not itself transcribed. 
 
 However, the utility of RNA-sequencing is limited because it requires a large number of input cells to achieve the concentration of DNA necessary to run the sequencer.
 Because millions of cells were needed to provide the required microgram of DNA input \citep{Wilhelm2009}, RNA-sequencing cannot tell the difference between 50\% of the cells expressing two copies of an RNA and 100\% of cells expressing one copy. 
@@ -178,39 +178,40 @@ Multiplexing of this method for multiple cells was accomplished shortly thereaft
 
 Developed contemporaneously and released shortly following CEL-seq, SMART template-switching chemistry was introduced to allow isolation of full-length transcripts \citep{Ramskoeld2012}.
 It accomplished this by leveraging the Nextera transposase reagent from bulk sequencing assays, which incorporates itself randomly into the captured RNA fragments, carrying an Illumina index. 
-The Illumina index was then used read off the sequencer, allowing reads from up to 96 cells to be sorted according to the cell that generated them per sequencing lane.
+Each cell is incubated with Nextera using different index pairs, the combination of which uniquely tag each cell. 
+Therefore, when the indices were read off the sequencer, it allowed reads from up to 96 cells to be sorted according to the cell that generated them per sequencing lane.
 This technological innovation was important because it allowed splicing events to be observed in single cells for the first time.
 scRNA-seq, applied in this fashion, can measure any cell of any size that can pass through a FACS sorter
 
 CEL- and SMART-seq enabled reading of an estimated 7-10 thousand molecules of RNA in each cell. 
 However, these data are not without problems. 
 While 10,000 molecules is many more than proteomics approaches allow, it is a relatively small fraction of the mRNA available in a eukaryotic cells. 
-Because many of the features of interest -- intracellular transcription factors -- are present at low copy number, capture-based stochasticity may drive their expression as much or more than biological state. 
+Because many of the features of interest, such as intracellular transcription factors, are present at low copy number, capture-based stochasticity may drive their expression as much or more than biological state. 
 
-Second, because cells contain so little starting material, and sequencing devices are designed for bulk genomes, significant amplification is necessary to generate enough material to run a sequencer. 
+Second, because cells contain so little starting material, and sequencing devices are designed for bulk genomes, large amounts of PCR (15+ cycles) or linear amplification (overnight) is necessary to generate enough material to run a sequencer. 
 Thus, both CEL- and SMART-seq utilize amplification, and this interacts with the capture rate to produce odd mixture distributions over captured RNA molecules. 
 
 The Central Limit Theorem describes how the mean values of a series of samples extracted independently from a population tend towards a Normal or Gaussian distribution.
 Because of the tendency for Gaussian distributions to naturally arise, there has been abundant work to analyze data that follow these distributions, and as such it is a desirable property. 
 In bulk sequencing, this is approximately achieved, as each technical or biological replicate samples many cells, each of which contains many mRNA. 
-After correcting for amplification by taking the log of the observed counts, the expression of most genes across replicates can usually be fit to Gaussian distributions. % maybe ENCODE best practices?  
+After correcting for amplification by taking the log of the observed counts, the expression of most genes across replicates can usually be fit to Gaussian distributions. 
 
 Single cell data is not so well behaved.
-The shallow sampling of the transcriptomes causes some cells to miss particular genes, which "drop-out" of analysis. 
+The shallow sampling of the transcriptomes causes some cells to miss particular genes, which "drop out" of analysis. 
 Thus, when the gene's expression is examined across cells, data is shared between a zero category or “drop-out” and a Log-Normal component which represents amplification over the captured molecules. 
 Because capture is so sparse, biases in amplification and other steps in library construction can contribute as significantly to the ratio of cells in the "drop-out" and "continuous" components as do the numbers of molecules originally present in cells \citep{Zheng2011,Dohm2008}.
-Indeed, capture in these technologies can be so variable that popular analysis visualizations such as "Dot plots" treat the fraction of cells that detect a transcript as carefully as they do the magnitude of expression in a detected gene\cite{Shekhar2016}. 
+Indeed, capture in these technologies can be so variable that popular analysis visualizations such as "Dot plots" treat the fraction of cells that detect a transcript as carefully as they do the magnitude of expression in a detected gene \citep{Shekhar2016}. 
 As a result, only large effects in molecule number are reliably detectable. 
 
 To overcome these technical biases, additional experimental controls were necessary to make the data more interpretable. 
-The most significant advance was the inclusion of molecular barcodes (UMIs). 
+The most significant advance was the inclusion of Unique Molecular Barcodes (UMIs). 
 Like cell barcodes, these are added to capture primers. 
 Unlike cell barcodes, molecular barcodes contain random sequences. 
 When the barcodes are long enough, they probabilistically provide a unique marker for each molecule. 
 This allows a computational scientist to resolve the reads obtained in an experiment at molecular resolution. 
 Inclusion of molecular barcodes allows computational scientists to exchange the complex mixture distributions for well characterized Poisson statistics---the statistics that describe the rate of rare sampling events \citep{Shiroguchi2012}.
 The effectiveness of this molecular barcoding is demonstrated with exogenous spike-in control reagents. 
-RNA of known concentration are added, and the accuracy of population estimates were improved with inclusion of UMIs. % cite grun, AVO
+RNA of known concentration are added, and the accuracy of population estimates were improved with inclusion of UMIs \citep{Gruen2014}.
 
 Amplification methods have an interaction with cell and molecular barcodes. 
 Traditional polymerase chain-reaction (PCR) amplification has a relatively small error rate, but the output of PCR is also valid input. 
@@ -256,7 +257,7 @@ A series of knockout experiments targeting the IFN-R pathway \citep{Gaublomme201
 Finally, recent studies demonstrated how tumor-associated cells can recruit Macrophages that suppress immunity by sequencing individual Macrophage cells and identifying hippo pathway Yes-associate protein (YAP) as the critical checkpoint for Macrophage recruitment \citep{Guo2017}
 
 These studies demonstrate how profiling single cells enables functional characterization of immune populations, both in natural states and when stimulated by foreign pathogens. 
-Yet, at the time this research bean, the study of immune infiltration of cancer had not been broached by large scRNA-seq experiments. 
+Yet, at the time this research began, the study of immune infiltration of cancer had not been broached by large scRNA-seq experiments. 
 The following chapter will describe how a technology was selected from the set of approaches reviewed above, adapted to sequencing immune cells, and benchmarked for sources of variation
 It will then introduce a statistical toolkit that was developed to correct the technical problems introduced by the process of transforming individual cells into a library which, after sequencing, describes the phenotypes of thousands of immune cells per tumor. 
 
