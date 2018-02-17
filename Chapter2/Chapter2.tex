@@ -27,6 +27,7 @@ Using the Smart-seq 2 on the Fluidigm C1 and devoting 1 million sequencing reads
 Such an experiment would nearly double the largest Smart-seq 2 experiment to current date for just a single patient \citep{Zheng2017}. 
 Fortunately, InDrop and Drop-seq, microfluidics approaches capable of sequencing tens of thousands of cells at low cost were announced shortly after this experiment was conceived \citep{Klein2015,Macosko2015}. 
 
+% todo I do definitely need a figure here; I need to explain droplet sequencing a bit before explaining how they differ. 
 % todo add a figure here about in-drop (from linas?) % todo el-ad also asked for a figure here describing the technologies. 
 By exchanging plates for microfluidic encapsulation flow cells, both platforms were capable of preparing tens of thousands of cells in hours, a feat that would have required either expensive mechanization or nearly two week’s work for a trained technician using existing plate approaches. 
 However, this increase in scale was made economical by significantly reducing the sequencing depth of individual cells.
@@ -110,9 +111,13 @@ We also extracted one involved lymph node to determine how TILs might act in a m
 \label{fig:1b}
 \end{figure} 
 
+% todo this section should incorporate a lot of the thesis background explanation (I should be able to start by copying from slides, for the most part.  
+\section{Understanding droplet-based 3' sequencing}
+
 \section{Tuning InDrop for Sequencing of Clinical Samples}
 
 % todo panel order in the figures should reflect order in the text. 
+% todo I can incorporate the motivation here from the talk
 When we began working with InDrop, it had only been applied to well-behaved cell lines. 
 Our initial analyses of pilot experiments using InDrop to sequence primary peripheral blood mononuclear cells revealed several deficiencies that we could correct to improve the quality of InDrop for primary samples.
 First, we observed that the ``GC content'', the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, varied across cell barcodes between 20 and 70\%. 
@@ -312,6 +317,7 @@ Alignment parameters used are as follows:
 \end{quote}
 This module thus takes as input a fastq file and produces a BAM file containing up to 20 multiple alignments per input fastq record and with all unaligned reads contained in the same file. 
 
+% todo I can incorporate the better motivation and figures from the talk here
 \section{Annotation Construction}
 
 Aligners identify the best match of each sequencing fragment to the genome, finding the chromosome, and the position on that chromosome, for each fragment. 
@@ -489,6 +495,7 @@ As a result, we assume that reads missing the poly-A tail may have fractured wit
 In aggregate, the filters in this section remove an average of 36\% of reads (sd = 9.3\%), depleting the count matrix of spurious molecules (see Table S1 for detailed values). % fix table reference
 These values are consistent with the results of running SEQC on drop-seq or MARS-seq datasets (data not shown).
 
+% todo I can include the simplified error correction figure here
 \section{Molecular Identifier Correction}
 
 % todo reference earlier figure describing errors; and/or manu would prefer we add a figure to describe how this works. 
@@ -527,6 +534,7 @@ For such data, it may be appropriate to err towards removing molecules instead o
 This dynamic suggests a corollary: while spending more reads on each molecule reduces an experiments theoretical yield, since the maximum yield is 1 read : 1 molecule, higher molecular coverage may yield data that more accurately reflects the cellular phenotypes. 
 Thus, datasets that capture more fragments of each molecule  
 
+% todo I have some multi-alignment correction figures in the talk that could be included here
 \section{Disambiguation of Multiply-Aligned Reads Recovers Substantial Sequencing Data}
 
 Alignment algorithms like STAR aim to identify the unique portion of the genome that was transcribed to generate the read that is being aligned. 
@@ -677,7 +685,8 @@ As a result of this analysis, this problem in the Klein pipeline was rectified.
 However, it demonstrates the importance of attention to detail in single cell analysis and the impact that small computational changes can have on data quality. 
 Finally, it demonstrates that in scRNA-seq experiments, it is more important to identify the \textit{right} molecules, than simply the largest number. 
 
-% todo add a section describing SEQC's contribution to various other publications
+% todo add seqc vs no-seqc figures here
+\section{SEQC identifies hidden biology}
 
 % todo make this a victory dance section
 \section{Generating scRNA-seq Profiles of Immunes Cells with InDrop and SEQC} % el ad thinks this section needs to have better flow and less repetition vs. the last section. It should not read like "methods". Hersh agrees with this. 
