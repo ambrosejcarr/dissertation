@@ -13,7 +13,7 @@ Therefore, study of tumor infiltrating immune cells also requires characterizati
 These requirements lead to complex experimental designs with multiple controls. 
 For example, It is important to separate phenotypes that are commonly observed across patients from those that result from specific microenvironments of individual tumors. 
 Thus, multiple patients must be sequenced to determine the relative frequency and generalizability of observed phenotypic states. 
-Additionally, scRNA-seq is a new technology with signifcant uncharacterized technical variability. 
+Additionally, scRNA-seq is a new technology with significant uncharacterized technical variability. 
 To verify that observed cell states result from biological variance and not technical changes induced by the experimental protocol, it is critical to measure each sample multiple times to identify what fraction of observed variability is technical. 
 
 Consequently, we expected to require approximately 1000 cells per replicate to properly profile each sample. 
@@ -103,14 +103,14 @@ IVT has a higher error rate than PCR, but errors don't propagate, this results i
 
 Unfortunately, there were no controlled experiments which would allow these two technologies to be quantitatively benchmarked. 
 In addition, the technologies were demonstrated on very different biological systems: 
-Drop-seq was run on a human-mouse cell line mixture and retinal neurons, whereas InDrops was demonstrated on cultured induced-pluripotent stem-cells. 
+Drop-seq was run on a human-mouse cell line mixture and retinal neurons, whereas InDrop was demonstrated on cultured induced-pluripotent stem-cells. 
 Because these cells have different sizes and stress responses, it made direct comparison of their results impossible. 
 
 Therefore, to differentiate between Drop-seq and InDrop, we carried out an in-house comparison of using an acute myeloid leukemia cancer model, reasoning that this system would be closer to the eventual tumor infiltrating immune cells that we would measure in our experiments than the published technologies. 
 We then examined the resulting data for the experimental yield of molecules and cells, the extent of cell contamination, and the feasibility of differentiating cells from non-cellular contamination. 
 
-Figure~\ref{fig:indrop-dropseq}~C displays a comparison between Drop-seq and InDrops.
-In our hands, InDrop produced data whereing the larger-count cell barcodes were more clearly separable than Drop-seq, and the overall yield of the InDrop experiment was higher.
+Figure~\ref{fig:indrop-dropseq}~C displays a comparison between Drop-seq and InDrop.
+In our hands, InDrop produced data wherein the larger-count cell barcodes were more clearly separable than Drop-seq, and the overall yield of the InDrop experiment was higher.
 In addition, the fraction of data concentrated in large-count cell barcodes was much higher in InDrop (Figure~\ref{fig:indrop-dropseq}~C, second panels). 
 This is an important observation, as it suggests that the overall ambient contamination is lower in the InDrop system, and therefore that the observed molecule counts in InDrop cells have a higher signal to noise ratio. 
 Combined with InDrop's better internal technical controls like error correcting cell barcodes and it's ability to capture more cells from rare samples, we were steered to utilize the InDrop assay for our lab's single-cell sequencing experiments.  
@@ -126,9 +126,9 @@ If those biases could be removed, we might further separate signal from noise, a
 
 We began by measuring the ``GC content'' of the capture primers. 
 GC content is the percentage of nucleotides in a DNA or RNA polymer that are guanine or cytosine, and it is established that sequences with 50-55\% GC content are the best substrates for enzymatic reactions like PCR \citep{Mamedov2008}. 
-Therefore, we reasoned that imbalances in GC content could cause some contamination-barcode pairs to amplify well, and cell-barcode pairs to amplify poorly, bluring the boundary between them. 
+Therefore, we reasoned that imbalances in GC content could cause some contamination-barcode pairs to amplify well, and cell-barcode pairs to amplify poorly, blurring the boundary between them. 
 
-When we measured the GC contant across cell barcodes, we observed that it was highly variable, with extreme high and low values of 20 and 70\%. 
+When we measured the GC constant across cell barcodes, we observed that it was highly variable, with extreme high and low values of 20 and 70\%. 
 When we compared the number of molecules associated with barcodes of different GC contents, we observed that cell barcodes with ``balanced'' GC content of 50\% were paired with more molecules in pilot experiments (Figure~\ref{fig:c2-1}~A), and in published InDrop data \citep{Klein2015}\footnote{This phenomena was also observed in Drop-seq, but because their barcodes are not designed, it cannot be addressed for that platform}.
 To quantify this phenomena, we correlated the deviance $d$ from balanced GC content ($50\%$) for each barcode $d = 1 - |GC - 0.5|$, and calculated the correlation of this statistic with the number of detected molecules for each barcode. 
 We observed a small but very significant effect of $r^{2} = 0.23, p < 10^{-45}$ suggesting that barcodes with 50\% GC content obtained higher molecule count than those with higher or lower GC fraction.
@@ -203,7 +203,7 @@ In addition, the rapid pace of technology development has induced computational 
 
 Given the fast rate of technological evolution, we believed that we and others would benefit from a modular data processing package capable of rapid adaptation to changes in data generation from multiple technologies.
 To address this deficiency, we developed SEquence Quality Control (SEQC), a general purpose python package to build a count matrix from single cell sequencing reads which is able to process data from InDrop, Drop-seq, 10X, and Mars-Seq2 technologies, but more critically, a package that incorporates cutting edge analysis methods to maximize signal:noise in scRNA-seq data. 
-The SEQC package, which takes Illumina Fastq or BCL files, the standard sequencing data formats, and generates a count matrix that is carefully filtered for errors and biases; the SEQC package is outlined in Figure~\ref{fig:s1a}. 
+The SEQC package, which takes Illumina Fastq or BCL files, the standard sequencing data formats, and generates a count matrix that is carefully filtered for errors and biases; the SEQC package is outlined in Figure~S\ref{fig:s1a}. 
 
 \begin{figure}
 \centering
@@ -241,7 +241,7 @@ To solve the classification problems that plague scRNA-seq data, like discrimina
 Given this labeled data, one would search for data features that differentiate the two conditions. 
 However, the experiments that generate this type labeled data are too easy, and don't generalize well. 
 For example, both InDrop and Drop-seq technologies show very low contamination when human and mouse cell lines are mixed, measurable by the number of cells that have both human and mouse DNA\@. 
-However, this experiment is both favorable to the assays, since cultered cells don't lyse as frequently as clinical samples, and underpowered, since human and mouse genomes are similar enough that a large number of potentially-contaminating fragments can't be specifically assigned.
+However, this experiment is both favorable to the assays, since cultured cells don't lyse as frequently as clinical samples, and underpowered, since human and mouse genomes are similar enough that a large number of potentially-contaminating fragments can't be specifically assigned.
 
 As a result, when we attempt to extrapolate what we learn from this case to more complex cases, the features we learned in the simple case vary too much, and fail to clearly differentiate cells in the new experiments. 
 
@@ -289,7 +289,7 @@ To prevent this, InDrop's first cell barcode fragment has 4 lengths, which cause
 
 However, this organization required us to localize the spacer sequence on the fly for each sequencing read. 
 The original InDrop publication accomplished this with exact pattern matching, however this is computationally expensive
-An alternative that can identify errors in the spacer sequence is fuzzy-matching, but this approach extended the run time of seqc by several hours, and thus is computationally prohibitive.  
+An alternative that can identify errors in the spacer sequence is fuzzy-matching, but this approach extended the run time of SEQC by several hours, and thus is computationally prohibitive.  
 The latter problem was significant, as we would occasionally see sequencing experiments with a single failed "N" cycle in the middle of the fastq file. 
 In these cases, the data was 100\% viable, as there were no failures in the barcodes or genomic sequence, but the existing approach would fail all reads. 
 
@@ -463,7 +463,7 @@ If quality were predictive of substitution errors, we would expect to observe st
 However, we observed no relationship (mean r\textsuperscript{2}=0.04, max r\textsuperscript{2}=0.06; `C' errors) on either InDrop or 10x data.
 In contrast, mutations to N bases produce the expected relationship, with base quality negatively correlating with → N substitutions (r\textsuperscript{2}=-0.87). However, N base errors made up less than 1 / 100,000 of the observed errors in our experiment, and we conclude (1) that base quality is not meaningfully predictive of error rates, and (2) that most sequenced error is derived from upstream library construction steps.
 
-\section{Barcode Sequencing Errors Arise In Library Construction and Are Correctible} \label{error_correction}
+\section{Barcode Sequencing Errors Arise In Library Construction and Are Correctable} \label{error_correction}
 
 Proper assignments of reads to the molecule and cell they were captured in is a critical step in scRNA-seq analysis. 
 Under ideal circumstances, the combination of the UMI and cell describe the cell of origin. 
@@ -482,8 +482,8 @@ Thus, we accept this low rate of loss and proceed to correct single base errors,
 
 This error rate, while high, is easy to correct and results in minimal data loss. 
 Although a 4\% barcode error rate is higher than the error rate observed by other technologies, it directly results from the use of linear amplification. 
-If errors are independent, then the probability of obtaining 2 or more errors, which would produce an uncorrectible barcode,  is 1 - cdf beginning at 2 for a Poisson distribution with $\lambda = 0.04$. 
-Given the observed error rate, we estimated that only 0.035\% of barcodes would be uncorrectible.
+If errors are independent, then the probability of obtaining 2 or more errors, which would produce an uncorrectable barcode,  is 1 - cdf beginning at 2 for a Poisson distribution with $\lambda = 0.04$. 
+Given the observed error rate, we estimated that only 0.035\% of barcodes would be uncorrectable.
 This allows SEQC to correct errors using a fast hash-based strategy. 
 This is in contrast to PCR-based amplification approaches which propagate errors that occur in early cycles, requiring more complex, graph-based correction methods, and larger Hamming buffers (see \href{https://github.com/vals/umis}{https://github.com/vals/umis}).
 
@@ -509,13 +509,13 @@ This will result in inflation of UMI counts for the matched gene.
 
 % todo manu found this confusing. 
 To test for the presence of these types of errors, we used a {\mono trie} data structure to efficiently count the largest hamming-corrected cell barcode prefix observed in each of our \textit{aligned} sequencing reads. 
-We used the hamming-corrected barcodes because we reasoned that subsitution errors would be the most common error type, and wanted to exclude those from anlysis, as they are corrected through other methods, described above. 
+We used the hamming-corrected barcodes because we reasoned that substitution errors would be the most common error type, and wanted to exclude those from analysis, as they are corrected through other methods, described above. 
 The largest cell barcode prefix is most often a complete cell barcode, owing to the high quality of InDrop data. 
 However, for 4.7\% of our sequencing reads, the prefix is a partial barcode.  
 
 These partial barcodes could arise from multiple sources. 
 One option is an insertion or deletion in the barcode. 
-Errors of this type would produce a frameshift in the barcode. 
+Errors of this type would produce a frame shift in the barcode. 
 A second option is that the barcode has broken, and the broken end acted as a randomer, an alternative capture strategy to poly-A capture. 
 To differentiate between these cases, we calculated, based on the list of known InDrop barcodes, which suffixes match single base insertions or deletions (indels). 
 We then determined whether there was an existing barcode that explained each broken primer. 
@@ -587,8 +587,8 @@ The most common approaches are transcriptomic pseudo-alignment, wherein a sequen
 However, both methods are too lenient, and propagate errors from InDrop sequencing data into the final count matrix. 
 
 Low-coverage 3' sequencing data contains too much uncertainty for expectation-maximization to function properly. 
-RSEM, which was designed for full-length bulk data, passes this unertainty directly into the count matrix, because it expects the data, in aggregate, to contain enough coverage of each gene for errors to average out. 
-This uncertainty is normally removed by UMI-aware count based methods, and analyses have shown that the inclusion of UMIs sinificantly improves data accuracy \citep{Grun2016}.
+RSEM, which was designed for full-length bulk data, passes this uncertainty directly into the count matrix, because it expects the data, in aggregate, to contain enough coverage of each gene for errors to average out. 
+This uncertainty is normally removed by UMI-aware count based methods, and analyses have shown that the inclusion of UMIs significantly improves data accuracy \citep{Grun2016}.
 As such, RSEM is not an appropriate approach for 3' data. 
 
 A second problem is that due to memory constraints, both expectation-maximization and transcriptome pseudo-alignment only consider matches to the transcriptome. 
@@ -642,7 +642,7 @@ This algorithm is summarized by Figure~\ref{fig:multi-alignment}.
 This figure displays a set of 13 alignments against genes A, B, and C, and an additional 15 against genes D, E, and F. 
 All alignments share the same cell and molecular barcodes.
 The alignments can first be split, since no alignment bridges A, B, C, and D, E, F (e.g.\ there is no alignment, for example, to A and D which links the groups).
-The alignments to A, B, C are then uniquely explained by A and can be resolved, whereas the alignments to D, E, and F are joinly explained by E and F, and are ambiguous.}
+The alignments to A, B, C are then uniquely explained by A and can be resolved, whereas the alignments to D, E, and F are jointly explained by E and F, and are ambiguous.}
 \label{fig:multi-alignment}
 \end{figure}
 
@@ -737,7 +737,7 @@ As a result of this analysis, this problem in the Klein pipeline was rectified.
 However, it demonstrates the importance of attention to detail in single cell analysis and the impact that small computational changes can have on data quality. 
 Finally, it demonstrates that in scRNA-seq experiments, it is more important to identify the \textit{right} molecules, than simply the largest number. 
 
-\section{SEQC Indentifies Biological Structure by Removing Noise from scRNA-seq Data}
+\section{SEQC Identifies Biological Structure by Removing Noise from scRNA-seq Data}
 
 \begin{figure}
 \centering
@@ -751,7 +751,7 @@ Panel A displays a density projection where yellow is higher and blue is lower. 
 Each algorithm discussed above improves the quality of the data, either by removing erroneous reads, correcting errors, removing ambiguity from alignments, restricting alignments to observable features, or removing low complexity aggregations of ambient contamination. 
 However, I have not yet demonstrated how critical these methods were to enabling biological reasoning over complex input data from clinical samples. 
 
-To display the impact of these methods, I compare a single pilot tumor sample analyzed with SEQC with a pipeline constructed from publically available components.
+To display the impact of these methods, I compare a single pilot tumor sample analyzed with SEQC with a pipeline constructed from publicly available components.
 This pipeline does not contain SEQC's filters, uses the STAR aligner with a standard GENCODE annotation, applies the Jaitin error correction method, requires unique alignments, and selects cells using SEQC approach, so that the same cells could be compared. 
 
 These data were then median-normalized, dimensionality reduced with PCA, and projected with tSNE\@. 
@@ -791,7 +791,7 @@ This rapid turn-around has enabled us to produce 4 versions of the InDrop chemis
 SEQC has allowed us to compare and contrast InDrop with other technologies. 
 It has been used to compare over 10 different chemistries, including, most recently, the processing of nucleus-sequencing data. 
 In addition, when technical disparities between single-cell approaches take up less dominant fractions of data variation, it may enable us to compare or pool data across experiments done by other labs using other chemistries---a feat not yet attempted, to our knowledge.
-SEQC is currently the data analysis platform used in MSKCC's single-cell data processing platform, and to date has processed over 250 individual sequencing experiments, resulting in 6 publications. 
+SEQC is currently the data analysis platform used in Memorial Sloan Kettering Institute's single-cell data processing platform, and to date has processed over 250 individual sequencing experiments, resulting in 6 publications. 
 
 Finally, SEQC enabled us to build a high-quality atlas of the cellular phenotypes of tumor infiltrating breast leukocytes. 
 We chose breast over other cancer models because patients suffering from breast cancer often elect to undergo bilateral mastectomies. 
