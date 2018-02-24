@@ -735,7 +735,7 @@ Finally, it demonstrates that in scRNA-seq experiments, it is more important to 
 
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{seqc_comparison.png}
+\includegraphics[height=0.75\textheight]{seqc_comparison.png}
 \caption{All panels display features on tSNE projections constructed from the top 10 principle components from the same set of cells processed with a pipeline constructed from publicly available tools (left) and SEQC (right). Each point represents a cell. 
 Panel A displays a density projection where yellow is higher and blue is lower. Panel B displays the expression of CD68, a marker for macrophage cells. Panel C displays the sum of CD19 and CD79A expression which marks B-cells.}
 
@@ -784,6 +784,13 @@ SEQC has enabled our group to rapidly iterate on the InDrop and other technologi
 We are able to return fully analyzed sequencing experiments including a complete clustering and QC analysis of a sample to the biologist on the same day that the sample is submitted for sequencing (MiSeq) or within 8 hours of the completion of fastq generation (HiSeq). 
 This rapid turn-around has enabled us to produce 4 versions of the InDrop chemistry, each improving upon the previous method by reducing the number of unnecessary bases that are sequenced, thus saving on cost, improving the barcode libraries, thus increasing data quality, and experiment with contemporaneous enrichment of target genes with paired full-transcriptome sequencing in the same cells, improving scRNA-seq's power to detect rare but important transcripts. 
 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{Figure1-B.png}
+\caption{Summary of samples obtained and patient metadata. Tumor, Normal, Blood and Lymph describe whether or not tissue of each type was extracted from each patient. ER, PR, and Her2 summarize the fraction of a tumor that stained positive for the ER and PR, and whether or not the Her2 gene was amplified.} 
+\label{fig:1b}
+\end{figure} 
+
 SEQC has allowed us to compare and contrast InDrop with other technologies. 
 It has been used to compare over 10 different chemistries, including, most recently, the processing of nucleus-sequencing data. 
 In addition, when technical disparities between single-cell approaches take up less dominant fractions of data variation, it may enable us to compare or pool data across experiments done by other labs using other chemistries---a feat not yet attempted, to our knowledge.
@@ -795,13 +802,6 @@ This confers a rare opportunity to sequence truly matched healthy tissue, devoid
 To ensure that we recovered a variety of immune cell states responding to variable microenvironments, we included patients with breast tumors of varying type and grade, and devoted the majority of our sequencing to TILs (8 patients). 
 In order to determine what phenotypic differences could be accounted for by tissue residence, we took matching normal (3) and peripheral blood mononuclear cells (PBMCs) (2) samples from the same patients when those patients elected to undergo prophylactic mastectomies (Figure~\ref{fig:1b}). 
 We also extracted one involved lymph node to determine how TILs might act in a metastatic context.  
-
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{Figure1-B.png}
-\caption{Summary of samples obtained and patient metadata. Tumor, Normal, Blood and Lymph describe whether or not tissue of each type was extracted from each patient. ER, PR, and Her2 summarize the fraction of a tumor that stained positive for the ER and PR, and whether or not the Her2 gene was amplified.} 
-\label{fig:1b}
-\end{figure} 
 
 These samples were profiled by 61 sequencing experiments with at least two technical replicates per sample and produced over 100,000 cells, each of which was covered by an average of 22,000 reads. 
 Cells contained on average 15 reads per molecule, and cell saturation was 91\% across all samples and replicates. 
