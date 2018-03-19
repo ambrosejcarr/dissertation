@@ -7,7 +7,7 @@
 % This is the main document file for the dissertation. You should not include any of your actual chapters or other substantive writing in this file.
 %First we have to set up the style and formatting of the pages.
 
-\documentclass[letterpaper,12pt]{memoir} %The memoir class is great for longer works that use separate chapters. The Dissertation Office recommends 10-pt Arial or 12-pt Times New Roman. I use 12-pt for readability.
+\documentclass[letterpaper,12pt,openany]{memoir} %The memoir class is great for longer works that use separate chapters. The Dissertation Office recommends 10-pt Arial or 12-pt Times New Roman. I use 12-pt for readability.
 \openany
 %Below are some LaTeX packages to include to make sure that your Unicode characters render correctly. This is especially important if your dissertation includes polytonic Greek!
 
@@ -89,14 +89,18 @@
 
 %% Here's the copyright page. I use a Creative Commons license.
 \include{./FrontMatter/Copyright}
-
 %% Here's the Abstract
 \include{./FrontMatter/Abstract}
 
-
+\let\cleardoublepage\clearpage
 
 \frontmatter
-\tableofcontents % You need to put your ToC after frontmatter so that it will get lowercase Roman numerals.
+
+% \begin{center}
+%   This page intentionally left blank.
+% \end{center}
+
+\tableofcontents* % You need to put your ToC after frontmatter so that it will get lowercase Roman numerals. Star removes the self-reference
 
 %A list of graphs and illustrations should go here if you use any.
 
@@ -120,7 +124,6 @@
 \include{./Chapter3/Chapter3}
 \include{./Chapter4/Chapter4}
 \include{./Discussion/Discussion}
-\include{./Supplemental_Figures/SupplementalFigures}
 
 %This final section includes your bibliography.
 
@@ -128,5 +131,8 @@
 
 \SingleSpacing %Start single-spacing text before you start the bibliography. We used \bibitemsep earlier in this document to keep bibliography items separated by one line of blank space, but we need to keep the entries themselves single-spaced.
 \printbibliography %Print the bibliography. Your bibliography file is defined as Bibliography.bib earlier in this document by the command \addbibresource. It should be kept in the same folder as this file.
+
+\DoubleSpacing
+\include{./Supplemental_Figures/SupplementalFigures}
 
 \end{document} %All done! Now you're a doctor.

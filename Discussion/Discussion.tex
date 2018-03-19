@@ -1,7 +1,6 @@
 %This is the conclusion of the dissertation
 
-\chapter{Discussion and Perspectives} 
-\addcontentsline{toc}{chapter}{Discussion and Perspectives}
+\chapter[Discussion and Perspectives]{Discussion and Perspectives} 
 
 \section{Implications of the Breast Tumor Immune Atlas}
 
@@ -140,7 +139,7 @@ SEQC was initially programmed to follow a strategy similar to docker, but with s
 We first programmed an Amazon Machine Image, which is like an Amazon-specific docker container. 
 As a result, it only worked on Amazon's Elastic Cloud, and we needed to use separate installation instructions for local installations. 
 
-Docker, by contrast, can run on Amazon, but also on Google cloud, and on mac and PC.
+Docker, by contrast, can run on Amazon, but also on Google cloud, and on mac and PC\@.
 For these reasons, SEQC has been made available in a docker container, which can be pulled from the dockerhub repository at ambrosejcarr/seqc:1.0.0.
 As a result, SEQC can now be used on any operating system, without needing expert knowledge of their operating system to install any dependencies. 
 
